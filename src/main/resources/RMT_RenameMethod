@@ -1,0 +1,22 @@
+// RMT = Refactor Mechanics Template
+
+--> temp note: renaming might go wrong when overriding methods up or down. What does existing automatic tooling do in this case.
+               The rename method is not likely to have an existing automatic detector, while it is up to a human to decide
+               if the name is understandable or not. For creating my first context based decisions and experiment with
+               a proper encoding of the described refactor mechanic paths, this seems a suitable candidate.
+
+Name:       Rename Method
+Reason:     "... Remember your code is for a human first and a computer second. Humans need good names...."
+
+// Coding of decision tree building up possible path based on context
+
+<decisions>
+    <context name="signature-in-superclass">
+        <action>go to super class</action>
+        <action>restart</action>
+    </context>
+
+    <context default>
+        <action>Create method with new name</action>
+    </context>
+</decisions>
