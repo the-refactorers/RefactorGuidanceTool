@@ -14,5 +14,5 @@ public class CodeSmellDescription {
 
     // Location (line number) in the file where the smell is detected
     public int fileLocation = 0;
-    
+
 }
