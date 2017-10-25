@@ -12,7 +12,7 @@ public class ClassMethodFinderTest {
         ResourceExampleClassParser loader = new ResourceExampleClassParser();
         CompilationUnit cu = loader.Parse("SimpleClassWith2Methods.java.txt");
 
-        ClassMethodFinder cmf = new ClassMethodFinder(cu);
+        ClassMethodFinder cmf = new ClassMethodFinder(cu, "TwoMethodClass");
         cmf.ListAllMethods();
     }
 }
