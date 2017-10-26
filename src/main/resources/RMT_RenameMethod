@@ -8,15 +8,50 @@
 Name:       Rename Method
 Reason:     "... Remember your code is for a human first and a computer second. Humans need good names...."
 
-// Coding of decision tree building up possible path based on context
+// Coding of decision tree where the context of the code is taken into account for decision making
+// if context description is valid, the action linked to the decision is taken
 
-<decisions>
-    <context name="signature-in-superclass">
-        <action>go to super class</action>
-        <action>restart</action>
-    </context>
+<guidance_decision_tree>
 
-    <context default>
-        <action>Create method with new name</action>
-    </context>
-</decisions>
+    <decisions>
+        <decision id="1">
+            <context name="signature-in-superclass">
+                <instruction>102</instruction>
+            </context>
+            <context name="signature-only-in-method">
+                <instruction>101</instruction>
+            </context>
+        </decision>
+
+        <decision id="2">
+            <context name="limited-references">
+                <instruction>103</instruction>
+            </context>
+
+            <context name="many-reference">
+                <instruction>104</instruction>
+            </context>
+         </decision>
+     </decisions>
+
+    <instructions>
+        <instruction id = "-1">
+            De methodenaam [method-name] in class [class-name] is betekenisloos
+            <decision>1</decision>
+        </instruction>
+
+        <instruction id = "101">
+            Creëer een nieuwe methode en kopier de inhoud van methode [method-name] naar deze nieuwe methode.
+            <decision>2</decision>
+        </instruction>
+
+        <instruction id = "102">
+            De methodenaam [method-name] is ook gedefinieerd in sub- of superclasses van class [class-name]. Een verandering
+            van de methode naam kan invloed hebben op het gedrag van je programma.
+            Pas ook renaming toe van methode [method-name] in de volgende classes [list-of-subclasses][list-of-superclasses]
+            <instruction>101</instruction>
+        </instruction>
+        
+    </instructions>
+
+</guidance_decision_tree>
