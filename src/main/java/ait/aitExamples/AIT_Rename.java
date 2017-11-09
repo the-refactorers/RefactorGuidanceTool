@@ -12,13 +12,12 @@ public class AIT_Rename {
         tree.setRefactorMechanic("Rename Method");
 
         Instruction i1 = new Instruction(1, "De naam van methode $method in class $class willen we renamen");
-        ContextDecision d1 = new ContextDecision();
-        d1.setContextType(method_single_declaration);
+        ContextDecision d1 = new ContextDecision(method_single_declaration, 2);
 
         Instruction i2 = new Instruction(2, "Maak een nieuwe methode aan met een verbeterde naam in class $class");
         d1.setNextInstructionID(2);
         i1.addDecision(d1);
-        i1.addDecision(d1);
+
         tree.setFirstInstruction(i1);
         tree.addInstruction(i2);
     }

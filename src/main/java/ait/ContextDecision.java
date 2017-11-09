@@ -15,6 +15,11 @@ public class ContextDecision {
     CodeContext.CodeContextEnum contextType;
     int         nextInstructionID = -1;
 
+    public ContextDecision(CodeContext.CodeContextEnum decisionCtxt, int resultsIn)
+    {
+        contextType = decisionCtxt;
+        nextInstructionID = resultsIn;
+    }
 
     @XmlAttribute
     public void setContextType(CodeContext.CodeContextEnum contextType) {

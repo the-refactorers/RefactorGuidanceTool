@@ -39,12 +39,21 @@ public class InstructionGenerator {
         List<String> generatedInstructionList = new ArrayList<String>();
         List<String> parsedValuesInstructionList = new ArrayList<>();
 
-        if (aitTree != null && parameterMap != null)
+        if (aitTree != null && parameterMap != null && contextSet != null)
         {
             // built up the instruction list, based on the code context set
-            String instruction = aitTree.getFirstInstruction().getInstructionDescription();
-            generatedInstructionList.add(instruction);
+            Instruction _instr = aitTree.getFirstInstruction();
+            generatedInstructionList.add(_instr.getInstructionDescription());
 
+            for (ContextDecision decision : _instr.getDecisions())
+            {
+                // Check if context for specific decision exists in code
+                if(contextSet.contains(decision.getContextType()))
+                {
+                    Instruction nextInstruction = aitTree.findInstruction(decision.nextInstructionID);
+                    generatedInstructionList.add(nextInstruction.getInstructionDescription());
+                }
+            }
 
             // Fill in the used variables in the generated instructions, based on the parameter map
             //        1. Are there variables present

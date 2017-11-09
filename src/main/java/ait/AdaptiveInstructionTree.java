@@ -65,4 +65,20 @@ public class AdaptiveInstructionTree {
     public void addInstruction(Instruction i) {
         allInstructions.add(i);
     }
+
+    public Instruction findInstruction(int nextInstructionID) {
+
+        Instruction lookedupInstruction = null;
+
+        for (Instruction instruction : this.allInstructions)
+        {
+            if (instruction.instructionID == nextInstructionID)
+            {
+                lookedupInstruction = instruction;
+                break;
+            }
+        }
+
+        return lookedupInstruction;
+    }
 }
