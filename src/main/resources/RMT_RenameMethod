@@ -36,7 +36,7 @@ Reason:     "... Remember your code is for a human first and a computer second. 
 
     <instructions>
         <instruction id = "-1">
-            De methodenaam [method-name] in class [class-name] is betekenisloos
+            De methodenaam [method-name] in class [class-name] is
             <decision>1</decision>
         </instruction>
 
@@ -51,7 +51,7 @@ Reason:     "... Remember your code is for a human first and a computer second. 
             Pas ook renaming toe van methode [method-name] in de volgende classes [list-of-subclasses][list-of-superclasses]
             <instruction>101</instruction>
         </instruction>
-        
+
     </instructions>
 
 </guidance_decision_tree>
