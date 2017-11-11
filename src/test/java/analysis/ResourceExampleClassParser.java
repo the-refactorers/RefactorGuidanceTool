@@ -1,4 +1,4 @@
-package rpg.tool;
+package analysis;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -8,7 +8,7 @@ import java.io.InputStream;
 /**
  * Helper class to parse the classes defined in the resource folder
  */
-class ResourceExampleClassParser {
+public class ResourceExampleClassParser {
 
     /**
      * Parses class signatures contained in resources folder
@@ -17,7 +17,7 @@ class ResourceExampleClassParser {
      *                          this object is used in the JavaParser for further code analysis.
      * @return A JavaParser compilationUnit. Null if resource could not be found or parsed.
      */
-    CompilationUnit Parse(String classAsResource) {
+    public CompilationUnit Parse(String classAsResource) {
 
         InputStream parseStream = this.getClass().getClassLoader().getResourceAsStream(classAsResource);
 

@@ -1,4 +1,4 @@
-package rpg.tool;
+package analysis;
 
 /**
  * Data structure containing information about a code smell that has been detected by

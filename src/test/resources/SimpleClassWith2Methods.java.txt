@@ -1,10 +1,12 @@
 public class TwoMethodClass
 {
-    public void MethodOne()
+    // Line outside method (test purpose)
+    public void MethodOne() // Line in method
     {
-
+        //Line in method
     }
 
+    // Line outside method
     public void MethodTwo()
     {
 
