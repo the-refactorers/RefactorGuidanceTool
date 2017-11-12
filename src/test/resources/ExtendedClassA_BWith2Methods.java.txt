@@ -1,0 +1,43 @@
+interface C
+{
+    public void MethodOne();
+}
+
+interface D
+{
+    public void MethodFour();
+}
+
+public class B implements C, D
+{
+    // Implementation of interface C method
+    public void MethodOne()
+    {
+
+    }
+
+    // Implementation of interface D method
+    public void MethodFour()
+    {
+
+    }
+
+    // Unique method
+    public void MethodThree()
+    {
+
+    }
+}
+
+public class A extends B
+{
+    // Overrides methodOne in class B, defined in interface C
+    public void MethodOne()
+    {
+    }
+
+    // Unique method
+    public void MethodTwo()
+    {
+    }
+}

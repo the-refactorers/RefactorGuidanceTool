@@ -10,6 +10,7 @@ import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import com.github.javaparser.symbolsolver.model.typesystem.ReferenceType;
 import helpers.Checker;
 
 import java.io.File;
@@ -20,53 +21,94 @@ class ClassMethodFinder {
 
     private CompilationUnit _cu;
     private String _qname;
+    private TypeSolver _symbolSolver;
 
-    ClassMethodFinder(CompilationUnit cu, String qualifiedName) {
+    public ClassMethodFinder(CompilationUnit cu, String qualifiedName) {
         _cu = cu;
-        _qname = "TwoMethodClass"; //qualifiedName;
-    }
+        _qname = qualifiedName;
 
-    List<String> getAllDefinedMethods() {
-
-        List<String> allDefinedMethods = new ArrayList<String>();
-
-        TypeSolver mySolver = new CombinedTypeSolver(
+        _symbolSolver = new CombinedTypeSolver(
                 new ReflectionTypeSolver(),
                 new JavaParserTypeSolver(new File("SymbolSolver/src/main/java/"))
         );
+    }
+
+    private boolean isIgnoredPackage(ReferenceTypeDeclaration rtd)
+    {
+        boolean ignoredPackage = false;
+
+       if (rtd.hasName() && rtd.getPackageName().equalsIgnoreCase("java.lang") )
+       {
+           ignoredPackage = true;
+       }
+
+       return ignoredPackage;
+    }
+
+    public List<String> getAllDefinedMethods() {
+
+        List<String> allDefinedMethods = new ArrayList<String>();
 
         // Find in the AST the class declaration of the provided class in the Ctor
-        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
+        List<MethodDeclaration> lmd = getMethodDeclarations();
 
-        List<MethodDeclaration> lmd = class4Analysis.getMethods();
         lmd.forEach (method -> {
             String formattedOut = String.format(" %s %s : range %s", method.getType(), method.getSignature(), method.getRange().toString());
             System.out.println(formattedOut);
             allDefinedMethods.add(formattedOut);
             });
-        /*
-        ReferenceTypeDeclaration rtd = JavaP)arserFacade.get(mySolver).getTypeDeclaration(class4Analysis);
 
-        rtd.getDeclaredMethods().forEach(m ->
-                System.out.println(String.format("  %s", m.getQualifiedSignature())));
-*/
-         //System.out.println();
+        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
+        ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
+
+         //simple test to find all declared methods in local class and all of its inherited classes
+        List<ReferenceType> rt = rtd.getAllAncestors();
+        rt.forEach( ancestor ->
+        {
+            ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
+
+            if (!isIgnoredPackage(rtd_ancestor)) {
+                rtd_ancestor.getDeclaredMethods().forEach(m ->
+                {
+                    System.out.println(String.format("A:  %s", m.getQualifiedSignature()));
+                    System.out.println(String.format("declared in:  %s", m.declaringType().getName()));
+                    System.out.println(String.format("is interface? %s", m.declaringType().isInterface()?"yes": "no"));
+                });
+            }
+        });
+
+        if (!isIgnoredPackage(rtd)) {
+            rtd.getAllMethods().forEach(m ->
+            {
+                if (!m.getQualifiedSignature().contains("java.lang")) {
+                    System.out.println(String.format("  %s", m.getQualifiedSignature()));
+                    System.out.println(String.format("declared in:  %s", m.declaringType().getName()));
+                }
+            });
+        }
+
+         System.out.println();
 
         return allDefinedMethods;
     }
 
+    private List<MethodDeclaration> getMethodDeclarations() {
+        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
+        return class4Analysis.getMethods();
+    }
+
+    /**
+     * Tells if a file line location lies within scope of a method
+     *
+     * @param location Line number in .java file
+     * @return true if line number lies in method scope
+     */
     public boolean isLocationInMethod(int location) {
 
         boolean locationInMethodDefinition = false;
 
-        TypeSolver mySolver = new CombinedTypeSolver(
-                new ReflectionTypeSolver(),
-                new JavaParserTypeSolver(new File("SymbolSolver/src/main/java/"))
-        );
-
         // Find in the AST the class declaration of the provided class in the Ctor
-        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
-        List<MethodDeclaration> lmd = class4Analysis.getMethods();
+        List<MethodDeclaration> lmd = getMethodDeclarations();
 
         for (MethodDeclaration method : lmd)
         {
@@ -74,29 +116,60 @@ class ClassMethodFinder {
                 locationInMethodDefinition = true;
         }
 
-        return false;
+        return locationInMethodDefinition;
     }
 
+    /**
+     * Determine in which method  a specific location in a .java file is located
+     *
+     * @param location  Line number in .java file
+     * @return Method name when location is inside a method, otherwise empty string
+     */
     public String getMethodNameForLocation(int location) {
         String methodName = new String();
 
-        TypeSolver mySolver = new CombinedTypeSolver(
-                new ReflectionTypeSolver(),
-                new JavaParserTypeSolver(new File("SymbolSolver/src/main/java/"))
-        );
+        if(isLocationInMethod(location)) {
+            // Find in the AST the class declaration of the provided class in the Ctor
+            List<MethodDeclaration> lmd = getMethodDeclarations();
 
-        // Find in the AST the class declaration of the provided class in the Ctor
-        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
-        List<MethodDeclaration> lmd = class4Analysis.getMethods();
-
-        for (MethodDeclaration method : lmd)
-        {
-            if( Checker.inRangeInclusive(method.getRange().get().begin.line, method.getRange().get().end.line, location)) {
-                methodName = method.getNameAsString();
-                break;
+            for (MethodDeclaration method : lmd) {
+                if (Checker.inRangeInclusive(method.getRange().get().begin.line, method.getRange().get().end.line, location)) {
+                    methodName = method.getNameAsString();
+                    break;
+                }
             }
         }
 
         return methodName;
+    }
+
+    public boolean isMethodDefinedInInterface(String methodName) {
+
+        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
+        ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
+
+        // simple test to find all declared methods in local class and all of its inherited classes
+        List<ReferenceType> rt = rtd.getAllAncestors();
+
+        rt.forEach( ancestor ->
+        {
+            ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
+
+            if (!isIgnoredPackage(rtd_ancestor) && rtd_ancestor.isInterface()) {
+
+                rtd_ancestor.getDeclaredMethods().forEach(m ->
+                {
+                    if(m.declaringType().isInterface())
+                    {
+
+                    }
+//                    System.out.println(String.format("A:  %s", m.getQualifiedSignature()));
+//                    System.out.println(String.format("declared in:  %s", m.declaringType().getName()));
+//                    System.out.println(String.format("is interface? %s", m.declaringType().isInterface()?"yes": "no"));
+                });
+            }
+        });
+
+        return false;
     }
 }
