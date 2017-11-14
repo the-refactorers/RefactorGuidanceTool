@@ -1,0 +1,29 @@
+interface SimpleInterface {
+public void MethodInInterface();
+}
+
+class Base {
+    public void MethodOverride(){
+        return;
+    }
+}
+
+class MyMethod extends Base implements SimpleInterface
+{
+    public int MethodXYZ()
+    {
+        int a = 5;
+        a = a+1;
+        return a;
+    }
+
+    public void MethodInInterface()
+    {
+        return;
+    }
+
+    public void MethodOverride()
+    {
+        return;
+    }
+}

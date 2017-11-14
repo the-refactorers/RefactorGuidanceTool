@@ -40,6 +40,8 @@ public class InstructionGeneratorTests {
 
         //generator.contextSet = codeContext;
         generator.setParameterMap(parameterMap);
+        generator.setContext(codeContext);
+
         List<String> instructionSteps = generator.generateInstruction();
         Assert.assertEquals("Parameter fill test: Dummy method printHelloWorld is located in dummy Hello", instructionSteps.get(0));
         Assert.assertEquals("Instruction 3: Overrides class Hello", instructionSteps.get(1));

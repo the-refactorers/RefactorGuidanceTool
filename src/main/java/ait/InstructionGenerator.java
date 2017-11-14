@@ -79,4 +79,8 @@ public class InstructionGenerator {
             return new ArrayList<String>();
         }
     }
+
+    public void setContext(EnumSet<CodeContext.CodeContextEnum> context) {
+        this.contextSet = context;
+    }
 }
