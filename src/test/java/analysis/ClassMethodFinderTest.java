@@ -79,6 +79,24 @@ public class ClassMethodFinderTest {
     }
 
     @Test
+    public void GivenClassSpecificMethodCanBeFound()
+    {
+        CreateCompilationUnitFromTestClass("SimpleClassWith2Methods.java.txt");
+        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "TwoMethodClass");
+
+        Assert.assertEquals(true, cmf.hasMethodDefined("MethodTwo"));
+    }
+
+    @Test
+    public void GivenInterfaceSpecificMethodCanBeFound()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "D");
+
+        Assert.assertEquals(true, cmf.hasMethodDefined("MethodFour"));
+    }
+
+    @Test
     public void GivenMethodIfDefinedInInterfaceIsDetectedWhenAskedFor()
     {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");

@@ -16,6 +16,7 @@ import helpers.Checker;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 class ClassMethodFinder {
 
@@ -93,7 +94,9 @@ class ClassMethodFinder {
     }
 
     private List<MethodDeclaration> getMethodDeclarations() {
-        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
+
+        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClassOrInterface(_cu, _qname);
+
         return class4Analysis.getMethods();
     }
 
@@ -145,31 +148,45 @@ class ClassMethodFinder {
 
     public boolean isMethodDefinedInInterface(String methodName) {
 
-        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
-        ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
+        boolean methodDeclaredInInterface = false;
 
-        // simple test to find all declared methods in local class and all of its inherited classes
-        List<ReferenceType> rt = rtd.getAllAncestors();
-
-        rt.forEach( ancestor ->
+        // When specific method is visible in class, figure out if it has been defined
+        // in an interface or not
+        if (hasMethodDefined(methodName))
         {
-            ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
+            // Get type declaration of given class, so we can resolve method declaration outside
+            // the class definition
+            ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
+            ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
 
-            if (!isIgnoredPackage(rtd_ancestor) && rtd_ancestor.isInterface()) {
+            // simple test to find all declared methods in local class and all of its inherited classes
+            List<ReferenceType> rt = rtd.getAllAncestors();
 
-                rtd_ancestor.getDeclaredMethods().forEach(m ->
+            for( ReferenceType ancestor : rt)
+            {
+                ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
+
+                if (!isIgnoredPackage(rtd_ancestor) &&
+                        rtd_ancestor.isInterface()  &&
+                        rtd_ancestor.getDeclaredMethods().stream().anyMatch(method -> method.getName().equals(methodName)))
                 {
-                    if(m.declaringType().isInterface())
-                    {
-
-                    }
-//                    System.out.println(String.format("A:  %s", m.getQualifiedSignature()));
-//                    System.out.println(String.format("declared in:  %s", m.declaringType().getName()));
-//                    System.out.println(String.format("is interface? %s", m.declaringType().isInterface()?"yes": "no"));
-                });
+                    methodDeclaredInInterface = true;
+                    break;
+                }
             }
-        });
+        }
 
-        return false;
+        return methodDeclaredInInterface;
+    }
+
+    public boolean hasMethodDefined(String methodName) {
+        boolean methodFound = false;
+
+        for (MethodDeclaration methodDecl : getMethodDeclarations())
+        {
+            methodFound = methodDecl.getName().toString().equals(methodName) || methodFound;
+        }
+
+        return methodFound;
     }
 }
