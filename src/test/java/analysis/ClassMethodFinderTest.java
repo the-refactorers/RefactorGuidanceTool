@@ -70,15 +70,6 @@ public class ClassMethodFinderTest {
     }
 
     @Test
-    public void GivenAnExtendedClassQueringMethodDefintionsShouldReturnOfParentChild()
-    {
-        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
-        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
-
-        Assert.assertEquals("", cmf.getAllDefinedMethods());
-    }
-
-    @Test
     public void GivenClassSpecificMethodCanBeFound()
     {
         CreateCompilationUnitFromTestClass("SimpleClassWith2Methods.java.txt");
@@ -102,6 +93,15 @@ public class ClassMethodFinderTest {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
         ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
 
-        Assert.assertTrue(cmf.isMethodDefinedInInterface("MethodOne"));
+        Assert.assertTrue(cmf.isMethodDeclaredFirstTimeInInterface("MethodOne"));
+    }
+
+    @Test
+    public void GivenMethodIsDetectedIfDefinedEarlierInSuperclass()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
+
+        Assert.assertTrue(cmf.isMethodDefinedEarlier("MethodOne"));
     }
 }

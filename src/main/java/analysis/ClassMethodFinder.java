@@ -151,7 +151,7 @@ class ClassMethodFinder {
      * @param methodName Name of method to be resolved
      * @return true, method name has been declared initially in an interface definition
      */
-    public boolean isMethodDefinedInInterface(String methodName) {
+    public boolean isMethodDeclaredFirstTimeInInterface(String methodName) {
 
         boolean methodDeclaredInInterface = false;
 
@@ -165,8 +165,7 @@ class ClassMethodFinder {
             ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
             List<ReferenceType> rt = rtd.asClass().getAllInterfaces();
 
-            // Determine for each ancestor if it is an interface declaration
-            for( ReferenceType ancestor : rt)
+            for(ReferenceType ancestor : rt)
             {
                 ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
 
@@ -199,5 +198,37 @@ class ClassMethodFinder {
         }
 
         return methodFound;
+    }
+
+    public boolean isMethodDefinedEarlier(String methodName) {
+        boolean methodDeclaredInSuperClass = false;
+
+        // When specific method is visible in class, figure out if it has been defined
+        // in an interface or not
+        if (hasMethodDefined(methodName))
+        {
+            // Get type declaration of given class, so we can resolve method declaration outside
+            // the class definition
+            ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
+            ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
+            List<ReferenceType> rt = rtd.asClass().getAllSuperClasses();
+
+            for(ReferenceType ancestor : rt)
+            {
+                ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
+
+                // When interface declaration and not one of the ignored packages
+                // Check if provided methodName is present in the stream of declared methods
+                // of this interface
+                if (!isIgnoredPackage(rtd_ancestor) &&
+                        rtd_ancestor.getDeclaredMethods().stream().anyMatch(method -> method.getName().equals(methodName)))
+                {
+                    methodDeclaredInSuperClass = true;
+                    break;
+                }
+            }
+        }
+
+        return methodDeclaredInSuperClass;
     }
 }
