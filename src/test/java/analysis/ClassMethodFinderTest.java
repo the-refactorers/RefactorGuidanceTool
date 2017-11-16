@@ -102,6 +102,24 @@ public class ClassMethodFinderTest {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
         ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
 
-        Assert.assertTrue(cmf.isMethodDefinedEarlier("MethodOne"));
+        Assert.assertTrue(cmf.isMethodDefinedInSuperClass("MethodOne"));
+    }
+
+    @Test
+    public void GivenMethodDeclaredLocalIsNotDetectedWhenTryingToFindInInterface()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
+
+        Assert.assertFalse(cmf.isMethodDeclaredFirstTimeInInterface("MethodTwo"));
+    }
+
+    @Test
+    public void GivenMethodDeclaredLocalIsNotDetectedWhenTryingToFindInSuperClass()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
+
+        Assert.assertFalse(cmf.isMethodDefinedInSuperClass("MethodTwo"));
     }
 }

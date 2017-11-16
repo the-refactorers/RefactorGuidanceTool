@@ -45,13 +45,13 @@ public class InstructionGenerator {
             Instruction _instr = aitTree.getFirstInstruction();
             generatedInstructionList.add(_instr.getInstructionDescription());
 
-            for (ContextDecision decision : _instr.getDecisions())
-            {
-                // Check if context for specific decision exists in code
-                if(contextSet.contains(decision.getContextType()))
-                {
-                    Instruction nextInstruction = aitTree.findInstruction(decision.nextInstructionID);
-                    generatedInstructionList.add(nextInstruction.getInstructionDescription());
+            while (!_instr.endNode()) {
+                for (ContextDecision decision : _instr.getDecisions()) {
+                    // Check if context for specific decision exists in code
+                    if (contextSet.contains(decision.getContextType())) {
+                        _instr = aitTree.findInstruction(decision.nextInstructionID);
+                        generatedInstructionList.add(_instr.getInstructionDescription());
+                    }
                 }
             }
 

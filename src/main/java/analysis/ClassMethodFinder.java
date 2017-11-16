@@ -24,6 +24,7 @@ class ClassMethodFinder {
     private CompilationUnit _cu;
     private String _qname;
     private TypeSolver _symbolSolver;
+    private String _declaredInInterface;
 
     public ClassMethodFinder(CompilationUnit cu, String qualifiedName) {
         _cu = cu;
@@ -175,6 +176,7 @@ class ClassMethodFinder {
                 if (!isIgnoredPackage(rtd_ancestor) &&
                         rtd_ancestor.getDeclaredMethods().stream().anyMatch(method -> method.getName().equals(methodName)))
                 {
+                    _declaredInInterface = rtd_ancestor.getName();
                     methodDeclaredInInterface = true;
                     break;
                 }
@@ -182,6 +184,11 @@ class ClassMethodFinder {
         }
 
         return methodDeclaredInInterface;
+    }
+
+    public String methodDefinedInInterface()
+    {
+        return _declaredInInterface;
     }
 
     /**
@@ -200,7 +207,7 @@ class ClassMethodFinder {
         return methodFound;
     }
 
-    public boolean isMethodDefinedEarlier(String methodName) {
+    public boolean isMethodDefinedInSuperClass(String methodName) {
         boolean methodDeclaredInSuperClass = false;
 
         // When specific method is visible in class, figure out if it has been defined
@@ -230,5 +237,20 @@ class ClassMethodFinder {
         }
 
         return methodDeclaredInSuperClass;
+    }
+
+    public boolean contextMultipleDeclarations(String methodName)
+    {
+        return isMethodDefinedInSuperClass(methodName) || isMethodDeclaredFirstTimeInInterface(methodName);
+    }
+
+    public boolean contextDeclaredInInterface(String methodName)
+    {
+        return isMethodDeclaredFirstTimeInInterface(methodName);
+    }
+
+    public boolean contextDeclaredInSuperClass(String methodName)
+    {
+        return isMethodDefinedInSuperClass(methodName);
     }
 }

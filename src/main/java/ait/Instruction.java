@@ -16,7 +16,7 @@ public class Instruction {
     int     instructionID = -1;
     String  instructionDescription;
 
-    List<ContextDecision> decisions;
+    List<ContextDecision> decisions = new ArrayList<ContextDecision>();
 
     public Instruction() {
     }
@@ -55,5 +55,9 @@ public class Instruction {
         }
 
         decisions.add(decision);
+    }
+
+    public boolean endNode() {
+        return decisions.isEmpty();
     }
 }

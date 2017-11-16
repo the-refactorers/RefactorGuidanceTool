@@ -15,7 +15,7 @@ public class CodeContext {
         method_override,
         method_has_limited_references,
         method_has_many_references,
-        method_defined_in_interface
+        method_multiple_declares, method_defined_in_interface
     }
 
     public static final Map<CodeContextEnum, String> contextMap;
