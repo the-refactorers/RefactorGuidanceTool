@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-class ClassMethodFinder {
+public class ClassMethodFinder {
 
     private CompilationUnit _cu;
     private String _qname;
