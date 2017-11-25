@@ -8,7 +8,7 @@ public class AIT_RenameGeneration {
         tree.setDescription("... Remember, code is written for humans ...");
         tree.setRefactorMechanic("Rename Method");
 
-        Instruction i1 = new Instruction(1, "When renaming $method in class $class of your project, take steps:");
+        Instruction i1 = new Instruction(1, "INSTRUCTIONS for renaming $method in class $class of your project:");
         Instruction i2 = new Instruction(2, "In the current context there is no risk in renaming method $method directly");
         Instruction i3 = new Instruction(3, "Rename $method in class $class to the new name");
         Instruction i4 = new Instruction(4, "Build your project and resolved unresolved references to $method");

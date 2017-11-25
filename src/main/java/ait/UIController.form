@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ait.UIController">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="8" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="715" height="408"/>
+    </constraints>
+    <properties/>
+    <border type="none" title="Refactor Guidance Tool"/>
+    <children>
+      <hspacer id="d630f">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="4" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <component id="da13c" class="javax.swing.JTextPane" binding="hereTheGeneratedTextTextPane" default-binding="true">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="4" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="150"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Here the generated text will be displayed"/>
+        </properties>
+      </component>
+      <component id="d0695" class="javax.swing.JRadioButton" binding="renameRadioButton" default-binding="true">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="200" height="-1"/>
+            <preferred-size width="200" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Rename"/>
+        </properties>
+      </component>
+      <component id="7910" class="javax.swing.JRadioButton" binding="largeClassRadioButton" default-binding="true">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="200" height="-1"/>
+            <preferred-size width="200" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Large Class"/>
+        </properties>
+      </component>
+      <component id="581cf" class="javax.swing.JButton" binding="generateInstructionsButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Generate Instructions"/>
+        </properties>
+      </component>
+      <grid id="2b223" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="c1ddb" class="javax.swing.JButton" binding="browseJavaFileButton" default-binding="true">
+            <constraints border-constraint="East"/>
+            <properties>
+              <text value="Browse Java File"/>
+            </properties>
+          </component>
+          <component id="f1da7" class="javax.swing.JTextField" binding="inputJavaFile">
+            <constraints border-constraint="Center"/>
+            <properties/>
+          </component>
+        </children>
+      </grid>
+      <grid id="b1aa5" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="8c38b" class="javax.swing.JButton" binding="projectDirButton" default-binding="true">
+            <constraints border-constraint="East"/>
+            <properties>
+              <text value="Project Dir"/>
+            </properties>
+          </component>
+          <component id="376dd" class="javax.swing.JTextField" binding="inputProjectDir">
+            <constraints border-constraint="Center"/>
+            <properties/>
+          </component>
+        </children>
+      </grid>
+      <component id="26c8d" class="javax.swing.JTextField" binding="inputCodeLineSmell">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="c5b66" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="120" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Code smell located on line"/>
+        </properties>
+      </component>
+      <component id="bcd4b" class="javax.swing.JComboBox" binding="prefabExamplesSelection">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+      </component>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="SmellGroup">
+      <member id="d0695"/>
+      <member id="7910"/>
+    </group>
+  </buttonGroups>
+</form>
