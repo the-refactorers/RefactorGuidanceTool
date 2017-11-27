@@ -1,6 +1,5 @@
 package rpg.tool;
 
-import ait.UIController;
 import org.apache.commons.cli.*;
 
 import javax.swing.*;

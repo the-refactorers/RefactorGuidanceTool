@@ -1,4 +1,4 @@
-package ait;
+package rpg.tool;
 
 import analysis.ClassMethodFinder;
 import analysis.ClassMethodFinder;
