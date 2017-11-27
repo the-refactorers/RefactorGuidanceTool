@@ -13,7 +13,7 @@ public class ContextDecision {
     @XmlTransient
     Instruction nextInstruction;
     CodeContext.CodeContextEnum contextType;
-    int         nextInstructionID = -1;
+    int         nextInstructionID = AdaptiveInstructionTree.FINAL_NODE;
 
     public ContextDecision(CodeContext.CodeContextEnum decisionCtxt, int resultsIn)
     {
