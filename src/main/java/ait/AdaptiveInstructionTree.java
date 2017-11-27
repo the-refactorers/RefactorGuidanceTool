@@ -14,6 +14,8 @@ import java.util.List;
 @XmlType(propOrder = {"refactorMechanic", "description", "allInstructions"})
 public class AdaptiveInstructionTree {
 
+    public final static int FINAL_NODE = -1;
+
     @XmlTransient
     EnumSet<CodeContext.CodeContextEnum> contextSet;
 
@@ -75,6 +77,11 @@ public class AdaptiveInstructionTree {
             if (instruction.instructionID == nextInstructionID)
             {
                 lookedupInstruction = instruction;
+                break;
+            }
+            else if (nextInstructionID == FINAL_NODE)
+            {
+                lookedupInstruction = new Instruction(-1,"");
                 break;
             }
         }

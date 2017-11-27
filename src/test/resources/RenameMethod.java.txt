@@ -1,9 +1,15 @@
 interface SimpleInterface {
-public void MethodInInterface();
+    public void MethodInInterface();
+    public void MethodOverrideInInterface();
 }
 
 class Base {
     public void MethodOverride(){
+        return;
+    }
+
+    public void MethodOverrideInInterface()
+    {
         return;
     }
 }
@@ -22,7 +28,7 @@ class MyMethod extends Base implements SimpleInterface
         return;
     }
 
-    public void MethodOverride()
+    public void MethodOverrideInInterface()
     {
         return;
     }

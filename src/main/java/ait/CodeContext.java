@@ -15,7 +15,9 @@ public class CodeContext {
         method_override,
         method_has_limited_references,
         method_has_many_references,
-        method_multiple_declares, method_defined_in_interface
+        method_multiple_declares, method_defined_in_interface,
+        method_overload_declaration,
+        always_true     // used to link multiple actions together, where no decision is required
     }
 
     public static final Map<CodeContextEnum, String> contextMap;
