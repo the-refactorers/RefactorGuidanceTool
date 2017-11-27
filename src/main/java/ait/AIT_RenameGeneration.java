@@ -28,9 +28,9 @@ public class AIT_RenameGeneration {
         ContextDecision i6_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i7_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 8);
         ContextDecision i8_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
-        ContextDecision i9_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, AdaptiveInstructionTree.FINAL_NODE);
+        ContextDecision i9_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
         ContextDecision i4_d1 = new ContextDecision(CodeContext.CodeContextEnum.method_overload_declaration, 9);
-        ContextDecision i4_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true, AdaptiveInstructionTree.FINAL_NODE);
+        ContextDecision i4_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
 
         i1.addDecision(i1_d1);
         i1.addDecision(i1_d2);
