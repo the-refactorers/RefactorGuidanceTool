@@ -26,6 +26,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MethodDataFlowAnalysis {
@@ -60,26 +61,39 @@ public class MethodDataFlowAnalysis {
              * When this part works, we can have a look by introducing new statemtns as
              * 1. if-then-else; break and return statements; try...catch; continue;
              */
+
+            System.out.println("Vars used in section to be extracted:");
+
+            for(IntraMethodVariableAnalysis.VariableFlowInfo vi : IntraMethodVariableAnalysis.within)
+            {
+                System.out.println("Variable: "+ vi.name);
+            }
         }
 
-        protected class ParameterFlowInfo {
-
-            public String name;
-
-            public boolean read = false;
-            public boolean written = false;
-            public boolean cond_write = false;
-            public boolean live = false;
-        }
 
         private static class IntraMethodVariableAnalysis extends VoidVisitorAdapter<Void>
         {
+            public class VariableFlowInfo {
+
+                public String name;
+
+                public boolean read = false;
+                public boolean written = false;
+                public boolean cond_write = false;
+                public boolean live = false;
+
+                public VariableFlowInfo(String varName)
+                {
+                    this.name = varName;
+                }
+            }
+
             int _start = 0;
             int _end = 0;
 
-            List<ParameterFlowInfo> before;
-            List<ParameterFlowInfo> within;
-            List<ParameterFlowInfo> after;
+            static List<VariableFlowInfo> before;
+            static public List<VariableFlowInfo> within = new ArrayList<VariableFlowInfo>();
+            static List<VariableFlowInfo> after;
 
             public void setExtractMethodRange(int start, int end)
             {
@@ -102,14 +116,32 @@ public class MethodDataFlowAnalysis {
                 Node t = sn.getParentNode().get();
                 Node t2 = t.getParentNode().get();
 
-                int varLine = sn.getRange().get().begin.line;
+                int varLocation = sn.getRange().get().begin.line;
 
-                System.out.println("Variable >> " + sn + " << is used @ location " + varLine);
+                System.out.println("Variable >> " + sn + " << is used @ location " + varLocation);
 
-                if (varLine <= _end && varLine >= _start)
+                if (isLocationInExtractedSection(varLocation))
                 {
                     System.out.println("===== This variable is within extract method section");
+
+                    boolean variableAlreadyAdded = false;
+                    for (VariableFlowInfo vi : within) {
+
+                        if(vi.name.equals(sn)) {
+                            variableAlreadyAdded = true;
+                            break;
+                        }
+                    }
+
+                    if (!variableAlreadyAdded)
+                    {
+                        within.add(new VariableFlowInfo(sn.getNameAsString()));
+                    }
                 }
+            }
+
+            private boolean isLocationInExtractedSection(int varLine) {
+                return varLine <= _end && varLine >= _start;
             }
         }
     }
