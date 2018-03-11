@@ -26,6 +26,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import java.io.FileInputStream;
+import java.util.List;
 
 public class MethodDataFlowAnalysis {
 
@@ -61,10 +62,24 @@ public class MethodDataFlowAnalysis {
              */
         }
 
+        protected class ParameterFlowInfo {
+
+            public String name;
+
+            public boolean read = false;
+            public boolean written = false;
+            public boolean cond_write = false;
+            public boolean live = false;
+        }
+
         private static class IntraMethodVariableAnalysis extends VoidVisitorAdapter<Void>
         {
             int _start = 0;
             int _end = 0;
+
+            List<ParameterFlowInfo> before;
+            List<ParameterFlowInfo> within;
+            List<ParameterFlowInfo> after;
 
             public void setExtractMethodRange(int start, int end)
             {
