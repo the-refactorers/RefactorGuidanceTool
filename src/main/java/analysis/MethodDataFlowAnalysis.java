@@ -33,11 +33,11 @@ import java.util.List;
 
 public class MethodDataFlowAnalysis {
 
-        public static void main(String[] args) throws Exception {
+        public  static void main(String[] args) throws Exception {
 
             // Parse the AST based on the input of SymbolFoo.java
             //System.out.println(System.getProperty("user.dir"));
-            CompilationUnit cu = JavaParser.parse(new FileInputStream("RefactorScenarios/ExtractMethod/DataFlowExample.java"));
+            CompilationUnit cu = JavaParser.parse(new FileInputStream("RefactorScenarios/ExtractMethod/DataflowPreservation/DataFlowExample.java"));
 
             // Navigator is used to navigate through the AST with some basic commands
             MethodDeclaration md = Navigator.demandMethod(Navigator.demandClass(cu, "DataFlowExample"), "simpleSequence");
@@ -46,10 +46,14 @@ public class MethodDataFlowAnalysis {
 //        VariableDeclarationExpr varDeclaration = Navigator.findNodeOfGivenClass(cu, VariableDeclarationExpr.class);
 //        System.out.println(varDeclaration);
 
-            IntraMethodVariableAnalysis declarationVisitor = new IntraMethodVariableAnalysis();
-            declarationVisitor.setExtractMethodRange(17,21);
+            IntraMethodVariableAnalysis declarationVisitor;
+            declarationVisitor = new IntraMethodVariableAnalysis();
+            declarationVisitor.setExtractMethodRange(40,45);
 
             declarationVisitor.visit(md, null);
+
+            LocalDeclaredVarsFinder localVars = new LocalDeclaredVarsFinder(md);
+            localVars.find();
 
            // UnaryExpr;
 
@@ -68,9 +72,9 @@ public class MethodDataFlowAnalysis {
 
             System.out.println("Vars used BEFORE section to be extracted:");
 
-            for(IntraMethodVariableAnalysis.VariableFlowTable vi : IntraMethodVariableAnalysis.dataFlowMethodVariables)
+            for(VariableFlowTable vi : IntraMethodVariableAnalysis.dataFlowMethodVariables)
             {
-                IntraMethodVariableAnalysis.VariableFacts beforeFacts = vi.before_region;
+                VariableFacts beforeFacts = vi.before_region;
 
                 if(beforeFacts.cond_write || beforeFacts.live || beforeFacts.read || beforeFacts.write)
                     System.out.println("Variable: "+ vi.name);
@@ -78,9 +82,9 @@ public class MethodDataFlowAnalysis {
 
             System.out.println("Vars used WITHIN section to be extracted:");
 
-            for(IntraMethodVariableAnalysis.VariableFlowTable vi : IntraMethodVariableAnalysis.dataFlowMethodVariables)
+            for(VariableFlowTable vi : IntraMethodVariableAnalysis.dataFlowMethodVariables)
             {
-                IntraMethodVariableAnalysis.VariableFacts withinFacts = vi.within_region;
+                VariableFacts withinFacts = vi.within_region;
 
                 if(withinFacts.cond_write || withinFacts.live || withinFacts.read || withinFacts.write)
                         System.out.println("Variable: "+ vi.name);
@@ -88,41 +92,21 @@ public class MethodDataFlowAnalysis {
 
             System.out.println("Vars used AFTER section to be extracted:");
 
-            for(IntraMethodVariableAnalysis.VariableFlowTable vi : IntraMethodVariableAnalysis.dataFlowMethodVariables)
+            for(VariableFlowTable vi : IntraMethodVariableAnalysis.dataFlowMethodVariables)
             {
-                IntraMethodVariableAnalysis.VariableFacts withinFacts = vi.after_region;
+                VariableFacts withinFacts = vi.after_region;
 
                 if(withinFacts.cond_write || withinFacts.live || withinFacts.read || withinFacts.write)
                     System.out.println("Variable: "+ vi.name);
             }
         }
 
-        private static class IntraMethodVariableAnalysis extends VoidVisitorAdapter<Void>
+        private  static class IntraMethodVariableAnalysis extends VoidVisitorAdapter<Void>
         {
-            public class VariableFacts {
-                public boolean write;
-                public boolean read;
-                public boolean cond_write;
-                public boolean live; // A variable is written which before only has been read in the section
-            }
-
-            public class VariableFlowTable {
-                public String name;
-
-                public VariableFacts before_region = new VariableFacts();
-                public VariableFacts within_region  = new VariableFacts();
-                public VariableFacts after_region  = new VariableFacts();
-
-                public VariableFlowTable(String varName)
-                {
-                    this.name = varName;
-                }
-            }
-
-            int _start = 0;
+           int _start = 0;
             int _end = 0;
 
-            static List<VariableFlowTable> dataFlowMethodVariables  = new ArrayList<VariableFlowTable>();;
+             static List<VariableFlowTable> dataFlowMethodVariables  = new ArrayList<VariableFlowTable>();;
 
             public void setExtractMethodRange(int start, int end)
             {
@@ -215,7 +199,7 @@ public class MethodDataFlowAnalysis {
                 {
                     for (VariableFlowTable vi : lst) {
                         if(vi.name.contains(varName)) {
-                            IntraMethodVariableAnalysis.VariableFacts withinFacts = vi.before_region;
+                            VariableFacts withinFacts = vi.before_region;
                             withinFacts.write = true;
                             vi.before_region = withinFacts;
                             break;
