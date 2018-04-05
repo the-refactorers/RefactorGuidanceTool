@@ -20,6 +20,11 @@ public class MarkVariableFlowList extends VoidVisitorAdapter<Void>
         this._method = md;
     }
 
+    public void mark()
+    {
+        this.visit(_method, null);
+    }
+
     @Override
     public void setVariableFlowList(List<VariableFlowTable> lst) {
         this._lst = lst;
