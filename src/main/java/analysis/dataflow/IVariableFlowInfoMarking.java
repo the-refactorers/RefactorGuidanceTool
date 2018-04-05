@@ -1,4 +1,4 @@
-package analysis;
+package analysis.dataflow;
 
 import java.util.List;
 

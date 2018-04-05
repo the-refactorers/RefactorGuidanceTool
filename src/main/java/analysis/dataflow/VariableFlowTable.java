@@ -1,4 +1,4 @@
-package analysis;
+package analysis.dataflow;
 
 public class VariableFlowTable {
 

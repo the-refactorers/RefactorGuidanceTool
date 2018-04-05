@@ -1,4 +1,4 @@
-package analysis;
+package analysis.dataflow;
 
 
 // Kunnen we hier 'live' automatisch instellen, op basis van eerdere waarden?

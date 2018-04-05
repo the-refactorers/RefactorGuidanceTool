@@ -1,4 +1,4 @@
-package analysis;
+package analysis.dataflow;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;

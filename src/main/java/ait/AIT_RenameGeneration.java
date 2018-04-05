@@ -12,9 +12,9 @@ public class AIT_RenameGeneration {
         Instruction i2 = new Instruction(2, "In the current context there is no risk in renaming method $method directly");
         Instruction i3 = new Instruction(3, "Rename $method in class $class to the new name");
         Instruction i4 = new Instruction(4, "Build your project and resolved unresolved references to $method");
-        Instruction i5 = new Instruction(5, "$method is not declared for the first time in $class");
-        Instruction i6 = new Instruction(6, "A declaration exists in interface $interface.\nIt is a good practice to \n\t1. Mark $method deprecated in $interface \n\t2. Declare new method in $interface");
-        Instruction i7 = new Instruction(7, "$method has been defined in the following superclasses: $super-list\nCheck if they need to be renamed also to preserve application behavior.\n When no risk. proceed...");
+        Instruction i5 = new Instruction(5, "Method $method is not declared for the first time in class $class");
+        Instruction i6 = new Instruction(6, "A declaration exists in (public) interface $interface.\nIt is a good practice to \n\t1. Mark public $method deprecated in $interface with @deprecated \n\t2. Declare new method in $interface \n\t 3. Create your new method in $class and call this method from within $method");
+        Instruction i7 = new Instruction(7, "Method $method has been defined in the following superclasses: $super-list\nCheck if you want to rename them also to preserve application behavior.\n When no risk. proceed...");
         Instruction i8 = new Instruction( 8, "To eliminate any side-effect risks, I suggest to rename $method also in $super-list\n");
         Instruction i9 = new Instruction( 9, "There are methods present in your class hierarchy with the same name (method override), but different number of parameters.\nIt is a good practice to rename also these methods to the new name you have choosen ");
 
