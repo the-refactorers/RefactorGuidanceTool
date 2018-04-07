@@ -25,6 +25,7 @@ public class LocalDeclaredVarsFinder extends VoidVisitorAdapter<Void> {
         this._method = md;
     }
 
+    // Kick-off the visitor pattern to start detecting declaration cases
     public void find()
     {
         this.visit(_method, null);
