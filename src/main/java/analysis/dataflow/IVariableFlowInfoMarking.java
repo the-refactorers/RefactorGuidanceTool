@@ -3,6 +3,6 @@ package analysis.dataflow;
 import java.util.List;
 
 public interface IVariableFlowInfoMarking {
-    void setVariableFlowList(List<VariableFlowTable> lst);
-    List<VariableFlowTable> getVariableFlowList();
+    void setVariableFlowList(VariableFlowSet lst);
+    VariableFlowSet getVariableFlowList();
 }

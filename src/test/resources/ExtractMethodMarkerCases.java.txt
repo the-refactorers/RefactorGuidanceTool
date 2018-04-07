@@ -1,0 +1,27 @@
+
+class ExtractMethodMarkerCases
+{
+    public void WriteMarkers()
+    {
+        int a = 4;
+        int b;
+        int c;
+        int d;
+
+        b = a + 2;
+
+        c++;
+
+        d = (b>c) ? b : c;
+    }
+
+    public void ReadMarkers()
+    {
+
+    }
+
+    public void LiveMarker()
+    {
+
+    }
+}

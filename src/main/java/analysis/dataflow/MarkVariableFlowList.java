@@ -13,11 +13,18 @@ public class MarkVariableFlowList extends VoidVisitorAdapter<Void>
     implements IVariableFlowInfoMarking
 {
     private final MethodDeclaration _method;
-    List<VariableFlowTable> _lst = null;
+    VariableFlowSet _lst = null;
 
     MarkVariableFlowList (MethodDeclaration md)
     {
         this._method = md;
+    }
+
+    MarkVariableFlowList (MethodDeclaration md, VariableFlowSet set)
+    {
+
+        this._method = md;
+        this._lst = set;
     }
 
     public void mark()
@@ -26,12 +33,12 @@ public class MarkVariableFlowList extends VoidVisitorAdapter<Void>
     }
 
     @Override
-    public void setVariableFlowList(List<VariableFlowTable> lst) {
+    public void setVariableFlowList(VariableFlowSet lst) {
         this._lst = lst;
     }
 
     @Override
-    public List<VariableFlowTable> getVariableFlowList() {
+    public VariableFlowSet getVariableFlowList() {
         return this._lst;
     }
 }

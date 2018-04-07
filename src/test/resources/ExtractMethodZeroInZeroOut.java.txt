@@ -1,0 +1,41 @@
+
+class ExtractMethodZeroInZeroOut
+{
+    int b = 0;
+
+    public void NonLocalsDeclared()
+    {
+        b = 0;
+    }
+
+    public void MethodOneLocalDeclared()
+    {
+        int a = 6;
+        b = b + a;
+
+        System.out.println(b);
+    }
+
+    public void MethodThreeLocalDeclared()
+    {
+        int a = 6;
+        int c = 2;
+        int d = 8;
+
+        b = c + a;
+    }
+
+    public void MethodOneLocalOneInputParams(int e)
+    {
+        int a = 6;
+
+        b = a + e;
+    }
+
+    public void MethodOneLocalThreeInputParams(int e, int f, int g)
+    {
+        int a = 6;
+
+        b = a + e + f + g;
+    }
+}

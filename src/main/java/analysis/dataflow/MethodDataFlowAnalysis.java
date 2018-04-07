@@ -51,7 +51,14 @@ public class MethodDataFlowAnalysis {
             declarationVisitor.visit(md, null);
 
             LocalDeclaredVarsFinder localVars = new LocalDeclaredVarsFinder(md);
+
+            System.out.println("Locally declared in " + md.getName().toString());
             localVars.find();
+            List<String> variables = localVars.getLocalVars();
+            for(String s : variables)
+            {
+                System.out.println(s);
+            }
 
            // UnaryExpr;
 
