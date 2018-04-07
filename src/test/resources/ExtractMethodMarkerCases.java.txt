@@ -7,6 +7,7 @@ class ExtractMethodMarkerCases
         int b;
         int c;
         int d;
+        int e;
 
         b = a + 2;
 
