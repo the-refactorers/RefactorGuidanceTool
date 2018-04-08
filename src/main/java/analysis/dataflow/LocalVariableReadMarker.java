@@ -1,6 +1,7 @@
 package analysis.dataflow;
 
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.*;
 
@@ -24,39 +25,32 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
         {
             Optional<Node> parentNode = sn.getParentNode();
 
-            int type = nodeType(parentNode.get());
             String name = parentNode.get().getMetaModel().getTypeName();
 
+            // todo: Code below can  be generalized. e.g. set of strategies. Or a chain of functionality, where new handling can be added
+            // visitor pattern can also be a solution
             if(name.contains("AssignExpr")) {
                 AssignExpr ae = (AssignExpr)parentNode.get();
-                if (!ae.getTarget().toString().contains(flowTable.name))
-                    flowTable.within_region.read = true;
-            }
 
+                // when name of target variable is not the name of the variable in the FlowTable
+                // the conclusion we are dealing with the variables that are read in this expression
+                if (!ae.getTarget().toString().contains(flowTable.name))
+                    MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
+            }
+            else
             if(name.contains("MethodCallExpr")) {
                 MethodCallExpr mce = (MethodCallExpr)parentNode.get();
 
-                if(mce.getArgument(0).toString().contains(flowTable.name))
-                    flowTable.within_region.read = true;
+                NodeList<Expression> allMethodArguments = mce.getArguments();
+
+                // Arguments passed as variables which are present in one of the local declared
+                // flowtables, can be concluded that this is a variable where information is read from
+                allMethodArguments.forEach(argument ->
+                {
+                    if(argument.toString().contains(flowTable.name))
+                        MarkFlowTable(flowTable, E_ACTION.read, startLine(mce.getRange()));
+                });
             }
-
-
-            // If a local variable has been declared AND an initializer value is present.
-            // The variable is seen as being written to.
-           // if (flowTable.name.contains(ae.getTarget().toString()))
-//            {
-//                flowTable.within_region.write = false;
-//            }
         });
-    }
-
-    public int nodeType(Node n)
-    {
-        return -1;
-    }
-
-    public int nodeType(AssignExpr ae)
-    {
-        return 1;
     }
 }
