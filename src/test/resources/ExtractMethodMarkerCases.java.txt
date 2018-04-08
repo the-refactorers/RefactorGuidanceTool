@@ -9,6 +9,7 @@ class ExtractMethodMarkerCases
         int d;
         int e;
         int f;
+        int g;
 
         b = a + 2;
 
@@ -16,11 +17,48 @@ class ExtractMethodMarkerCases
         ++f;
 
         d = (b>c) ? b : c;
+
+        g += 3;
     }
 
-    public void ReadMarkers()
+    public void ReadTertiaryMarkers()
     {
+        int d, b, c;
 
+        d = (b>c) ? b : c;
+    }
+
+    public void ReadVariableInOtherVariable()
+    {
+        int a = 0;
+        int b = 1;
+
+        a = b;
+    }
+
+    // Case: value is read from variable and passed on to another method
+    public void PassingVariablesToMethods()
+    {
+        int a = 0;
+        passOn(a);
+    }
+
+     public void PassingNVariablesToMethods()
+     {
+        int a,b,c;
+        passOn(a,b);
+     }
+
+    private void passOn(int v)
+    {
+        int c = 1;
+        c = c+v;
+    }
+
+    private void passOn(int v, int w)
+    {
+        int c = 1;
+        c = c+v+w;
     }
 
     public void LiveMarker()

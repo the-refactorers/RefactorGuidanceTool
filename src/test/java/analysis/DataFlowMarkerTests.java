@@ -38,7 +38,7 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
 
     // Case: c++
     @Test
-    public void unaryAssignmentTest()
+    public void WriteunaryAssignmentTest()
     {
         // In the example test variable c is increased by c++
 
@@ -87,7 +87,7 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
 
     // Case: b = a + 2
     @Test
-    public void AssignmentTest()
+    public void WriteAssignmentTest()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
 
@@ -116,5 +116,87 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
 
         VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
         Assert.assertTrue(varFT.within_region.write);
+    }
+
+    // Case: d = (b<c) ? b : c;
+    // Expected outcome: b and c are read
+    @Test
+    public void ReadTertiaryTests()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadTertiaryMarkers");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("b");
+        Assert.assertTrue(varFT.within_region.read);
+        varFT = dataFlowSet.getVariableFlowTable("c");
+        Assert.assertTrue(varFT.within_region.read);
+        varFT = dataFlowSet.getVariableFlowTable("a");
+        Assert.assertFalse(varFT.within_region.read);
+    }
+
+    // Case: a = b;
+    // Expected outcome: b is marked read
+    @Test
+    public void ReadAssignmentTest()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadVariableInOtherVariable");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("b");
+        Assert.assertTrue(varFT.within_region.read);
+        varFT = dataFlowSet.getVariableFlowTable("a");
+        Assert.assertFalse(varFT.within_region.read);
+    }
+
+    // Case: PassOn(a);
+    // Expected outcome: a is marked read
+    @Test
+    public void ReadParameterPassingTestWithoutReturn()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "PassingVariablesToMethods");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
+        Assert.assertTrue(varFT.within_region.read);
+    }
+
+    // Case: PassOn(a, b);
+    // Expected outcome: a, b is marked read
+    @Test
+    public void ReadMultipleParameterPassingTestWithoutReturn()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "PassingNVariablesToMethods");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
+        Assert.assertTrue(varFT.within_region.read);
+        varFT = dataFlowSet.getVariableFlowTable("b");
+        Assert.assertTrue(varFT.within_region.read);
+        varFT = dataFlowSet.getVariableFlowTable("c");
+        Assert.assertFalse(varFT.within_region.read);
     }
 }
