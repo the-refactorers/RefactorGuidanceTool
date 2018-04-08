@@ -1,6 +1,7 @@
 package analysis.dataflow;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.ConditionalExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
@@ -29,20 +30,32 @@ public class LocalVariableWrittenMarker extends MarkVariableFlowList {
 
     // Case: int a = 5;
     @Override
-    public void visit(VariableDeclarationExpr vde, Void args)
+    public void visit(VariableDeclarator vd, Void args)
     {
-
+        _lst.getListOfVariableFlowTables().forEach( flowTable ->
+        {
+            // If a local variable has been declared AND an initializer value is present.
+            // The variable is seen as being written to.
+            if (flowTable.name.contains(vd.getNameAsString()) &&
+                    vd.getInitializer().isPresent())
+            {
+                flowTable.within_region.write = true;
+            }
+        });
     }
 
     // Case: a++
     @Override
     public void visit(UnaryExpr ue, Void args)
     {
+        // In the local declared list of variables lookup, if the name found is present
+        // if this is the case determine position of location and write in the correct section
         _lst.getListOfVariableFlowTables().forEach( flowTable ->
         {
-            if (flowTable.name.contains("c"))
+            if (flowTable.name.contains(ue.getExpression().toString()))
             {
-                flowTable.before_region.write = true;
+                // determine
+                flowTable.within_region.write = true;
             }
         });
     }

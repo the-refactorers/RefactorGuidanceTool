@@ -13,7 +13,9 @@ public class MarkVariableFlowList extends VoidVisitorAdapter<Void>
     implements IVariableFlowInfoMarking
 {
     private final MethodDeclaration _method;
-    VariableFlowSet _lst = null;
+    protected VariableFlowSet _lst = null;
+    private int _start;
+    private int _end;
 
     MarkVariableFlowList (MethodDeclaration md)
     {
@@ -32,12 +34,25 @@ public class MarkVariableFlowList extends VoidVisitorAdapter<Void>
         this.visit(_method, null);
     }
 
-    @Override
+    // Marking of the variables is done based on the location where a variable is involved.
+    // This can be BEFORE, WITHIN or AFTER the piece of code that a user wants to extract.
+    public boolean setExtractMethodRegion(int start, int end){
+
+        boolean suc = false;
+
+        if (end>start && start>=0 && end >= 1) {
+            this._start = start;
+            this._end = end;
+            suc = true;
+        }
+
+        return suc;
+    };
+
     public void setVariableFlowList(VariableFlowSet lst) {
         this._lst = lst;
     }
 
-    @Override
     public VariableFlowSet getVariableFlowList() {
         return this._lst;
     }

@@ -1,9 +1,6 @@
 package analysis;
 
-import analysis.dataflow.LocalDeclaredVarsFinder;
-import analysis.dataflow.LocalVariableWrittenMarker;
-import analysis.dataflow.VariableFlowSet;
-import analysis.dataflow.VariableFlowTable;
+import analysis.dataflow.*;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,45 +13,50 @@ import java.util.List;
  */
 public class DataFlowMarkerTests extends JavaParserTestSetup {
 
+    private MethodDeclaration setupTestClass(String className, String methodName) {
+        //String className = "ExtractMethodMarkerCases";
+        CreateCompilationUnitFromTestClass(className + ".java.txt");
+        return findMethodDeclarationInClass(className, methodName);
+    }
+
+    // Case: One variable is defined.
+    // Expected outcome: 1 varFlowTable which has the same name as the declared variable in the test code
     @Test
     public void variableFlowTableCreation()
     {
-        CreateCompilationUnitFromTestClass("ExtractMethodZeroInZeroOut.java.txt");
-        MethodDeclaration md = findMethodDeclarationInClass("ExtractMethodZeroInZeroOut", "MethodOneLocalDeclared");
+        MethodDeclaration md = setupTestClass("ExtractMethodZeroInZeroOut", "MethodOneLocalDeclared");
 
-        LocalDeclaredVarsFinder localVars = new LocalDeclaredVarsFinder(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
 
-        localVars.find();
-        VariableFlowSet variableFlowTables = new VariableFlowSet(localVars.getLocalVars());
+        VariableFlowSet variableFlowTableSet = analyzer.getVariableFlowSet();
 
-        List<VariableFlowTable> allVarFlowTables = variableFlowTables.getListOfVariableFlowTables();
+        List<VariableFlowTable> allVarFlowTables = variableFlowTableSet.getListOfVariableFlowTables();
 
         Assert.assertEquals(1, allVarFlowTables.size());
-        if (allVarFlowTables.size() == 1)
-            Assert.assertEquals(allVarFlowTables.get(0).name ,"a");
+        Assert.assertEquals(variableFlowTableSet.getVariableFlowTable("a").name,"a");
     }
 
+    // Case: c++
     @Test
     public void unaryAssignmentTest()
     {
         // In the example test variable c is increased by c++
 
-        CreateCompilationUnitFromTestClass("ExtractMethodMarkerCases.java.txt");
-        MethodDeclaration md = findMethodDeclarationInClass("ExtractMethodMarkerCases", "WriteMarkers");
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
 
-        LocalDeclaredVarsFinder localVars = new LocalDeclaredVarsFinder(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
 
-        localVars.find();
-        VariableFlowSet varFlowTables = new VariableFlowSet(localVars.getLocalVars());
-
-        LocalVariableWrittenMarker wMark = new LocalVariableWrittenMarker(md, varFlowTables);
+        LocalVariableWrittenMarker wMark = new LocalVariableWrittenMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
 
-        VariableFlowSet dataFlowSet = wMark.getVariableFlowList();
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("c");
+        Assert.assertTrue(varFT.within_region.write);
 
         dataFlowSet.getListOfVariableFlowTables().forEach(flowTable ->
                 {
-                    if (flowTable.before_region.write)
+                    if (flowTable.within_region.write)
                     {
                         System.out.println("Variable " + flowTable.name + " is WRITTEN");
                     }
@@ -66,9 +68,49 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
         );
     }
 
+    // Case int a = 4
+    @Test
+    public void DeclaredWithInitializationTest()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableWrittenMarker wMark = new LocalVariableWrittenMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
+        Assert.assertTrue(varFT.within_region.write);
+    }
+
+    // Case: b = a + 2
     @Test
     public void AssignmentTest()
     {
+        Assert.assertTrue(false);
+    }
 
+    // Case: d = (b>c) ? b : c;
+    @Test
+    public void TertiaryAssignmentTest()
+    {
+        Assert.assertTrue(false);
+    }
+
+    // Case: Test the LocalVariableWrittenMarker as being integrated in MethodDataFlowAnalyzer
+    @Test
+    public void MethodDataFlowAnalyzerIntegrationTest()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        analyzer.start();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
+        Assert.assertTrue(varFT.within_region.write);
     }
 }

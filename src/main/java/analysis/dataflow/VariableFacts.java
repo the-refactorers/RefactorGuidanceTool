@@ -16,7 +16,7 @@ public class VariableFacts {
 
         public boolean live; // A variable is written which before only has been read in the section
 
-        private class Loc {
+        public class Loc {
                 public int lineNumber;
                 public int statementIndex;
         }

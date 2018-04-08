@@ -37,4 +37,19 @@ public class VariableFlowSet {
     {
         return dataFlowMethodVariables;
     }
+
+    public VariableFlowTable getVariableFlowTable(String varName) {
+
+        boolean variableFound = false;
+        VariableFlowTable tableForReturn = new VariableFlowTable("");
+
+        for (VariableFlowTable vi : dataFlowMethodVariables) {
+            if(vi.name.contains(varName)) {
+                tableForReturn = vi;
+                break;
+            }
+        }
+
+        return tableForReturn;
+    }
 }
