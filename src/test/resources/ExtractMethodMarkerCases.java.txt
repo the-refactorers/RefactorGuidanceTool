@@ -8,10 +8,12 @@ class ExtractMethodMarkerCases
         int c;
         int d;
         int e;
+        int f;
 
         b = a + 2;
 
         c++;
+        ++f;
 
         d = (b>c) ? b : c;
     }

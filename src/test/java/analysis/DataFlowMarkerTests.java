@@ -89,14 +89,18 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     @Test
     public void AssignmentTest()
     {
-        Assert.assertTrue(false);
-    }
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
 
-    // Case: d = (b>c) ? b : c;
-    @Test
-    public void TertiaryAssignmentTest()
-    {
-        Assert.assertTrue(false);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableWrittenMarker wMark = new LocalVariableWrittenMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        // b should be marked written
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("b");
+        Assert.assertTrue(varFT.within_region.write);
     }
 
     // Case: Test the LocalVariableWrittenMarker as being integrated in MethodDataFlowAnalyzer

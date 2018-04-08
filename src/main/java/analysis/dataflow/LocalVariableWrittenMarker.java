@@ -64,13 +64,14 @@ public class LocalVariableWrittenMarker extends MarkVariableFlowList {
     @Override
     public void visit(AssignExpr ae, Void args)
     {
-
-    }
-
-    // Case: max = (a>b) ? a : b
-    @Override
-    public void visit(ConditionalExpr te, Void args)
-    {
-
+        _lst.getListOfVariableFlowTables().forEach( flowTable ->
+        {
+            // If a local variable has been declared AND an initializer value is present.
+            // The variable is seen as being written to.
+           if (flowTable.name.contains(ae.getTarget().toString()))
+            {
+                flowTable.within_region.write = true;
+            }
+        });
     }
 }
