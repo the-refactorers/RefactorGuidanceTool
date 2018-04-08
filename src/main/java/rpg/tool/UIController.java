@@ -1,16 +1,10 @@
 package rpg.tool;
 
-import analysis.ClassMethodFinder;
-import analysis.ClassMethodFinder;
 import analysis.RenameMethodAnalyzer;
-import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.CompilationUnit;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.*;
 
 public class UIController {

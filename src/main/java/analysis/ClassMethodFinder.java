@@ -22,7 +22,6 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
 import com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade;
-import com.github.javaparser.symbolsolver.model.declarations.ClassDeclaration;
 import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
 import com.github.javaparser.symbolsolver.model.resolution.TypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
@@ -34,7 +33,6 @@ import helpers.Checker;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ClassMethodFinder {
 
@@ -147,7 +145,7 @@ public class ClassMethodFinder {
      * @return Method name when location is inside a method, otherwise empty string
      */
     public String getMethodNameForLocation(int location) {
-        String methodName = new String();
+        String methodName = "";
 
         if(isLocationInMethod(location)) {
             // Find in the AST the class declaration of the provided class in the Ctor

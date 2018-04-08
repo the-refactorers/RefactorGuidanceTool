@@ -13,7 +13,7 @@ public class JavaParserTestSetup {
 
     protected MethodDeclaration findMethodDeclarationInClass(String className, String methodName) {
         return Navigator.demandMethod(Navigator.demandClass(_cu, className), methodName);
-    };
+    }
 
     protected void CreateCompilationUnitFromTestClass(String classTemplate)
     {

@@ -55,16 +55,16 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
         Assert.assertTrue(varFT.within_region.write);
 
         dataFlowSet.getListOfVariableFlowTables().forEach(flowTable ->
+            {
+                if (flowTable.within_region.write)
                 {
-                    if (flowTable.within_region.write)
-                    {
-                        System.out.println("Variable " + flowTable.name + " is WRITTEN");
-                    }
-                    else
-                    {
-                        System.out.println(flowTable.name);
-                    }
+                    System.out.println("Variable " + flowTable.name + " is WRITTEN");
                 }
+                else
+                {
+                    System.out.println(flowTable.name);
+                }
+            }
         );
     }
 

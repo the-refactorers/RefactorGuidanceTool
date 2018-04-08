@@ -5,7 +5,7 @@ import java.util.List;
 
 public class VariableFlowSet {
 
-    List<VariableFlowTable> dataFlowMethodVariables  = new ArrayList<VariableFlowTable>();;
+    List<VariableFlowTable> dataFlowMethodVariables  = new ArrayList<VariableFlowTable>();
 
     private boolean isVariableAlreadyAdded(String varName) {
         boolean variableAlreadyAdded = false;

@@ -1,6 +1,5 @@
 package Client;
 
-import Server.BankPaymentController;
 import Shared.IRemotePayment;
 
 public class DirectPayment {

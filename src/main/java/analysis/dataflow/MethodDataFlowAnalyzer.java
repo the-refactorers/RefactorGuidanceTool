@@ -5,13 +5,12 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 public class MethodDataFlowAnalyzer {
 
     private MethodDeclaration _md;
-    private LocalDeclaredVarsFinder localVars;
     private VariableFlowSet variableDataFlowSet;
 
     public MethodDataFlowAnalyzer(MethodDeclaration md)
     {
         this._md = md;
-        localVars = new LocalDeclaredVarsFinder(this._md);
+        LocalDeclaredVarsFinder localVars = new LocalDeclaredVarsFinder(this._md);
 
         localVars.find();
         variableDataFlowSet = new VariableFlowSet(localVars.getLocalVars());
