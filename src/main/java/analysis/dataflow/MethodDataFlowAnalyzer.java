@@ -52,7 +52,7 @@ public class MethodDataFlowAnalyzer {
         List<String> inputVariables = new ArrayList<>();
 
         variableDataFlowSet.getListOfVariableFlowTables().forEach(
-                flowTable -> { if (VariableShouldBePassed2NewMethod(flowTable))
+                flowTable -> { if (isVariableNeededInExtractMethod(flowTable))
                         inputVariables.add(flowTable.name);
                 }
         );
@@ -60,7 +60,7 @@ public class MethodDataFlowAnalyzer {
         return inputVariables;
     }
 
-    private boolean VariableShouldBePassed2NewMethod(VariableFlowTable flowTable) {
+    private boolean isVariableNeededInExtractMethod(VariableFlowTable flowTable) {
         // When variable is changed in before region and used(read) in within region
         return flowTable.before_region.write && flowTable.within_region.read;
     }
