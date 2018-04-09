@@ -4,7 +4,9 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.*;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,10 +41,13 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                     if (parentNode.get() instanceof AssignExpr) {
                         AssignExpr ae = (AssignExpr) parentNode.get();
 
-                        // when name of target variable is not the name of the variable in the FlowTable
-                        // the conclusion we are dealing with the variables that are read in this expression
-                        if (!ae.getTarget().toString().contains(flowTable.name))
+                        // When evaluating the variable in the flowtable, it is read if:
+                        // 1. It is not part of the target
+                        // 2. It is present as a child in the value.childnodes
+                        if (!ae.getTarget().toString().contains(flowTable.name) &&
+                                varnamePresentInExpression(ae.getValue(),flowTable.name)) {
                             MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
+                        }
                     } else if (parentNode.get() instanceof MethodCallExpr) {
                         MethodCallExpr mce = (MethodCallExpr) parentNode.get();
 
@@ -63,5 +68,18 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                 }
             }
         });
+    }
+
+    private boolean varnamePresentInExpression(Expression childNodes, String name) {
+
+        boolean found = false;
+        List<SimpleName> names = childNodes.getChildNodesByType(SimpleName.class);
+        for(SimpleName n : names)
+            if(n.toString().contentEquals(name)) {
+                found |= true;
+                break;
+            }
+
+        return found;
     }
 }

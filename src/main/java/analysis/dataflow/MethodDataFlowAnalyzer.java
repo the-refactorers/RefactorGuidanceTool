@@ -1,18 +1,30 @@
 package analysis.dataflow;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MethodDataFlowAnalyzer {
 
     private MethodDeclaration _md;
     private VariableFlowSet variableDataFlowSet;
+    private List<MarkVariableFlowList> markRunners = new ArrayList<>();
 
     public MethodDataFlowAnalyzer(MethodDeclaration md)
     {
         this._md = md;
-        LocalDeclaredVarsFinder localVars = new LocalDeclaredVarsFinder(this._md);
+        addLocalDeclaredVarsToVariableFlowSet();
 
+        markRunners.add(new LocalVariableWrittenMarker(_md, variableDataFlowSet));
+        markRunners.add(new LocalVariableReadMarker(_md, variableDataFlowSet));
+    }
+
+    private void addLocalDeclaredVarsToVariableFlowSet() {
+        LocalDeclaredVarsFinder localVars = new LocalDeclaredVarsFinder(this._md);
         localVars.find();
+
         variableDataFlowSet = new VariableFlowSet(localVars.getLocalVars());
     }
 
@@ -21,10 +33,16 @@ public class MethodDataFlowAnalyzer {
         return variableDataFlowSet;
     }
 
+    public void setExtractSection(int start, int end)
+    {
+        for(MarkVariableFlowList markRunner : markRunners)
+            markRunner.setExtractMethodRegion(start, end);
+    }
+
     public void start() {
 
-        LocalVariableWrittenMarker wMark = new LocalVariableWrittenMarker(_md, variableDataFlowSet);
-        wMark.mark();
+        for(MarkVariableFlowList markRunner : markRunners)
+            markRunner.mark();
 
     }
 }

@@ -79,15 +79,36 @@ public class MarkVariableFlowList extends VoidVisitorAdapter<Void>
 
         if(isLocationBeforeExtractedSection(location))
         {
-
+            if(action == E_ACTION.write)
+            {
+                flowTable.before_region.write = true;
+            }
+            else
+            {
+                flowTable.before_region.read = true;
+            }
         }
         else if (isLocationAfterExtractedSection(location))
         {
-
+            if(action == E_ACTION.write)
+            {
+                flowTable.after_region.write = true;
+            }
+            else
+            {
+                flowTable.after_region.read = true;
+            }
         }
         else if (isLocationInExtractedSection(location))
         {
-
+            if(action == E_ACTION.write)
+            {
+                flowTable.within_region.write = true;
+            }
+            else
+            {
+                flowTable.within_region.read = true;
+            }
         }
     }
 

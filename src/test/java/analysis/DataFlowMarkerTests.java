@@ -107,7 +107,7 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     @Test
     public void MethodDataFlowAnalyzerIntegrationTest()
     {
-        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadWriteMarkers");
 
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
         analyzer.start();
@@ -116,6 +116,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
 
         VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
         Assert.assertTrue(varFT.within_region.write);
+        varFT = dataFlowSet.getVariableFlowTable("b");
+        Assert.assertTrue(varFT.within_region.read);
     }
 
     // Case: d = (b<c) ? b : c;
@@ -197,6 +199,23 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
         varFT = dataFlowSet.getVariableFlowTable("b");
         Assert.assertTrue(varFT.within_region.read);
         varFT = dataFlowSet.getVariableFlowTable("c");
+        Assert.assertFalse(varFT.within_region.read);
+    }
+
+    // Case: method with only declarations and write actions, should not mark any of the variables written
+    @Test
+    public void ReadNoneOfLocalVars()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "noReads");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
         Assert.assertFalse(varFT.within_region.read);
     }
 }
