@@ -36,7 +36,7 @@ public class LocalVariableWrittenMarker extends MarkVariableFlowList {
         {
             // If a local variable has been declared AND an initializer value is present.
             // The variable is seen as being written to.
-            if (flowTable.name.contains(vd.getNameAsString()) &&
+            if (flowTable.name.contentEquals(vd.getNameAsString()) &&
                     vd.getInitializer().isPresent())
             {
                 MarkFlowTable(flowTable, E_ACTION.write, startLine(vd.getRange()));
@@ -52,7 +52,7 @@ public class LocalVariableWrittenMarker extends MarkVariableFlowList {
         // if this is the case determine position of location and write in the correct section
         _lst.getListOfVariableFlowTables().forEach( flowTable ->
         {
-            if (flowTable.name.contains(ue.getExpression().toString()))
+            if (flowTable.name.contentEquals(ue.getExpression().toString()))
             {
                 MarkFlowTable(flowTable, E_ACTION.write, startLine(ue.getRange()));
             }
@@ -67,7 +67,7 @@ public class LocalVariableWrittenMarker extends MarkVariableFlowList {
         {
             // If a local variable has been declared AND an initializer value is present.
             // The variable is seen as being written to.
-           if (flowTable.name.contains(ae.getTarget().toString()))
+           if (flowTable.name.contentEquals(ae.getTarget().toString()))
             {
                 MarkFlowTable(flowTable, E_ACTION.write, startLine(ae.getRange()));
             }

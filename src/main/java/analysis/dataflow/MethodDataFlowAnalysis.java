@@ -203,7 +203,7 @@ public class MethodDataFlowAnalysis {
                 if(region == 0)
                 {
                     for (VariableFlowTable vi : lst) {
-                        if(vi.name.contains(varName)) {
+                        if(vi.name.contentEquals(varName)) {
                             VariableFacts withinFacts = vi.before_region;
                             withinFacts.write = true;
                             vi.before_region = withinFacts;
@@ -216,7 +216,7 @@ public class MethodDataFlowAnalysis {
             private boolean isVariableAlreadyAdded(String varName, List<VariableFlowTable> lst) {
                 boolean variableAlreadyAdded = false;
                 for (VariableFlowTable vi : lst) {
-                    if(vi.name.contains(varName)) {
+                    if(vi.name.contentEquals(varName)) {
                         variableAlreadyAdded = true;
                         break;
                     }

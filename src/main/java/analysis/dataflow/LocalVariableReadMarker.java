@@ -44,7 +44,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                         // When evaluating the variable in the flowtable, it is read if:
                         // 1. It is not part of the target
                         // 2. It is present as a child in the value.childnodes
-                        if (!ae.getTarget().toString().contains(flowTable.name) &&
+                        if (!ae.getTarget().toString().contentEquals(flowTable.name) &&
                                 varnamePresentInExpression(ae.getValue(),flowTable.name)) {
                             MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
                         }
@@ -57,7 +57,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                         // flowtables, can be concluded that this is a variable where information is read from
                         allMethodArguments.forEach(argument ->
                         {
-                            if (argument.toString().contains(flowTable.name))
+                            if (argument.toString().contentEquals(flowTable.name))
                                 MarkFlowTable(flowTable, E_ACTION.read, startLine(mce.getRange()));
                         });
                     }

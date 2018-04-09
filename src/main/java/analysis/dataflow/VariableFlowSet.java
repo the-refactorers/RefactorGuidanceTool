@@ -10,7 +10,7 @@ public class VariableFlowSet {
     private boolean isVariableAlreadyAdded(String varName) {
         boolean variableAlreadyAdded = false;
         for (VariableFlowTable vi : dataFlowMethodVariables) {
-            if(vi.name.contains(varName)) {
+            if(vi.name.contentEquals(varName)) {
                 variableAlreadyAdded = true;
                 break;
             }
@@ -44,7 +44,7 @@ public class VariableFlowSet {
         VariableFlowTable tableForReturn = new VariableFlowTable("");
 
         for (VariableFlowTable vi : dataFlowMethodVariables) {
-            if(vi.name.contains(varName)) {
+            if(vi.name.contentEquals(varName)) {
                 tableForReturn = vi;
                 break;
             }
