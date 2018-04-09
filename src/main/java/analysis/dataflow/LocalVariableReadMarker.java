@@ -70,15 +70,20 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
         });
     }
 
+    /**
+     * Determine if name of variable can be found in a given expression
+     *
+     * @param childNodes
+     * @param name
+     * @return true = given name found
+     */
     private boolean varnamePresentInExpression(Expression childNodes, String name) {
 
         boolean found = false;
         List<SimpleName> names = childNodes.getChildNodesByType(SimpleName.class);
-        for(SimpleName n : names)
-            if(n.toString().contentEquals(name)) {
-                found |= true;
-                break;
-            }
+
+        found = names.stream().filter(
+            varName -> varName.toString().contentEquals(name)).findFirst().isPresent();
 
         return found;
     }

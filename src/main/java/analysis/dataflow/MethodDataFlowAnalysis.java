@@ -215,12 +215,10 @@ public class MethodDataFlowAnalysis {
 
             private boolean isVariableAlreadyAdded(String varName, List<VariableFlowTable> lst) {
                 boolean variableAlreadyAdded = false;
-                for (VariableFlowTable vi : lst) {
-                    if(vi.name.contentEquals(varName)) {
-                        variableAlreadyAdded = true;
-                        break;
-                    }
-                }
+
+                variableAlreadyAdded = lst.stream().filter(
+                        varFlowTableItem -> varFlowTableItem.name.contentEquals(varName)).findFirst().isPresent();
+
                 return variableAlreadyAdded;
             }
 
