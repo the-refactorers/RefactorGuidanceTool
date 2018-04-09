@@ -1,0 +1,26 @@
+public class ExtractMethodCases
+{
+    public void ExtractionWithoutDependencies()
+    {
+        int a=0;
+
+        //extract this
+        int b=2;
+        b++;
+        //extract end
+
+        ++a;
+    }
+
+    public void ExtractionWith1Input()
+    {
+        int a=0;
+
+        //extract this
+        int b=2;
+        b = a + 1;
+        //extract end
+
+        b = 0;
+    }
+}

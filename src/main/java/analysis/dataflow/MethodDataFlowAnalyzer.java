@@ -45,4 +45,23 @@ public class MethodDataFlowAnalyzer {
             markRunner.mark();
 
     }
+
+
+    public List<String> variablesForInput() {
+
+        List<String> inputVariables = new ArrayList<>();
+
+        variableDataFlowSet.getListOfVariableFlowTables().forEach(
+                flowTable -> { if (VariableShouldBePassed2NewMethod(flowTable))
+                        inputVariables.add(flowTable.name);
+                }
+        );
+
+        return inputVariables;
+    }
+
+    private boolean VariableShouldBePassed2NewMethod(VariableFlowTable flowTable) {
+        // When variable is changed in before region and used(read) in within region
+        return flowTable.before_region.write && flowTable.within_region.read;
+    }
 }
