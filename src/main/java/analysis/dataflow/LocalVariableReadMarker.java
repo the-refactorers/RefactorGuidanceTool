@@ -41,11 +41,9 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                     if (parentNode.get() instanceof AssignExpr) {
                         AssignExpr ae = (AssignExpr) parentNode.get();
 
-                        // When evaluating the variable in the flowtable, it is read if:
-                        // 1. It is not part of the target
-                        // 2. It is present as a child in the value.childnodes
-                        if (!ae.getTarget().toString().contentEquals(flowTable.name) &&
-                                varnamePresentInExpression(ae.getValue(),flowTable.name)) {
+                        //If specific variable is present in the children nodes of the assignment expression
+                        // then it is read
+                        if (varnamePresentInExpression(ae.getValue(),flowTable.name)) {
                             MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
                         }
                     } else if (parentNode.get() instanceof MethodCallExpr) {
@@ -68,6 +66,10 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                 }
             }
         });
+    }
+
+    private boolean varNameIsWrittenTo(AssignExpr ae, VariableFlowTable flowTable) {
+        return ae.getTarget().toString().contentEquals(flowTable.name);
     }
 
     /**

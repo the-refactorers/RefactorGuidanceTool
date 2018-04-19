@@ -93,6 +93,12 @@ class ExtractMethodMarkerCases
         b = 2;
     }
 
+    private void WriteVariableBasedOnOwnValue()
+    {
+        int a = 0;
+        a = a + 6;
+    }
+
     public void LiveMarker()
     {
     }

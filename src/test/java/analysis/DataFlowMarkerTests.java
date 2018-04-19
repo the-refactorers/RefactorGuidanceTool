@@ -218,4 +218,22 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
         VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
         Assert.assertFalse(varFT.within_region.read);
     }
+
+    // Case: When a variable is read in the before section, and read in the within with a direct write it should be marked
+    // read + write in the within section  before: b=3    ;  within: b = b + 6;
+    @Test
+    public void VariableAssignmentByFirstReading()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteVariableBasedOnOwnValue");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
+        Assert.assertTrue(varFT.within_region.read);
+    }
 }

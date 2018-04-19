@@ -23,4 +23,28 @@ public class ExtractMethodCases
 
         b = 0;
     }
+
+    public void ExtractionWith2Input()
+    {
+        int a=0;
+        int b=2;
+
+        //extract this b=read and written in section so is needed; a = read)
+        b = a + 1 + b;
+        //extract end
+
+        b = 0;
+    }
+
+    public void ExtractionWith1Output()
+    {
+        int a=0;
+
+        //extract this
+        int b=2;
+        b = a + 1;
+        //extract end
+
+        System.out.println(b);
+    }
 }
