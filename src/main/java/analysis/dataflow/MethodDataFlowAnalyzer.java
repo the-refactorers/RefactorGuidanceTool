@@ -51,7 +51,7 @@ public class MethodDataFlowAnalyzer {
         List<String> inputVariables = new ArrayList<>();
 
         variableDataFlowSet.getListOfVariableFlowTables().forEach(
-                flowTable -> { if (isVariableNeededInExtractMethod(flowTable))
+                flowTable -> { if (isVariableReadInExtractMethod(flowTable))
                         inputVariables.add(flowTable.name);
                 }
         );
@@ -59,12 +59,24 @@ public class MethodDataFlowAnalyzer {
         return inputVariables;
     }
 
-    private boolean isVariableNeededInExtractMethod(VariableFlowTable flowTable) {
+    private boolean isVariableReadInExtractMethod(VariableFlowTable flowTable) {
         // When variable is changed in before region and used(read) in within region
         return flowTable.before_region.write && flowTable.within_region.read;
     }
 
     public List<String> variablesForOutput() {
-        return new ArrayList<String>();
+        List<String> inputVariables = new ArrayList<>();
+
+        variableDataFlowSet.getListOfVariableFlowTables().forEach(
+                flowTable -> { if (isVariableChangedInExtractMethod(flowTable))
+                    inputVariables.add(flowTable.name);
+                }
+        );
+
+        return inputVariables;
+    }
+
+    private boolean isVariableChangedInExtractMethod(VariableFlowTable flowTable) {
+        return flowTable.within_region.write && flowTable.after_region.read;
     }
 }

@@ -61,6 +61,7 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
         Assert.assertEquals(2, vfi.size());
     }
 
+    @Test
     public void ExtractCodeWith1ParamOutput()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Output");
@@ -70,6 +71,6 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
         analyzer.start();
 
         List<String> vfi = analyzer.variablesForOutput();
-        Assert.assertEquals(2, vfi.size());
+        Assert.assertEquals(1, vfi.size());
     }
 }
