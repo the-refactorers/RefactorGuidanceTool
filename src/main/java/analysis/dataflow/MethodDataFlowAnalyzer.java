@@ -59,11 +59,6 @@ public class MethodDataFlowAnalyzer {
         return inputVariables;
     }
 
-    private boolean isVariableReadInExtractMethod(VariableFlowTable flowTable) {
-        // When variable is changed in before region and used(read) in within region
-        return flowTable.before_region.write && flowTable.within_region.read;
-    }
-
     public List<String> variablesForOutput() {
         List<String> inputVariables = new ArrayList<>();
 
@@ -78,5 +73,10 @@ public class MethodDataFlowAnalyzer {
 
     private boolean isVariableChangedInExtractMethod(VariableFlowTable flowTable) {
         return flowTable.within_region.write && flowTable.after_region.read;
+    }
+
+    private boolean isVariableReadInExtractMethod(VariableFlowTable flowTable) {
+        // When variable is changed in before region and used(read) in within region
+        return flowTable.before_region.write && flowTable.within_region.read;
     }
 }
