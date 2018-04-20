@@ -47,4 +47,41 @@ public class ExtractMethodCases
 
         System.out.println(b);
     }
+
+    public void ExtractWith1OutputButVariableUsedAfter()
+    {
+        int a=0;
+
+        //extract this
+        int b=2;
+        b = a + 1;
+        //extract end
+
+        System.out.println(b);
+        System.out.println(a);
+    }
+
+    public void ExtractWith2Output()
+    {
+        int a=0;
+
+        //extract this
+        int b=2;
+        b = a + 1;
+        a = 8;
+        //extract end
+
+        System.out.println(b);
+        System.out.println(a);
+    }
+
+    public void ExtractWhereBeforeVariableIsReadAfterWrittenInWithin()
+    {
+        int a = 0;
+
+        // extract this
+        a = 6;
+        int b = a + 1;
+        // extract end
+    }
 }

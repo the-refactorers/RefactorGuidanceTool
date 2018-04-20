@@ -73,4 +73,45 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
         List<String> vfi = analyzer.variablesForOutput();
         Assert.assertEquals(1, vfi.size());
     }
+
+    @Test
+    public void ExtractCodeWith1ParamOutputAndUseOfParameterAfterThatWasOnlyRead()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWith1OutputButVariableUsedAfter");
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        analyzer.setExtractSection(55,58);
+        analyzer.start();
+
+        List<String> vfi = analyzer.variablesForOutput();
+        Assert.assertEquals(1, vfi.size());
+    }
+
+    @Test
+    public void ExtractCodeWith2Output()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWith2Output");
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        analyzer.setExtractSection(68,72);
+        analyzer.start();
+
+        List<String> vfi = analyzer.variablesForOutput();
+        Assert.assertEquals(2, vfi.size());
+    }
+
+    @Test
+    public void ExtractCodeWhereBeforeVariableIsReadAfterWrittenInWithin()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWhereBeforeVariableIsReadAfterWrittenInWithin");
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        analyzer.setExtractSection(82,85);
+        analyzer.start();
+
+        // Because the variable is assigned, before a read. It is not
+        // needed to pass on to extract method
+        List<String> vfi = analyzer.variablesForInput();
+        Assert.assertEquals(0, vfi.size());
+    }
 }

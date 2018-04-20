@@ -38,7 +38,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                 try {
                     // todo: Code below can  be generalized. e.g. set of strategies. Or a chain of functionality, where new handling can be added
                     // visitor pattern can also be a solution
-                    if (parentNode.get() instanceof AssignExpr) {
+                    if (parentNode.get() instanceof AssignExpr ) {
                         AssignExpr ae = (AssignExpr) parentNode.get();
 
                         //If specific variable is present in the children nodes of the assignment expression
@@ -46,7 +46,20 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                         if (varnamePresentInExpression(ae.getValue(),flowTable.name)) {
                             MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
                         }
-                    } else if (parentNode.get() instanceof MethodCallExpr) {
+                    }
+                    else
+                    if (parentNode.get() instanceof BinaryExpr ) {
+                        BinaryExpr ae = (BinaryExpr) parentNode.get();
+
+                        //NodeList<Expression> allMethodArguments = ae.();
+                        //If specific variable is present in the children nodes of the assignment expression
+                        // then it is read
+                        //if (varnamePresentInExpression(sn.getName().asString(),flowTable.name)) {
+                            MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
+                        //}
+                    }
+                    else
+                    if (parentNode.get() instanceof MethodCallExpr) {
                         MethodCallExpr mce = (MethodCallExpr) parentNode.get();
 
                         NodeList<Expression> allMethodArguments = mce.getArguments();
