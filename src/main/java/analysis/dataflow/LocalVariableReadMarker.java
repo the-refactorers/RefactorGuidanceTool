@@ -8,6 +8,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -26,7 +27,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
     }
 
     // Every variable used in an expression will be part of a node NameExpr that is visited.
-    @Override
+    //@Override
     public void visit(NameExpr sn, Void args)
     {
         _lst.getListOfVariableFlowTables().forEach( flowTable ->
@@ -38,28 +39,29 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                 try {
                     // todo: Code below can  be generalized. e.g. set of strategies. Or a chain of functionality, where new handling can be added
                     // visitor pattern can also be a solution
-                    if (parentNode.get() instanceof AssignExpr ) {
+                    if (parentNode.get() instanceof AssignExpr) {
                         AssignExpr ae = (AssignExpr) parentNode.get();
 
-                        //If specific variable is present in the children nodes of the assignment expression
+                        //If specific variable is present in the children nodes of the value part of the assignment expression
                         // then it is read
-                        if (varnamePresentInExpression(ae.getValue(),flowTable.name)) {
+                        if (varnamePresentInSimpleNameNodeList(ae.getValue().getChildNodesByType(SimpleName.class), flowTable.name)) {
                             MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
                         }
                     }
-                    else
-                    if (parentNode.get() instanceof BinaryExpr ) {
-                        BinaryExpr ae = (BinaryExpr) parentNode.get();
 
-                        //NodeList<Expression> allMethodArguments = ae.();
+                    if (parentNode.get() instanceof BinaryExpr) {
+                        BinaryExpr be = (BinaryExpr) parentNode.get();
+
                         //If specific variable is present in the children nodes of the assignment expression
                         // then it is read
-                        //if (varnamePresentInExpression(sn.getName().asString(),flowTable.name)) {
-                            MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
-                        //}
+                        if (varnamePresentInSimpleNameNodeList(be.getChildNodesByType(SimpleName.class), flowTable.name)) {
+                            MarkFlowTable(flowTable, E_ACTION.read, startLine(be.getRange()));
+                            //}
+                        }
                     }
-                    else
-                    if (parentNode.get() instanceof MethodCallExpr) {
+
+                    if (parentNode.get() instanceof MethodCallExpr)
+                    {
                         MethodCallExpr mce = (MethodCallExpr) parentNode.get();
 
                         NodeList<Expression> allMethodArguments = mce.getArguments();
@@ -71,6 +73,17 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                             if (argument.toString().contentEquals(flowTable.name))
                                 MarkFlowTable(flowTable, E_ACTION.read, startLine(mce.getRange()));
                         });
+                    }
+
+                    if (parentNode.get() instanceof UnaryExpr)
+                    {
+                        UnaryExpr ue = (UnaryExpr) parentNode.get();
+                        ue.getChildNodesByType(SimpleName.class);
+
+                        if (varnamePresentInSimpleNameNodeList(ue.getChildNodesByType(SimpleName.class), flowTable.name)) {
+                            MarkFlowTable(flowTable, E_ACTION.read, startLine(ue.getRange()));
+                            //}
+                        }
                     }
                 }
                 catch(ClassCastException ce)
@@ -92,13 +105,35 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
      * @param name
      * @return true = given name found
      */
-    private boolean varnamePresentInExpression(Expression childNodes, String name) {
+    private boolean varnamePresentInNodeList(List<Node> childNodes, String name) {
 
         boolean found = false;
-        List<SimpleName> names = childNodes.getChildNodesByType(SimpleName.class);
+
+        List<SimpleName> nodeOfSimpleNames = childNodes.stream().filter(
+            node -> node instanceof SimpleName
+            ).map(SimpleName.class::cast).collect(Collectors.toList());
+
+        found = nodeOfSimpleNames.stream().filter(
+                sn -> sn.asString().contentEquals(name)
+        ).findFirst().isPresent();
+
+        return found;
+    }
+
+    /**
+     * Determine if name of variable can be found in a given expression
+     *
+     * @param childNodes
+     * @param name
+     * @return true = given name found
+     */
+    private boolean varnamePresentInSimpleNameNodeList(List<SimpleName> names, String name) {
+
+        boolean found = false;
+        //List<SimpleName> names = childNodes.getChildNodesByType(SimpleName.class);
 
         found = names.stream().filter(
-            varName -> varName.toString().contentEquals(name)).findFirst().isPresent();
+                varName -> varName.toString().contentEquals(name)).findFirst().isPresent();
 
         return found;
     }

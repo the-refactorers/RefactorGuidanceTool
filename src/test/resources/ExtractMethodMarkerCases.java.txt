@@ -87,16 +87,27 @@ class ExtractMethodMarkerCases
     private void noReads()
     {
         int a;
-        int b;
-
         a = b + 1;
-        b = 2;
     }
 
     private void WriteVariableBasedOnOwnValue()
     {
         int a = 0;
         a = a + 6;
+    }
+
+    private void ReadingOfTertiaryWriteToSame()
+    {
+        int b = 6;
+
+        b = (b > 10) ? 0 : b;
+    }
+
+    private void ReadingOfUnaryOperation()
+    {
+        int c = 9;
+
+        c++;
     }
 
     public void LiveMarker()

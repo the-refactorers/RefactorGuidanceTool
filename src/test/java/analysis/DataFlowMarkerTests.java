@@ -236,4 +236,39 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
         VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
         Assert.assertTrue(varFT.within_region.read);
     }
+
+    // Case: b = b > 10 ? 0 : b
+    // In this case the variable is first read; followed by a write
+    @Test
+    public void VariableReadingTertiaryWriteToSame()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadingOfTertiaryWriteToSame");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("b");
+        Assert.assertTrue(varFT.within_region.read);
+    }
+
+    // Case: C++; is actually 1st read C then followed bij writing new value to C
+    @Test
+    public void VariableReadingUnaryOperation()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadingOfUnaryOperation");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("c");
+        Assert.assertTrue(varFT.within_region.read);
+    }
 }
