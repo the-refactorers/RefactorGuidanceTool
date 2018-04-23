@@ -110,6 +110,13 @@ class ExtractMethodMarkerCases
         c++;
     }
 
+    private void ReadingInIfStatement()
+    {
+        int c = 5;
+
+        if (c == 5) c = 0;
+    }
+
     public void LiveMarker()
     {
     }

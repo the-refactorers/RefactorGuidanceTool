@@ -271,4 +271,21 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
         VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("c");
         Assert.assertTrue(varFT.within_region.read);
     }
+
+
+    @Test
+    public void VariableReadingIfStatement()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadingInIfStatement");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("c");
+        Assert.assertTrue(varFT.within_region.read);
+    }
 }
