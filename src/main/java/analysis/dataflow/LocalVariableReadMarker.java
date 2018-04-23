@@ -64,15 +64,11 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                     {
                         MethodCallExpr mce = (MethodCallExpr) parentNode.get();
 
-                        NodeList<Expression> allMethodArguments = mce.getArguments();
-
-                        // Arguments passed as variables which are present in one of the local declared
-                        // flowtables, can be concluded that this is a variable where information is read from
-                        allMethodArguments.forEach(argument ->
-                        {
-                            if (argument.toString().contentEquals(flowTable.name))
-                                MarkFlowTable(flowTable, E_ACTION.read, startLine(mce.getRange()));
-                        });
+                        mce.getChildNodesByType(SimpleName.class);
+                        if (varnamePresentInSimpleNameNodeList(mce.getChildNodesByType(SimpleName.class), flowTable.name)) {
+                            MarkFlowTable(flowTable, E_ACTION.read, startLine(mce.getRange()));
+                            //}
+                        }
                     }
 
                     if (parentNode.get() instanceof UnaryExpr)
