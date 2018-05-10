@@ -79,9 +79,9 @@ public class ExtractMethodCases
     {
         int a = 0;
 
-        // extract this
+        // extract this; Actually in this case the code could be re-arranged => declaration in within section
         a = 6;
-        int b = a + 1;
+        int b = a + 1; // Variable is not 'live' here; it was written in within before the first read
         // extract end
     }
 }

@@ -19,6 +19,7 @@ public class MethodDataFlowAnalyzer {
 
         markRunners.add(new LocalVariableWrittenMarker(_md, variableDataFlowSet));
         markRunners.add(new LocalVariableReadMarker(_md, variableDataFlowSet));
+        markRunners.add(new LocalVariableLiveMarker(_md, variableDataFlowSet));
     }
 
     private void addLocalDeclaredVarsToVariableFlowSet() {
