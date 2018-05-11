@@ -1,3 +1,7 @@
+/**
+ * Dataflow package has been inspired by:
+ *  Improving method Extraction: A Novel approach to Data Flow Analysis using Boolean flags & Expressions
+ */
 package analysis.dataflow;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
