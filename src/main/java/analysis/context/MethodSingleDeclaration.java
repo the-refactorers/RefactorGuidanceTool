@@ -16,5 +16,5 @@
  **/
 package analysis.context;
 
-public class ContextMultipleDeclarations {
+public class MethodSingleDeclaration {
 }

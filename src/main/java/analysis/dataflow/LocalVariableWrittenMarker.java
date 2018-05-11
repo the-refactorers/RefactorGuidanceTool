@@ -39,7 +39,7 @@ public class LocalVariableWrittenMarker extends MarkVariableFlowList {
             if (flowTable.name.contentEquals(vd.getNameAsString()) &&
                     vd.getInitializer().isPresent())
             {
-                MarkFlowTable(flowTable, E_ACTION.write, startLine(vd.getRange()));
+                MarkFlowTable(flowTable, E_ACTION.write, toLoc(vd.getRange()));
             }
         });
     }
@@ -54,7 +54,7 @@ public class LocalVariableWrittenMarker extends MarkVariableFlowList {
         {
             if (flowTable.name.contentEquals(ue.getExpression().toString()))
             {
-                MarkFlowTable(flowTable, E_ACTION.write, startLine(ue.getRange()));
+                MarkFlowTable(flowTable, E_ACTION.write, toLoc(ue.getRange()));
             }
         });
     }
@@ -69,7 +69,7 @@ public class LocalVariableWrittenMarker extends MarkVariableFlowList {
             // The variable is seen as being written to.
            if (flowTable.name.contentEquals(ae.getTarget().toString()))
             {
-                MarkFlowTable(flowTable, E_ACTION.write, startLine(ae.getRange()));
+                MarkFlowTable(flowTable, E_ACTION.write, toLoc(ae.getRange()));
             }
         });
     }

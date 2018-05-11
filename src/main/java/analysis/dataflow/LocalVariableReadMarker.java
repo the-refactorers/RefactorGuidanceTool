@@ -45,7 +45,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                         //If specific variable is present in the children nodes of the value part of the assignment expression
                         // then it is read
                         if (varnamePresentInSimpleNameNodeList(ae.getValue().getChildNodesByType(SimpleName.class), flowTable.name)) {
-                            MarkFlowTable(flowTable, E_ACTION.read, startLine(ae.getRange()));
+                            MarkFlowTable(flowTable, E_ACTION.read, toLoc(ae.getRange()));
                         }
                     }
 
@@ -55,7 +55,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                         //If specific variable is present in the children nodes of the assignment expression
                         // then it is read
                         if (varnamePresentInSimpleNameNodeList(be.getChildNodesByType(SimpleName.class), flowTable.name)) {
-                            MarkFlowTable(flowTable, E_ACTION.read, startLine(be.getRange()));
+                            MarkFlowTable(flowTable, E_ACTION.read, toLoc(be.getRange()));
                             //}
                         }
                     }
@@ -66,7 +66,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
 
                         mce.getChildNodesByType(SimpleName.class);
                         if (varnamePresentInSimpleNameNodeList(mce.getChildNodesByType(SimpleName.class), flowTable.name)) {
-                            MarkFlowTable(flowTable, E_ACTION.read, startLine(mce.getRange()));
+                            MarkFlowTable(flowTable, E_ACTION.read, toLoc(mce.getRange()));
                             //}
                         }
                     }
@@ -77,7 +77,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
                         ue.getChildNodesByType(SimpleName.class);
 
                         if (varnamePresentInSimpleNameNodeList(ue.getChildNodesByType(SimpleName.class), flowTable.name)) {
-                            MarkFlowTable(flowTable, E_ACTION.read, startLine(ue.getRange()));
+                            MarkFlowTable(flowTable, E_ACTION.read, toLoc(ue.getRange()));
                             //}
                         }
                     }

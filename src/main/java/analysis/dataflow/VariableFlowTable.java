@@ -13,7 +13,9 @@ public class VariableFlowTable {
         this.name = varName;
     }
 
-    public boolean isAllFalse() {
-        return before_region.allFalse() && within_region.allFalse() && after_region.allFalse();
+    public boolean allFactsInRegionMarkedFalse() {
+        return before_region.areAllFactsFalse()
+                && within_region.areAllFactsFalse()
+                && after_region.areAllFactsFalse();
     }
 }

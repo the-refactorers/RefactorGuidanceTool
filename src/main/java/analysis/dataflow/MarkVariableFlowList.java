@@ -63,54 +63,68 @@ public class MarkVariableFlowList extends VoidVisitorAdapter<Void>
         return suc;
     }
 
-    public void MarkFlowTable(VariableFlowTable flowTable, E_ACTION action, int location)
+    // TODO: 11-5-2018  - refactor this code
+    public void MarkFlowTable(VariableFlowTable flowTable, E_ACTION action, VariableFacts.Loc location)
     {
         if (rangeNotSet())
         {
             if(action == E_ACTION.write)
             {
-                flowTable.within_region.write = true;
+                setWithinWrite(flowTable, location);
             }
             else
             {
                 flowTable.within_region.read = true;
+                flowTable.within_region.read_at.add(location);
             }
         }
-
-        if(isLocationBeforeExtractedSection(location))
+        else
+        if(isLocationBeforeExtractedSection(location.lineNumber))
         {
             if(action == E_ACTION.write)
             {
                 flowTable.before_region.write = true;
+                flowTable.before_region.written_at.add(location);
             }
             else
             {
                 flowTable.before_region.read = true;
+                flowTable.before_region.read_at.add(location);
             }
         }
-        else if (isLocationAfterExtractedSection(location))
+        else if (isLocationAfterExtractedSection(location.lineNumber))
         {
             if(action == E_ACTION.write)
             {
                 flowTable.after_region.write = true;
+                flowTable.after_region.written_at.add(location);
             }
             else
             {
                 flowTable.after_region.read = true;
+                flowTable.after_region.read_at.add(location);
             }
         }
-        else if (isLocationInExtractedSection(location))
+        else if (isLocationInExtractedSection(location.lineNumber))
         {
             if(action == E_ACTION.write)
             {
-                flowTable.within_region.write = true;
+                setWithinWrite(flowTable, location);
             }
             else
             {
                 flowTable.within_region.read = true;
+                flowTable.within_region.read_at.add(location);
             }
         }
     }
+
+    private void setWithinWrite(VariableFlowTable flowTable, VariableFacts.Loc location) {
+        flowTable.within_region.write = true;
+        flowTable.within_region.written_at.add(location);
+    }
+
+
 
     public void setVariableFlowList(VariableFlowSet lst) {
         this._lst = lst;
@@ -120,7 +134,14 @@ public class MarkVariableFlowList extends VoidVisitorAdapter<Void>
         return this._lst;
     }
 
-    protected int startLine(Optional<Range> r) { return r.get().begin.line; }
+    protected VariableFacts.Loc toLoc(Optional<Range> r) {
+        VariableFacts fact = new VariableFacts();
+        VariableFacts.Loc locationInfo = fact.new Loc();
+        locationInfo.lineNumber = r.get().begin.line;
+        locationInfo.column = r.get().begin.column;
+
+        return locationInfo;
+    }
 
     private boolean isLocationBeforeExtractedSection(int varLocation) {
         return varLocation < _start;

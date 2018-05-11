@@ -119,5 +119,24 @@ class ExtractMethodMarkerCases
 
     public void LiveMarker()
     {
+        int a = 5;
+
+        int b;
+
+        int c = b + a;  // Extract only this: b & a are live in within section
+
+        passOn(c);      // c is live in after section
+    }
+
+    public void LiveMarkerWriteAfterRead()
+    {
+        int a = 5;
+
+        int b;
+
+        int c = b + a;  // Extract only this: b & a are live in within section
+        b = 6;
+
+        passOn(c);      // c is live in after section
     }
 }

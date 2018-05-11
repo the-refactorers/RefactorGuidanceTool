@@ -288,4 +288,56 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
         VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("c");
         Assert.assertTrue(varFT.within_region.read);
     }
+
+    @Test
+    public void testSectionMarkingCorrect()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "PassingVariablesToMethods");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+
+        LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
+        wMark.mark();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
+
+        // Because no extract range has been set, only updates in the within section are allowed
+        // in this case write = true
+        Assert.assertFalse(varFT.within_region.areAllFactsFalse());
+        Assert.assertTrue(varFT.before_region.areAllFactsFalse());
+        Assert.assertTrue(varFT.after_region.areAllFactsFalse());
+    }
+
+    @Test
+    public void LiveMarkerNoWriteBeforeRead()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "LiveMarker");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        analyzer.start();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("b");
+        Assert.assertTrue(varFT.within_region.live);
+        varFT = dataFlowSet.getVariableFlowTable("a");
+        Assert.assertFalse(varFT.within_region.live);
+    }
+
+    @Test
+    public void LiveMarkerWriteAfterRead()
+    {
+        MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "LiveMarkerWriteAfterRead");
+
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        analyzer.start();
+
+        VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
+
+        // Write occurs after read of 'b'; so this variable is live in section (it is used without any change)
+        VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("b");
+        Assert.assertTrue(varFT.within_region.live);
+    }
 }

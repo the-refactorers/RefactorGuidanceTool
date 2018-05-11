@@ -52,4 +52,9 @@ public class VariableFlowSet {
 
         return tableForReturn;
     }
+
+    public boolean areAllSectionsInTableSetFalse()
+    {
+        return dataFlowMethodVariables.stream().allMatch(table -> table.allFactsInRegionMarkedFalse());
+    }
 }
