@@ -12,6 +12,12 @@ public class NoneLocalVarDependencies {
     CompilationUnit _cu  = null;
     MethodDataFlowAnalyzer _analyzer = null;
 
+    public NoneLocalVarDependencies(MethodDataFlowAnalyzer mdfa)
+    {
+        super();
+        _analyzer = mdfa;
+    }
+
     public void setupAnalysis(CompilationUnit cu, String className, String methodName, CodeSection cs) {
 
         _cu = cu;
@@ -21,7 +27,7 @@ public class NoneLocalVarDependencies {
         _analyzer.setExtractSection(cs.begin(),cs.end());
     }
 
-    public boolean analyse() throws Exception {
+    public boolean detect() throws Exception {
 
         boolean result = false;
 

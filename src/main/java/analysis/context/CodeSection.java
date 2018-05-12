@@ -10,12 +10,12 @@ public class CodeSection {
         this._end = end;
     }
 
-    int begin()
+    public int begin()
     {
         return _start;
     }
 
-    int end()
+    public int end()
     {
         return _end;
     }

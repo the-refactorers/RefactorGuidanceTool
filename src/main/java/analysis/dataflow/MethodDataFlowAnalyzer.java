@@ -4,13 +4,17 @@
  */
 package analysis.dataflow;
 
+import analysis.ICodeAnalyzer;
+import analysis.context.CodeSection;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MethodDataFlowAnalyzer {
+public class MethodDataFlowAnalyzer implements ICodeAnalyzer {
 
     private MethodDeclaration _md;
     private VariableFlowSet variableDataFlowSet;
