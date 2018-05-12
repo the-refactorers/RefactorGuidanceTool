@@ -13,12 +13,6 @@ import java.util.List;
  */
 public class DataFlowMarkerTests extends JavaParserTestSetup {
 
-    private MethodDeclaration setupTestClass(String className, String methodName) {
-        //String className = "ExtractMethodMarkerCases";
-        CreateCompilationUnitFromTestClass(className + ".java.txt");
-        return findMethodDeclarationInClass(className, methodName);
-    }
-
     // Case: One variable is defined.
     // Expected outcome: 1 varFlowTable which has the same name as the declared variable in the test code
     @Test

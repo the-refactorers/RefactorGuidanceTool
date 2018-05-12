@@ -12,13 +12,7 @@ import org.junit.Test;
  */
 public class DataFlowSectionTests extends JavaParserTestSetup {
 
-    private MethodDeclaration setupTestClass(String className, String methodName) {
-        //String className = "ExtractMethodMarkerCases";
-        CreateCompilationUnitFromTestClass(className + ".java.txt");
-        return findMethodDeclarationInClass(className, methodName);
-    }
-
-    // Case: Invalid section result in marking all variables in within section
+   // Case: Invalid section result in marking all variables in within section
     @Test
     public void WriteWithInvalidSectionsTest()
     {

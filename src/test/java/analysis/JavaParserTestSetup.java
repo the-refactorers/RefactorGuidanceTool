@@ -20,6 +20,12 @@ public class JavaParserTestSetup {
         _cu = _loader.Parse(classTemplate);
     }
 
+    protected MethodDeclaration setupTestClass(String className, String methodName) {
+        //String className = "ExtractMethodMarkerCases";
+        CreateCompilationUnitFromTestClass(className + ".java.txt");
+        return findMethodDeclarationInClass(className, methodName);
+    }
+
     protected CompilationUnit CreateCompilationUnitFromTestClass(ResourceExampleClassParser resourceLoader, String classTemplate)
     {
         return resourceLoader.Parse(classTemplate);

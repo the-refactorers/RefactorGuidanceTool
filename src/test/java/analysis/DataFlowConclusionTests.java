@@ -16,12 +16,6 @@ import java.util.List;
  */
 public class DataFlowConclusionTests extends JavaParserTestSetup {
 
-    private MethodDeclaration setupTestClass(String className, String methodName) {
-        //String className = "ExtractMethodMarkerCases";
-        CreateCompilationUnitFromTestClass(className + ".java.txt");
-        return findMethodDeclarationInClass(className, methodName);
-    }
-
     @Test
     public void ExtractCodeWithoutDependenciesNoInputNeeded()
     {
