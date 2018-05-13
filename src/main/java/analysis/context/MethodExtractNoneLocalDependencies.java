@@ -7,12 +7,12 @@ import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import java.util.List;
 
-public class NoneLocalVarDependencies {
+public class MethodExtractNoneLocalDependencies implements IContextDetection {
 
     CompilationUnit _cu  = null;
     MethodDataFlowAnalyzer _analyzer = null;
 
-    public NoneLocalVarDependencies(MethodDataFlowAnalyzer mdfa)
+    public MethodExtractNoneLocalDependencies(MethodDataFlowAnalyzer mdfa)
     {
         super();
         _analyzer = mdfa;
@@ -46,5 +46,4 @@ public class NoneLocalVarDependencies {
 
         return result;
     }
-
 }

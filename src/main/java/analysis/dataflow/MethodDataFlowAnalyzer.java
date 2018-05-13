@@ -19,6 +19,7 @@ public class MethodDataFlowAnalyzer implements ICodeAnalyzer {
     private MethodDeclaration _md;
     private VariableFlowSet variableDataFlowSet;
     private List<MarkVariableFlowList> markRunners = new ArrayList<>();
+    private boolean analyzed = false;
 
     public MethodDataFlowAnalyzer(MethodDeclaration md)
     {
@@ -48,11 +49,18 @@ public class MethodDataFlowAnalyzer implements ICodeAnalyzer {
             markRunner.setExtractMethodRegion(start, end);
     }
 
-    public void start() {
-        
-        for(MarkVariableFlowList markRunner : markRunners)
-            markRunner.mark();
+    public void start()    {
+        start(false);
+    }
 
+    public void start(boolean forceAnalysis) {
+
+        if (!analyzed || forceAnalysis) {
+            for (MarkVariableFlowList markRunner : markRunners)
+                markRunner.mark();
+
+            analyzed = true;
+        }
     }
 
     public List<String> variablesForInput() {
