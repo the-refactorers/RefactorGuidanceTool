@@ -9,8 +9,8 @@ public class AIT_TestGenerator {
         tree.setRefactorMechanic("Unit Testing Template");
 
         Instruction i1 = new Instruction(1, "Parameter fill test: Dummy method $method is located in dummy $class");
-        ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.method_single_declaration, 2);
-        ContextDecision i1_d2 = new ContextDecision(CodeContext.CodeContextEnum.method_override, 3);
+        ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodSingleDeclaration, 2);
+        ContextDecision i1_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverride, 3);
         i1.addDecision(i1_d1);
         i1.addDecision(i1_d2);
 

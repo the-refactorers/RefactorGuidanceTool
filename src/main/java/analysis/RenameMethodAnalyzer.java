@@ -35,20 +35,20 @@ public class RenameMethodAnalyzer {
         EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
 
         if (!cmf.contextMultipleDeclarations(methodName)) {
-            codeContext.add(CodeContext.CodeContextEnum.method_single_declaration);
+            codeContext.add(CodeContext.CodeContextEnum.MethodSingleDeclaration);
         }
         else
         {
-            codeContext.add(CodeContext.CodeContextEnum.method_multiple_declares);
+            codeContext.add(CodeContext.CodeContextEnum.MethodMultipleDeclarations);
         }
 
         if (cmf.contextDeclaredInInterface(methodName))
         {
-            codeContext.add(CodeContext.CodeContextEnum.method_defined_in_interface);
+            codeContext.add(CodeContext.CodeContextEnum.MethodInterfaceDeclaration);
         }
         if (cmf.contextDeclaredInSuperClass(methodName))
         {
-            codeContext.add(CodeContext.CodeContextEnum.method_override);
+            codeContext.add(CodeContext.CodeContextEnum.MethodOverride);
         }
 
         codeContext.add(CodeContext.CodeContextEnum.always_true);

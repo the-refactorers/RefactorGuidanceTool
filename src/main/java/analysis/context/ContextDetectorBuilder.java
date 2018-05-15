@@ -40,37 +40,71 @@ public class ContextDetectorBuilder {
 
         if(refactoringProcessName.contentEquals("Rename Method"))
         {
-            BuildRenameContextDetectors();
+            BuildRenameContextDetectors(completeCodeContext);
         }
 
         return this._contextDetectors;
     }
 
-    private void BuildRenameContextDetectors() {
+    private void BuildRenameContextDetectors(EnumSet<CodeContext.CodeContextEnum> completeCodeContext)
+    {
+            if (ContextDetectorForAllContextDecisions(completeCodeContext)) {
+                try {
+
+                for (CodeContext.CodeContextEnum context : completeCodeContext) {
+
+                    if (!context.toString().contentEquals(CodeContext.CodeContextEnum.always_true.toString())) {
+
+                        Class<?> classCtxt = Class.forName("analysis.context." + context.name());
+                        Class<?> classAnalyzer = Class.forName("analysis.MethodAnalyzer.ClassMethodFinder");
+
+                        Constructor<?> constructor = classCtxt.getConstructor(classAnalyzer, String.class);
+
+                        IContextDetector instance =
+                                (IContextDetector) constructor.newInstance(classAnalyzer.newInstance(), "methodA");
+
+                        // parameterinput should be retrieved from a configuration object
+                        // By placing it in a seperate object we can instantiate all context detectors from a configuration description
+                        // When running the actual algorithm for a specific refactoring
+                        // 1. set-up specific input object, with specific info methods for context detectors (known by them)
+                        // 2. analyze code
+                        // 3. run context detection
+                        // 4. generate
+
+                        _contextDetectors.add(instance);
+                    }
+                }
+                }
+
+                catch(ClassNotFoundException cnfe)
+                {
+                    System.out.println(cnfe.getMessage());
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e.getMessage());
+                }
+
+            }
+        }
+
+
+    private boolean ContextDetectorForAllContextDecisions(EnumSet<CodeContext.CodeContextEnum> completeCodeContext) {
+
+        boolean allDefined = true;
+
         try {
-            Class<?> clazz = Class.forName("analysis.context.MethodSingleDeclaration");
-            Class<?> ctor_p1 = Class.forName("analysis.MethodAnalyzer.ClassMethodFinder");
-
-            Constructor<?> constructor = clazz.getConstructor(ctor_p1, String.class);
-
-            ClassMethodFinder cmf = new ClassMethodFinder();
-            IContextDetector instance = (IContextDetector) constructor.newInstance(ctor_p1.newInstance(), "methodA");
-
-            // parameterinput should be retrieved from a configuration object
-            // By placing it in a seperate object we can instantiate all context detectors from a configuration description
-            // When running the actual algorithm for a specific refactoring
-            // 1. set-up specific input object, with specific info methods for context detectors (known by them)
-            // 2. analyze code
-            // 3. run context detection
-            // 4. generate
-
-            _contextDetectors.add(instance);
+            for (CodeContext.CodeContextEnum context : completeCodeContext) {
+                if(!context.toString().contentEquals(CodeContext.CodeContextEnum.always_true.toString()))
+                    Class.forName("analysis.context." + context.name());
+            }
         }
-        catch(Exception E)
+        catch(ClassNotFoundException cnfe)
         {
+            System.out.println("class " + cnfe.getMessage() + " not defined");
+            allDefined = false;
+        }
 
-        }
-        finally{
-        }
+        return allDefined;
     }
 }

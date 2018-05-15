@@ -42,7 +42,6 @@ public class ClassMethodFinder implements ICodeAnalyzer {
     private TypeSolver _symbolSolver;
     private String _declaredInInterface;
 
-
     public void initialize(CompilationUnit cu, String qualifiedName) {
         _cu = cu;
         _qname = qualifiedName;

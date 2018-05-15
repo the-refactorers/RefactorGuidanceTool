@@ -36,7 +36,7 @@ public class InstructionGeneratorTests {
         parameterMap.put("$method", "printHelloWorld");
         parameterMap.put("$class", "Hello");
 
-        EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.of(CodeContext.CodeContextEnum.method_override);
+        EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.of(CodeContext.CodeContextEnum.MethodOverride);
 
         //generator.contextSet = codeContext;
         generator.setParameterMap(parameterMap);

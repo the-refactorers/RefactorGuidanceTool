@@ -20,18 +20,18 @@ public class AIT_RenameGeneration {
         Instruction i8 = new Instruction( 8, "To eliminate any side-effect risks, I suggest to rename $method also in $super-list\n");
         Instruction i9 = new Instruction( 9, "There are methods present in your class hierarchy with the same name (method override), but different number of parameters.\nIt is a good practice to rename also these methods to the new name you have choosen ");
 
-        ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.method_single_declaration, 2);
-        ContextDecision i1_d2 = new ContextDecision(CodeContext.CodeContextEnum.method_multiple_declares, 5);
+        ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodSingleDeclaration, 2);
+        ContextDecision i1_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodMultipleDeclarations, 5);
         ContextDecision i2_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i3_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 4);
-        ContextDecision i5_d1 = new ContextDecision(CodeContext.CodeContextEnum.method_defined_in_interface, 6);
-        ContextDecision i5_d2 = new ContextDecision(CodeContext.CodeContextEnum.method_override, 7);
-        ContextDecision i6_d1 = new ContextDecision(CodeContext.CodeContextEnum.method_override, 7);
+        ContextDecision i5_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodInterfaceDeclaration, 6);
+        ContextDecision i5_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverride, 7);
+        ContextDecision i6_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverride, 7);
         ContextDecision i6_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i7_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 8);
         ContextDecision i8_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i9_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
-        ContextDecision i4_d1 = new ContextDecision(CodeContext.CodeContextEnum.method_overload_declaration, 9);
+        ContextDecision i4_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverload, 9);
         ContextDecision i4_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
 
         i1.addDecision(i1_d1);

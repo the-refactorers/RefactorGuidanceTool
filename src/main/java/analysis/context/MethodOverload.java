@@ -16,5 +16,20 @@
  **/
 package analysis.context;
 
-public class MethodOverload {
+import analysis.MethodAnalyzer.ClassMethodFinder;
+
+public class MethodOverload implements IContextDetector {
+
+    private ClassMethodFinder _analyzer = null;
+    private String _methodName = null;
+
+    public MethodOverload(ClassMethodFinder cmf, String methodName) {
+        this._analyzer = cmf;
+        this._methodName = methodName;
+    }
+
+    @Override
+    public boolean detect() throws Exception {
+        return false;
+    }
 }

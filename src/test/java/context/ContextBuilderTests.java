@@ -15,8 +15,11 @@ public class ContextBuilderTests {
         ContextDetectorBuilder cb = new ContextDetectorBuilder();
         AdaptiveInstructionTree ait = new AIT_RenameGeneration().getAdaptiveInstructionTree();
         cb.setAIT(ait);
+
         int nrOfContextInTree = ait.allUniqueCodeContextInTree().size();
         int nrOfContextDetectors = cb.getContextDetectors().size();
-        assertEquals(nrOfContextInTree, nrOfContextDetectors );
+
+        //-1, because for always_true no detector exists
+        assertEquals(nrOfContextInTree-1, nrOfContextDetectors );
     }
 }
