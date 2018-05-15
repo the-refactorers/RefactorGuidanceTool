@@ -20,7 +20,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
     {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 
-        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
         MethodSingleDeclaration msd = new MethodSingleDeclaration(cmf, "MethodTwo");
 
         try {
@@ -37,7 +38,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
     {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 
-        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
         MethodMultipleDeclarations msd = new MethodMultipleDeclarations(cmf, "MethodOne");
 
         try {
@@ -55,7 +57,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         //@todo: specifically public interface, this might lead to exposure to packages with unseen behavior
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 
-        ClassMethodFinder cmf = new ClassMethodFinder(_cu, "A");
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
         MethodInterfaceDeclaration msd = new MethodInterfaceDeclaration(cmf, "MethodOne");
 
         try {

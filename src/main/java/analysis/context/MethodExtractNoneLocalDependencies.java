@@ -23,7 +23,8 @@ public class MethodExtractNoneLocalDependencies implements IContextDetector {
         _cu = cu;
 
         MethodDeclaration md = Navigator.demandMethod(Navigator.demandClass(_cu, className), methodName);
-        _analyzer = new MethodDataFlowAnalyzer(md);
+        _analyzer = new MethodDataFlowAnalyzer();
+        _analyzer.setMethod(md);
         _analyzer.setExtractSection(cs.begin(),cs.end());
     }
 

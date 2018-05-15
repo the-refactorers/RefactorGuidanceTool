@@ -17,6 +17,7 @@
 
 package analysis.MethodAnalyzer;
 
+import analysis.ICodeAnalyzer;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -34,14 +35,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassMethodFinder {
+public class ClassMethodFinder implements ICodeAnalyzer {
 
     private CompilationUnit _cu;
     private String _qname;
     private TypeSolver _symbolSolver;
     private String _declaredInInterface;
 
-    public ClassMethodFinder(CompilationUnit cu, String qualifiedName) {
+
+    public void initialize(CompilationUnit cu, String qualifiedName) {
         _cu = cu;
         _qname = qualifiedName;
 
@@ -270,5 +272,10 @@ public class ClassMethodFinder {
     public boolean contextDeclaredInSuperClass(String methodName)
     {
         return isMethodDefinedInSuperClass(methodName);
+    }
+
+    @Override
+    public void start() {
+        // No special processing has to be performed
     }
 }

@@ -67,7 +67,8 @@ public class RenameMethodAnalyzer {
         CompilationUnit cu = JavaParser.parse(parseStream);
 
         String className = "MyMethod";
-        ClassMethodFinder cmf = new ClassMethodFinder(cu, className);
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(cu, className);
 
         // Determine name based on location
         String methodName = cmf.getMethodNameForLocation(lineNumber);

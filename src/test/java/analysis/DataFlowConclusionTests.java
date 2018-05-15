@@ -20,7 +20,8 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     public void ExtractCodeWithoutDependenciesNoInputNeeded()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         analyzer.setExtractSection(7,10);
         analyzer.start();
@@ -33,7 +34,8 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     public void ExtractCodeWith1ParamInput()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Input");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         analyzer.setExtractSection(19,22);
         analyzer.start();
@@ -46,7 +48,8 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     public void ExtractCodeWith2ParamInput()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith2Input");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         analyzer.setExtractSection(32,35);
         analyzer.start();
@@ -59,7 +62,8 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     public void ExtractCodeWith1ParamOutput()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Output");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         analyzer.setExtractSection(43,46);
         analyzer.start();
@@ -72,7 +76,8 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     public void ExtractCodeWith1ParamOutputAndUseOfParameterAfterThatWasOnlyRead()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWith1OutputButVariableUsedAfter");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         analyzer.setExtractSection(55,58);
         analyzer.start();
@@ -85,7 +90,8 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     public void ExtractCodeWith2Output()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWith2Output");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         analyzer.setExtractSection(68,72);
         analyzer.start();
@@ -98,7 +104,8 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     public void ExtractCodeWhereBeforeVariableIsReadAfterWrittenInWithin()
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWhereBeforeVariableIsReadAfterWrittenInWithin");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         analyzer.setExtractSection(82,85);
         analyzer.start();

@@ -20,7 +20,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodZeroInZeroOut", "MethodOneLocalDeclared");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         VariableFlowSet variableFlowTableSet = analyzer.getVariableFlowSet();
 
@@ -38,7 +39,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
 
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableWrittenMarker wMark = new LocalVariableWrittenMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -68,7 +70,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableWrittenMarker wMark = new LocalVariableWrittenMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -85,7 +88,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableWrittenMarker wMark = new LocalVariableWrittenMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -103,7 +107,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadWriteMarkers");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
         analyzer.start();
 
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
@@ -121,7 +126,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadTertiaryMarkers");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -143,7 +149,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadVariableInOtherVariable");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -163,7 +170,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "PassingVariablesToMethods");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -181,7 +189,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "PassingNVariablesToMethods");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -202,7 +211,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "noReads");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -220,7 +230,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteVariableBasedOnOwnValue");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -238,7 +249,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadingOfTertiaryWriteToSame");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -255,7 +267,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadingOfUnaryOperation");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -272,7 +285,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "ReadingInIfStatement");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -288,7 +302,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "PassingVariablesToMethods");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
 
         LocalVariableReadMarker wMark = new LocalVariableReadMarker(md, analyzer.getVariableFlowSet());
         wMark.mark();
@@ -309,7 +324,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "LiveMarker");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
         analyzer.start();
 
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
@@ -325,7 +341,8 @@ public class DataFlowMarkerTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "LiveMarkerWriteAfterRead");
 
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer(md);
+        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
+        analyzer.setMethod(md);
         analyzer.start();
 
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();

@@ -7,7 +7,7 @@ import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import java.util.List;
 
-public class MethodExtractSingleArgument implements IContextDetection {
+public class MethodExtractSingleArgument implements IContextDetector {
     CompilationUnit _cu  = null;
     MethodDataFlowAnalyzer _analyzer = null;
 
@@ -22,7 +22,8 @@ public class MethodExtractSingleArgument implements IContextDetection {
         _cu = cu;
 
         MethodDeclaration md = Navigator.demandMethod(Navigator.demandClass(_cu, className), methodName);
-        _analyzer = new MethodDataFlowAnalyzer(md);
+        _analyzer = new MethodDataFlowAnalyzer();
+        _analyzer.setMethod(md);
         _analyzer.setExtractSection(cs.begin(),cs.end());
     }
 

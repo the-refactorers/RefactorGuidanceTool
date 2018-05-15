@@ -19,7 +19,8 @@ public class intraMethodContextTests extends JavaParserTestSetup {
         try {
             MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
 
-            MethodDataFlowAnalyzer _analyzer = new MethodDataFlowAnalyzer(md);
+            MethodDataFlowAnalyzer _analyzer = new MethodDataFlowAnalyzer();
+            _analyzer.setMethod(md);
             MethodExtractNoneLocalDependencies nlvdCtxt = new MethodExtractNoneLocalDependencies(_analyzer);
 
             CodeSection cs = new CodeSection(7, 10);
@@ -39,7 +40,9 @@ public class intraMethodContextTests extends JavaParserTestSetup {
             try {
                 MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Input");
 
-                MethodDataFlowAnalyzer _analyzer = new MethodDataFlowAnalyzer(md);
+                MethodDataFlowAnalyzer _analyzer = new MethodDataFlowAnalyzer();
+                _analyzer.setMethod(md);
+
                 MethodExtractSingleArgument mesp = new MethodExtractSingleArgument(_analyzer);
                 CodeSection cs = new CodeSection(19, 22);
                 _analyzer.setExtractSection(cs.begin(),cs.end());

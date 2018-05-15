@@ -33,7 +33,8 @@ public class RenameTest {
         CreateCompilationUnitFromTestClass("RenameMethod.java.txt");
 
         String className = "MyMethod";
-        ClassMethodFinder cmf = new ClassMethodFinder(_cu, className);
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, className);
 
         // Determine name based on location context
         String methodName = cmf.getMethodNameForLocation(22);
@@ -64,7 +65,8 @@ public class RenameTest {
         CreateCompilationUnitFromTestClass("RenameMethod.java.txt");
 
         String className = "MyMethod";
-        ClassMethodFinder cmf = new ClassMethodFinder(_cu, className);
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, className);
 
         // Determine name based on location context
         String methodName = cmf.getMethodNameForLocation(28);

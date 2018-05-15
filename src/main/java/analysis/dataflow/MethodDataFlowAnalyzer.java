@@ -21,7 +21,7 @@ public class MethodDataFlowAnalyzer implements ICodeAnalyzer {
     private List<MarkVariableFlowList> markRunners = new ArrayList<>();
     private boolean analyzed = false;
 
-    public MethodDataFlowAnalyzer(MethodDeclaration md)
+    public void setMethod(MethodDeclaration md)
     {
         this._md = md;
         addLocalDeclaredVarsToVariableFlowSet();
