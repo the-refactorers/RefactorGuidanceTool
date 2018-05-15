@@ -1,5 +1,7 @@
 package ait;
 
+import java.util.EnumSet;
+
 public class AIT_RenameGeneration {
 
     AdaptiveInstructionTree tree = new AdaptiveInstructionTree();
@@ -58,8 +60,10 @@ public class AIT_RenameGeneration {
         tree.addInstruction(i9);
     }
 
+
     public AdaptiveInstructionTree getAdaptiveInstructionTree()
     {
         return tree;
     }
+
 }

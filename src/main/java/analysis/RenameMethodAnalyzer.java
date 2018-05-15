@@ -21,6 +21,7 @@ import ait.AIT_RenameGeneration;
 import ait.AdaptiveInstructionTree;
 import ait.CodeContext;
 import ait.InstructionGenerator;
+import analysis.MethodAnalyzer.ClassMethodFinder;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 

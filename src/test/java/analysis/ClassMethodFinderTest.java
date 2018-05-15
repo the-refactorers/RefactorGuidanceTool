@@ -1,6 +1,6 @@
 package analysis;
 
-import analysis.ClassMethodFinder;
+import analysis.MethodAnalyzer.ClassMethodFinder;
 import com.github.javaparser.ast.CompilationUnit;
 import org.junit.Assert;
 import org.junit.Before;

@@ -3,7 +3,7 @@ package context;
 import analysis.JavaParserTestSetup;
 import analysis.context.CodeSection;
 import analysis.context.MethodExtractNoneLocalDependencies;
-import analysis.context.MethodExtractSingleParameter;
+import analysis.context.MethodExtractSingleArgument;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
@@ -40,8 +40,7 @@ public class intraMethodContextTests extends JavaParserTestSetup {
                 MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Input");
 
                 MethodDataFlowAnalyzer _analyzer = new MethodDataFlowAnalyzer(md);
-                MethodExtractSingleParameter mesp = new MethodExtractSingleParameter(_analyzer);
-
+                MethodExtractSingleArgument mesp = new MethodExtractSingleArgument(_analyzer);
                 CodeSection cs = new CodeSection(19, 22);
                 _analyzer.setExtractSection(cs.begin(),cs.end());
 

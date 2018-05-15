@@ -15,7 +15,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-package analysis;
+package analysis.MethodAnalyzer;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -254,6 +254,7 @@ public class ClassMethodFinder {
         return methodDeclaredInSuperClass;
     }
 
+    //@todo: has been moved to context
     public boolean contextMultipleDeclarations(String methodName)
     {
         return isMethodDefinedInSuperClass(methodName) || isMethodDeclaredFirstTimeInInterface(methodName);

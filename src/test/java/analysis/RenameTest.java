@@ -1,6 +1,7 @@
 package analysis;
 
 import ait.*;
+import analysis.MethodAnalyzer.ClassMethodFinder;
 import com.github.javaparser.ast.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
