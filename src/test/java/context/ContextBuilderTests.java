@@ -1,5 +1,7 @@
 package context;
 
+import ait.AIT_RenameGeneration;
+import ait.AdaptiveInstructionTree;
 import analysis.context.ContextDetectorBuilder;
 import org.junit.Test;
 
@@ -11,6 +13,10 @@ public class ContextBuilderTests {
     public void getReflectiveContext()
     {
         ContextDetectorBuilder cb = new ContextDetectorBuilder();
-        assertEquals(1, cb.getContextDetectorsReflective().size());
+        AdaptiveInstructionTree ait = new AIT_RenameGeneration().getAdaptiveInstructionTree();
+        cb.setAIT(ait);
+        int nrOfContextInTree = ait.allUniqueCodeContextInTree().size();
+        int nrOfContextDetectors = cb.getContextDetectors().size();
+        assertEquals(nrOfContextInTree, nrOfContextDetectors );
     }
 }

@@ -17,7 +17,7 @@ public class AdaptiveInstructionTree {
     public final static int FINAL_NODE = -1;
 
     @XmlTransient
-    EnumSet<CodeContext.CodeContextEnum> contextSet;
+    EnumSet<CodeContext.CodeContextEnum> contextSet = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
 
     String refactorMechanic;
     String description;
@@ -41,6 +41,12 @@ public class AdaptiveInstructionTree {
 
     public EnumSet<CodeContext.CodeContextEnum> allUniqueCodeContextInTree()
     {
+        for(Instruction i : allInstructions) {
+            for(ContextDecision cd : i.getDecisions()) {
+                if(!contextSet.contains(cd.contextType)) contextSet.add(cd.contextType);
+            }
+        }
+
         return contextSet;
     }
 

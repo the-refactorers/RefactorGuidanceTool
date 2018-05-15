@@ -6,7 +6,6 @@ import analysis.ICodeAnalyzer;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -34,32 +33,8 @@ public class ContextDetectorBuilder {
         this._ait = ait;
     }
 
-    public List<IContextDetector> getContextDetectorsReflective()
-    {
-        try {
-            Class<?> clazz = Class.forName("analysis.context.MethodSingleDeclaration");
-            Class<?> ctor_p1 = Class.forName("analysis.MethodAnalyzer.ClassMethodFinder");
-            Class<?> ctor_p2 = Class.forName("analysis.MethodAnalyzer.ClassMethodFinder");
-            Constructor<?> constructor = clazz.getConstructor(ctor_p1, String.class);
-
-            ClassMethodFinder cmf = new ClassMethodFinder();
-            IContextDetector instance = (IContextDetector) constructor.newInstance(cmf, "methodA");
-
-            _contextDetectors.add(instance);
-        }
-        catch(Exception E)
-        {
-
-        }
-        finally{
-    }
-        return _contextDetectors;
-    }
-
     public List<IContextDetector> getContextDetectors()
     {
-
-
         EnumSet<CodeContext.CodeContextEnum> completeCodeContext = this._ait.allUniqueCodeContextInTree();
         String refactoringProcessName = this._ait.getRefactorMechanic();
 
@@ -72,5 +47,30 @@ public class ContextDetectorBuilder {
     }
 
     private void BuildRenameContextDetectors() {
+        try {
+            Class<?> clazz = Class.forName("analysis.context.MethodSingleDeclaration");
+            Class<?> ctor_p1 = Class.forName("analysis.MethodAnalyzer.ClassMethodFinder");
+
+            Constructor<?> constructor = clazz.getConstructor(ctor_p1, String.class);
+
+            ClassMethodFinder cmf = new ClassMethodFinder();
+            IContextDetector instance = (IContextDetector) constructor.newInstance(ctor_p1.newInstance(), "methodA");
+
+            // parameterinput should be retrieved from a configuration object
+            // By placing it in a seperate object we can instantiate all context detectors from a configuration description
+            // When running the actual algorithm for a specific refactoring
+            // 1. set-up specific input object, with specific info methods for context detectors (known by them)
+            // 2. analyze code
+            // 3. run context detection
+            // 4. generate
+
+            _contextDetectors.add(instance);
+        }
+        catch(Exception E)
+        {
+
+        }
+        finally{
+        }
     }
 }
