@@ -1,7 +1,7 @@
 package analysis.context;
 
 // A General interface which every context class should implement
-public interface IContextDetection {
+public interface IContextDetector {
 
     // When analyzes has detected specific context, it will hold internally a set of relevant parameters
     // to this context definition. getParameters extends a set of ParamCOllection, which can be used later in the

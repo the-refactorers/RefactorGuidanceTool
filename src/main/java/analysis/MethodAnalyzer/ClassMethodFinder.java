@@ -260,11 +260,13 @@ public class ClassMethodFinder {
         return isMethodDefinedInSuperClass(methodName) || isMethodDeclaredFirstTimeInInterface(methodName);
     }
 
+    //@todo: has been moved to context
     public boolean contextDeclaredInInterface(String methodName)
     {
         return isMethodDeclaredFirstTimeInInterface(methodName);
     }
 
+    //@todo: has been moved to context
     public boolean contextDeclaredInSuperClass(String methodName)
     {
         return isMethodDefinedInSuperClass(methodName);

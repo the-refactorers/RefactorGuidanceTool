@@ -2,7 +2,7 @@ package analysis.context;
 
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
-public class MethodMultipleDeclarations {
+public class MethodMultipleDeclarations implements IContextDetector {
 
     ClassMethodFinder _analyzer = null;
     String _methodName = null;

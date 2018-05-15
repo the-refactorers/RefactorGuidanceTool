@@ -7,7 +7,7 @@ import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import java.util.List;
 
-public class MethodExtractNoneLocalDependencies implements IContextDetection {
+public class MethodExtractNoneLocalDependencies implements IContextDetector {
 
     CompilationUnit _cu  = null;
     MethodDataFlowAnalyzer _analyzer = null;
