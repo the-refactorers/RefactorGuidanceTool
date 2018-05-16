@@ -46,6 +46,12 @@ public class ContextDetectorSetBuilder {
             // Maak de analyzers 1x aan in, om geen dubbele instanties te krijgen
             // They can be directly initialized if contextanalyzerconfiguration object is present
 
+            // voor deze specifieke method
+            // uitlezen cu + methodname of line numers
+            // initieren ClassMethodFinder analyzer (en evt. andere analyzers)
+            // instantieren detectors, waarbij in het config object de juiste analyzers staan, die een detector
+            // intern weet op te vragen.
+
             // Voeg de analuzers toe aan ContextAnalyzerCOnfiguration
             BuildRenameContextDetectors(completeCodeContext); // provides possible analyzers + input
         }
