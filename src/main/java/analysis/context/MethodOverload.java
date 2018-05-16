@@ -16,6 +16,7 @@
  **/
 package analysis.context;
 
+import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
 public class MethodOverload implements IContextDetector {
@@ -31,5 +32,10 @@ public class MethodOverload implements IContextDetector {
     @Override
     public boolean detect() throws Exception {
         return false;
+    }
+
+    @Override
+    public CodeContext.CodeContextEnum getType() {
+        return CodeContext.CodeContextEnum.MethodOverload;
     }
 }

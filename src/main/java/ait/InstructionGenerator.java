@@ -36,10 +36,22 @@ public class InstructionGenerator {
      */
     public List<String> generateInstruction()
     {
+        String errStr = "ERROR: unknown";
+        boolean inputErr = false;
+
         List<String> generatedInstructionList = new ArrayList<String>();
         List<String> parsedValuesInstructionList = new ArrayList<>();
 
-        if (aitTree != null && parameterMap != null && contextSet != null)
+        if(aitTree == null) {errStr = "ERROR: AIT is null"; inputErr = true;}
+        else
+        if(contextSet == null || contextSet.isEmpty()) {errStr = "ERROR: Context-set is empty or null"; inputErr = true;}
+        else
+        if(parameterMap == null) { errStr = "ERROR: parameterMap is null"; inputErr = true; }
+
+        // Should always be present, otherwise the algorithm is never stopping
+        if(contextSet != null) contextSet.add(CodeContext.CodeContextEnum.always_true);
+
+        if (!inputErr)
         {
             // built up the instruction list, based on the code context set
             Instruction _instr = aitTree.getFirstInstruction();
@@ -76,7 +88,9 @@ public class InstructionGenerator {
         }
         else
         {
-            return new ArrayList<String>();
+            ArrayList<String> resultString = new ArrayList<>();
+            resultString.add(errStr);
+            return resultString;
         }
     }
 

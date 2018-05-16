@@ -39,6 +39,10 @@ public class AdaptiveInstructionTree {
         return description;
     }
 
+    /**
+     * Returns the set of all unique code context decision points in the AIT
+     * @return
+     */
     public EnumSet<CodeContext.CodeContextEnum> allUniqueCodeContextInTree()
     {
         for(Instruction i : allInstructions) {
@@ -48,6 +52,19 @@ public class AdaptiveInstructionTree {
         }
 
         return contextSet;
+    }
+
+    /**
+     * Returns the set of enum that identifies unique context decisions.
+     * It has filtered out always_true, which is a placeholder for those actions that always should take place
+     * @return
+     */
+    public EnumSet<CodeContext.CodeContextEnum> allSpecializedCodeContextInTree()
+    {
+        EnumSet<CodeContext.CodeContextEnum> set = allUniqueCodeContextInTree();
+        set.remove(CodeContext.CodeContextEnum.always_true);
+
+        return set;
     }
 
     @XmlTransient

@@ -1,5 +1,6 @@
 package analysis.context;
 
+import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
 public class MethodOverride implements IContextDetector{
@@ -16,4 +17,10 @@ public class MethodOverride implements IContextDetector{
     public boolean detect() throws Exception {
         return false;
     }
+
+    @Override
+    public CodeContext.CodeContextEnum getType() {
+        return CodeContext.CodeContextEnum.MethodOverride;
+    }
+
 }

@@ -1,5 +1,6 @@
 package analysis.context;
 
+import ait.CodeContext;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -44,5 +45,10 @@ public class MethodExtractSingleArgument implements IContextDetector {
         }
 
         return result;
+    }
+
+    @Override
+    public CodeContext.CodeContextEnum getType() {
+        return CodeContext.CodeContextEnum.intramethod_extract_single_argument;
     }
 }

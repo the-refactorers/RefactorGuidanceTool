@@ -1,5 +1,7 @@
 package analysis.context;
 
+import ait.CodeContext;
+
 // A General interface which every context class should implement
 public interface IContextDetector {
 
@@ -15,4 +17,6 @@ public interface IContextDetector {
     // Analyse code to see if specific context is present in code
     // Built up relevant parameter set, which can be retrieved later
     boolean detect() throws Exception;
+
+    CodeContext.CodeContextEnum getType();
 }

@@ -1,5 +1,6 @@
 package analysis.context;
 
+import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
 public class MethodMultipleDeclarations implements IContextDetector {
@@ -27,6 +28,11 @@ public class MethodMultipleDeclarations implements IContextDetector {
         }
 
         return result;
+    }
+
+    @Override
+    public CodeContext.CodeContextEnum getType() {
+        return CodeContext.CodeContextEnum.MethodMultipleDeclarations;
     }
 
 }

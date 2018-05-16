@@ -1,5 +1,6 @@
 package analysis.context;
 
+import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
 public class MethodSingleDeclaration implements IContextDetector {
@@ -28,5 +29,10 @@ public class MethodSingleDeclaration implements IContextDetector {
         }
 
         return result;
+    }
+
+    @Override
+    public CodeContext.CodeContextEnum getType() {
+        return CodeContext.CodeContextEnum.MethodSingleDeclaration;
     }
 }

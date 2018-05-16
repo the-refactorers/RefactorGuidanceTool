@@ -16,7 +16,25 @@ public class InstructionGeneratorTests {
         AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
         InstructionGenerator generator = new InstructionGenerator(tree);
 
-        Assert.assertTrue(generator.generateInstruction().isEmpty());
+        Assert.assertEquals(generator.generateInstruction().get(0), "ERROR: Context-set is empty or null");
+    }
+
+    @Test
+    public void GivenTreeNullGivesErrorInstruction()
+    {
+        InstructionGenerator generator = new InstructionGenerator(null);
+        Assert.assertEquals(generator.generateInstruction().get(0), "ERROR: AIT is null");
+    }
+
+    @Test
+    public void GivenEmptyContextSetShouldResultInErrorInstruction()
+    {
+        AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
+        InstructionGenerator generator = new InstructionGenerator(tree);
+        EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
+        generator.setContext(codeContext);
+
+        Assert.assertEquals(generator.generateInstruction().get(0), "ERROR: Context-set is empty or null");
     }
 
     @Test

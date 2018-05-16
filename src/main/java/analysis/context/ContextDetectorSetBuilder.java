@@ -15,7 +15,7 @@ import java.util.List;
  *  in a given adaptive instruction tree. The list of detectors can be provided to the procedural
  *  guidance generator
  */
-public class ContextDetectorBuilder {
+public class ContextDetectorSetBuilder {
 
     AdaptiveInstructionTree _ait = null;
     List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();

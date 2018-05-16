@@ -22,6 +22,8 @@ import ait.AdaptiveInstructionTree;
 import ait.CodeContext;
 import ait.InstructionGenerator;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.context.ContextAnalyzer;
+import analysis.context.ContextDetectorSetBuilder;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
@@ -88,11 +90,18 @@ public class RenameMethodAnalyzer {
             AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
             InstructionGenerator generator = new InstructionGenerator(tree);
 
-            //generator.contextSet = codeContext;
             generator.setParameterMap(parameterMap);
 
             // Analyze context and set-up code context of generator
-            generator.setContext(AnalyzeContext(cmf, methodName));
+            ContextDetectorSetBuilder cb = new ContextDetectorSetBuilder();
+            cb.setAIT(tree);
+
+            ContextAnalyzer ca = new ContextAnalyzer();
+            ca.setContextDetectors(cb.getContextDetectors());
+            ca.run();
+
+            //generator.setContext(AnalyzeContext(cmf, methodName));
+            generator.setContext(ca.getDetectedContextSet());
 
             instructionSteps = generator.generateInstruction();
         }
