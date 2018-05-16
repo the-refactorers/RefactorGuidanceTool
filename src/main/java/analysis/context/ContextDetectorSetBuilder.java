@@ -18,6 +18,9 @@ import java.util.List;
 public class ContextDetectorSetBuilder {
 
     AdaptiveInstructionTree _ait = null;
+
+    ContextAnalyzerConfiguration _analyzerConfig = null;
+
     List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();
     List<ICodeAnalyzer> _analyzers = new ArrayList<ICodeAnalyzer>();
 
@@ -40,11 +43,32 @@ public class ContextDetectorSetBuilder {
 
         if(refactoringProcessName.contentEquals("Rename Method"))
         {
-            BuildRenameContextDetectors(completeCodeContext);
+            // Maak de analyzers 1x aan in, om geen dubbele instanties te krijgen
+            // They can be directly initialized if contextanalyzerconfiguration object is present
+
+            // Voeg de analuzers toe aan ContextAnalyzerCOnfiguration
+            BuildRenameContextDetectors(completeCodeContext); // provides possible analyzers + input
         }
 
         return this._contextDetectors;
     }
+
+    /**
+     * Through the returned configuration object, the created analyzers can be accessed
+     * - to initialize from the outside
+     * - to be used by the detectors to access necessary information
+     * @return
+     */
+    public ContextAnalyzerConfiguration getContextAnalyzerConfiguration()
+    {
+        return _analyzerConfig;
+    }
+
+    public void setContextAnalyzerConfiguration(ContextAnalyzerConfiguration config)
+    {
+        _analyzerConfig = config;
+    }
+
 
     private void BuildRenameContextDetectors(EnumSet<CodeContext.CodeContextEnum> completeCodeContext)
     {

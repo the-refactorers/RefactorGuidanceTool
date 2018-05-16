@@ -100,8 +100,8 @@ public class RenameMethodAnalyzer {
             ca.setContextDetectors(cb.getContextDetectors());
             ca.run();
 
-            //generator.setContext(AnalyzeContext(cmf, methodName));
-            generator.setContext(ca.getDetectedContextSet());
+            generator.setContext(AnalyzeContext(cmf, methodName));
+            //generator.setContext(ca.getDetectedContextSet());
 
             instructionSteps = generator.generateInstruction();
         }
