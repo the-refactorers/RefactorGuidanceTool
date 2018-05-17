@@ -2,10 +2,7 @@ package analysis.context;
 
 import ait.CodeContext;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Determines which specific contexts are present in a piece of code in a generic way.
@@ -15,6 +12,7 @@ public class ContextAnalyzer {
 
     List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();
     EnumSet<CodeContext.CodeContextEnum> _detectedSet = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
+    Map<String, String> _parameterDefinitions = new HashMap<>();
 
     public void setContextDetectors(List<IContextDetector> detectors) {
         this._contextDetectors = detectors;
@@ -31,15 +29,19 @@ public class ContextAnalyzer {
             try {
                 if (detector.detect()) {
                     _detectedSet.add(detector.getType());
-                    Map<String, String> parameters = detector.getParameterMap();
-                    
+                    extendParameterDefinitions(detector);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
     }
 
+    private void extendParameterDefinitions(IContextDetector detector) {
+        Map<String, String> parameters = detector.getParameterMap();
+        parameters.forEach((parameter, name) -> _parameterDefinitions.put(parameter, name));
+    }
+
     public Map<String,String> getParameterMap() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return _parameterDefinitions;
     }
 }

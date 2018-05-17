@@ -38,12 +38,6 @@ public class InstructionGeneratorTests {
     }
 
     @Test
-    public void GivenTreeWithThreeInstructionsAndDecisionResultsCorrectInstruction()
-    {
-
-    }
-
-    @Test
     public void GivenInstructionAndParameterMapFillsParameterValues()
     {
         AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
@@ -56,7 +50,6 @@ public class InstructionGeneratorTests {
 
         EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.of(CodeContext.CodeContextEnum.MethodOverride);
 
-        //generator.contextSet = codeContext;
         generator.setParameterMap(parameterMap);
         generator.setContext(codeContext);
 

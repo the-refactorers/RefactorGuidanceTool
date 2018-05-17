@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class MethodSingleDeclaration implements IContextDetector {
 
-    ClassMethodFinder _analyzer = null;
-    String _methodName = null;
+    private ClassMethodFinder _analyzer = null;
+    private String _methodName = null;
     private Map<String,String> _parameterMap = new HashMap<String, String>();
 
     public MethodSingleDeclaration(ClassMethodFinder cmf, String methodName) {
@@ -36,6 +36,8 @@ public class MethodSingleDeclaration implements IContextDetector {
                 !_analyzer.isMethodDeclaredFirstTimeInInterface(_methodName))
             {
                 _parameterMap.put("$method", this._methodName);
+                _parameterMap.put("$class", this._analyzer.getQualifiedMethodName());
+
                 result = true;
             }
         }

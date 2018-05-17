@@ -67,8 +67,9 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         try {
             msd.detect();
 
-            Assert.assertEquals(1, msd.getParameterMap().size());
+            Assert.assertEquals(2, msd.getParameterMap().size());
             Assert.assertTrue(msd.getParameterMap().containsKey("$method"));
+            Assert.assertTrue(msd.getParameterMap().containsKey("$class"));
         }
         catch(Exception e)
         {
@@ -87,6 +88,29 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             Assert.assertTrue(msd.detect());
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void parametersMethodDeclaredMultipleTimes()
+    {
+        //@todo: specifically public interface, this might lead to exposure to packages with unseen behavior
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+        MethodMultipleDeclarations mmd = new MethodMultipleDeclarations(cmf, "MethodOne");
+
+        try {
+            mmd.detect();
+
+            Assert.assertEquals(2, mmd.getParameterMap().size());
+            Assert.assertTrue(mmd.getParameterMap().containsKey("$method"));
+            Assert.assertTrue(mmd.getParameterMap().containsKey("$class"));
         }
         catch(Exception e)
         {

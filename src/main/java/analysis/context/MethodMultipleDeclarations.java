@@ -3,12 +3,15 @@ package analysis.context;
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MethodMultipleDeclarations implements IContextDetector {
 
-    ClassMethodFinder _analyzer = null;
-    String _methodName = null;
+    private ClassMethodFinder _analyzer = null;
+    private String _methodName = null;
+
+    private Map<String,String> _parameterMap = new HashMap<String, String>();
 
     public MethodMultipleDeclarations(ClassMethodFinder cmf, String methodName) {
         this._analyzer = cmf;
@@ -25,8 +28,14 @@ public class MethodMultipleDeclarations implements IContextDetector {
 
         if(_analyzer != null)
         {
-            result = _analyzer.isMethodDefinedInSuperClass(_methodName) ||
-                     _analyzer.isMethodDeclaredFirstTimeInInterface(_methodName);
+            if(_analyzer.isMethodDefinedInSuperClass(_methodName) ||
+                _analyzer.isMethodDeclaredFirstTimeInInterface(_methodName))
+
+            {
+                _parameterMap.put("$method", this._methodName);
+                _parameterMap.put("$class", this._analyzer.getQualifiedMethodName());
+                result = true;
+            }
         }
         else
         {
@@ -38,7 +47,7 @@ public class MethodMultipleDeclarations implements IContextDetector {
 
     @Override
     public Map<String,String> getParameterMap() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return _parameterMap;
     }
 
     @Override

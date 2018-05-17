@@ -33,6 +33,7 @@ import java.util.*;
 
 public class RenameMethodAnalyzer {
 
+    @Deprecated
     public EnumSet<CodeContext.CodeContextEnum> AnalyzeContext(ClassMethodFinder cmf, String methodName)
     {
         EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
@@ -63,14 +64,19 @@ public class RenameMethodAnalyzer {
 
 
     public List<String> generateInstructions(String testResource, int lineNumber) {
+
+        // load java class from the resource set
         InputStream parseStream = this.getClass().getClassLoader().getResourceAsStream(testResource);
 
         if (parseStream == null) {
             throw new RuntimeException("Unable to find sample " + testResource);
         }
 
+        // Initialize compilation unit
         CompilationUnit cu = JavaParser.parse(parseStream);
 
+        // set up analyzer to make it possible to retrieve method-number based on line number
+        // @todo: This should be taken out of analyzer class
         String className = "MyMethod";
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(cu, className);
@@ -80,36 +86,32 @@ public class RenameMethodAnalyzer {
 
         List<String> instructionSteps = new ArrayList<>();
 
+        // When we have a method name, start generating instructions for renaming this method
         if (!methodName.isEmpty()) {
-            // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
-            Map<String, String> parameterMap = new HashMap<>();
-            //parameterMap.put("$method", methodName);
-            //parameterMap.put("$class", className);
-
-            //if (cmf.contextDeclaredInInterface(methodName)) {
-               // parameterMap.put("$interface", cmf.methodDefinedInInterface());
-           // }
-
+            // SELECT refactoring
             AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
-            InstructionGenerator generator = new InstructionGenerator(tree);
-
-            generator.setParameterMap(parameterMap);
 
             // Analyze context and set-up code context of generator
             ContextConfiguration cac = new ContextConfiguration();
+
+            // SPECIFY necessary refactoring properties
             cac.setMethodName(methodName);
             cac.setCompilationUnit(cu);
             cac.setClassName(className);
 
             ContextDetectorSetBuilder cb = new ContextDetectorSetBuilder();
-
             cb.setConfiguration(cac);
             cb.setAIT(tree);
 
             ContextAnalyzer ca = new ContextAnalyzer();
 
             try {
+                // CONFIGURE context detectors
+                // Build up specific set of context detectors belonging to the tree provided
                 ca.setContextDetectors(cb.getContextDetectors());
+
+                // ANALYZE code
+                // Evaluate all detectors -> Results in set of context detected
                 ca.run();
             }
             catch(Exception e)
@@ -117,10 +119,14 @@ public class RenameMethodAnalyzer {
                 System.out.println(e.getMessage());
             }
 
-            generator.setParameterMap(ca.getParameterMap());
+            // Instantiate instruction generator
+            InstructionGenerator generator = new InstructionGenerator(tree);
 
+            // Provide concrete parameter values and detected context set
+            generator.setParameterMap(ca.getParameterMap());
             generator.setContext(ca.getDetectedContextSet());
 
+            // GENERATE (=Filter nodes from tree + parsing of parametrized values in resulting nodes)
             instructionSteps = generator.generateInstruction();
         }
         else

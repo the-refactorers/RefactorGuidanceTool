@@ -52,6 +52,11 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         );
     }
 
+    public String getQualifiedMethodName()
+    {
+        return _qname;
+    }
+
     private boolean isIgnoredPackage(ReferenceTypeDeclaration rtd)
     {
         boolean ignoredPackage = false;

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//@todo: adjust renameTest to new generic way of generating
 public class RenameTest {
 
     private ResourceExampleClassParser _loader;
@@ -60,6 +61,7 @@ public class RenameTest {
     }
 
     @Test
+    @Deprecated
     public void MethodIsDeclaredInInterface()
     {
         CreateCompilationUnitFromTestClass("RenameMethod.java.txt");

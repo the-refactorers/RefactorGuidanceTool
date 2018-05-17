@@ -77,6 +77,8 @@ public class ContextDetectorSetBuilder {
         _analyzerConfig = config;
     }
 
+    //@Todo Move each specifc initiation of objects needed in a refactoring generator to a seperate Factory
+    //
     private void BuildRenameContextDetectors(EnumSet<CodeContext.CodeContextEnum> completeCodeContext)
     {
         // 1. setup the analyzers and add them to the generic config object.
@@ -87,37 +89,34 @@ public class ContextDetectorSetBuilder {
         UniversalBuildContextDetectors(completeCodeContext, _analyzerConfig);
     }
 
+    /**
+     * A set of context detectors is build based on the context set that is provided.
+     * The @ContextConfiguration object is used to provide detectors with necessary input in a generic way
+     *
+     * @param completeCodeContext Context detectors that should be instantiated
+     * @param analyzerConfig      Necessary input to properly initialize detectors and possible analyzers
+     */
     private void UniversalBuildContextDetectors(EnumSet<CodeContext.CodeContextEnum> completeCodeContext,
                                                 ContextConfiguration analyzerConfig)
     {
             if (ContextDetectorForAllContextDecisions(completeCodeContext)) {
                 try {
+                    for (CodeContext.CodeContextEnum context : completeCodeContext) {
 
-                for (CodeContext.CodeContextEnum context : completeCodeContext) {
+                        if (!context.toString().contentEquals(CodeContext.CodeContextEnum.always_true.toString())) {
 
-                    if (!context.toString().contentEquals(CodeContext.CodeContextEnum.always_true.toString())) {
+                            Class<?> classCtxt = Class.forName("analysis.context." + context.name());
+                            Class<?> classConfig = Class.forName("analysis.context.ContextConfiguration");
 
-                        Class<?> classCtxt = Class.forName("analysis.context." + context.name());
-                        Class<?> classConfig = Class.forName("analysis.context.ContextConfiguration");
+                            Constructor<?> constructor = classCtxt.getConstructor(classConfig);
 
-                        Constructor<?> constructor = classCtxt.getConstructor(classConfig);
+                            IContextDetector instance =
+                                    (IContextDetector) constructor.newInstance(analyzerConfig);
 
-                        IContextDetector instance =
-                                (IContextDetector) constructor.newInstance(analyzerConfig);
-
-                        // parameterinput should be retrieved from a configuration object
-                        // By placing it in a seperate object we can instantiate all context detectors from a configuration description
-                        // When running the actual algorithm for a specific refactoring
-                        // 1. set-up specific input object, with specific info methods for context detectors (known by them)
-                        // 2. analyze code
-                        // 3. run context detection
-                        // 4. generate
-
-                        _contextDetectors.add(instance);
+                            _contextDetectors.add(instance);
+                        }
                     }
                 }
-                }
-
                 catch(ClassNotFoundException cnfe)
                 {
                     System.out.println(cnfe.getMessage());
@@ -126,11 +125,17 @@ public class ContextDetectorSetBuilder {
                 {
                     System.out.println(e.getMessage());
                 }
-
             }
         }
 
 
+    /**
+     * Internally used to validate if all requested detectors in the context set are actually
+     * present as classes in our java project
+     *
+     * @param completeCodeContext
+     * @return True, when all necessary classes could be found
+     */
     private boolean ContextDetectorForAllContextDecisions(EnumSet<CodeContext.CodeContextEnum> completeCodeContext) {
 
         boolean allDefined = true;
