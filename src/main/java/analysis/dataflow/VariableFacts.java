@@ -1,18 +1,15 @@
 package analysis.dataflow;
 
-
-import javassist.compiler.ast.Variable;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class VariableFacts {
 
         public boolean write;
-        public List<Loc> written_at = new ArrayList<Loc>();
+        public List<Loc> written_at = new ArrayList<>();
 
         public boolean read;
-        public List<Loc> read_at = new ArrayList<Loc>();
+        public List<Loc> read_at = new ArrayList<>();
 
         public boolean cond_write;
 

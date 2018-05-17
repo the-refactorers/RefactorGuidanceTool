@@ -10,7 +10,7 @@ public class MethodSingleDeclaration implements IContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private String _methodName = null;
-    private Map<String,String> _parameterMap = new HashMap<String, String>();
+    private Map<String,String> _parameterMap = new HashMap<>();
 
     public MethodSingleDeclaration(ClassMethodFinder cmf, String methodName) {
         this._analyzer = cmf;

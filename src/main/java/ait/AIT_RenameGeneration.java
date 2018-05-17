@@ -1,7 +1,5 @@
 package ait;
 
-import java.util.EnumSet;
-
 public class AIT_RenameGeneration {
 
     AdaptiveInstructionTree tree = new AdaptiveInstructionTree();

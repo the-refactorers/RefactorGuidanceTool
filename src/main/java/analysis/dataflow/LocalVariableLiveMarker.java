@@ -1,9 +1,6 @@
 package analysis.dataflow;
 
-import com.github.javaparser.Range;
 import com.github.javaparser.ast.body.MethodDeclaration;
-
-import java.util.Optional;
 
 public class LocalVariableLiveMarker extends MarkVariableFlowList {
 

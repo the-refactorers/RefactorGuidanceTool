@@ -1,8 +1,6 @@
 package analysis;
 
 import analysis.dataflow.MethodDataFlowAnalyzer;
-import analysis.dataflow.VariableFlowSet;
-import analysis.dataflow.VariableFlowTable;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import org.junit.Assert;
 import org.junit.Test;

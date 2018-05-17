@@ -6,7 +6,6 @@ import analysis.context.MethodExtractNoneLocalDependencies;
 import analysis.context.MethodExtractSingleArgument;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.symbolsolver.javaparser.Navigator;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

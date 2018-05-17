@@ -39,7 +39,7 @@ public class InstructionGenerator {
         String errStr = "ERROR: unknown";
         boolean inputErr = false;
 
-        List<String> generatedInstructionList = new ArrayList<String>();
+        List<String> generatedInstructionList = new ArrayList<>();
         List<String> parsedValuesInstructionList = new ArrayList<>();
 
         if(aitTree == null) {errStr = "ERROR: AIT is null"; inputErr = true;}

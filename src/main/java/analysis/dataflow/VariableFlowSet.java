@@ -5,7 +5,7 @@ import java.util.List;
 
 public class VariableFlowSet {
 
-    List<VariableFlowTable> dataFlowMethodVariables  = new ArrayList<VariableFlowTable>();
+    List<VariableFlowTable> dataFlowMethodVariables  = new ArrayList<>();
 
     private boolean isVariableAlreadyAdded(String varName) {
         boolean variableAlreadyAdded = false;
@@ -55,6 +55,6 @@ public class VariableFlowSet {
 
     public boolean areAllSectionsInTableSetFalse()
     {
-        return dataFlowMethodVariables.stream().allMatch(table -> table.allFactsInRegionMarkedFalse());
+        return dataFlowMethodVariables.stream().allMatch(VariableFlowTable::allFactsInRegionMarkedFalse);
     }
 }

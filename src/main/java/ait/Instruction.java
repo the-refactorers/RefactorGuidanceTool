@@ -15,7 +15,7 @@ public class Instruction {
     int     instructionID = -1;
     String  instructionDescription;
 
-    List<ContextDecision> decisions = new ArrayList<ContextDecision>();
+    List<ContextDecision> decisions = new ArrayList<>();
 
     public Instruction() {
     }
@@ -50,7 +50,7 @@ public class Instruction {
     {
         if (decisions == null)
         {
-            decisions = new ArrayList<ContextDecision>();
+            decisions = new ArrayList<>();
         }
 
         decisions.add(decision);

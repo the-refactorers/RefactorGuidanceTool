@@ -3,7 +3,6 @@ package analysis.context;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.CompilationUnit;
-import sun.security.krb5.internal.MethodData;
 
 public class ContextConfiguration {
 

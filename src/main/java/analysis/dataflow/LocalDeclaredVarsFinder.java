@@ -18,7 +18,7 @@ import java.util.List;
 public class LocalDeclaredVarsFinder extends VoidVisitorAdapter<Void> {
 
     private final MethodDeclaration _method;
-    private List<String> _localVars = new ArrayList<String>();
+    private List<String> _localVars = new ArrayList<>();
     
     public LocalDeclaredVarsFinder(MethodDeclaration md)
     {

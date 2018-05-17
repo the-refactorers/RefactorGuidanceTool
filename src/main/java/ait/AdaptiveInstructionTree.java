@@ -21,7 +21,7 @@ public class AdaptiveInstructionTree {
 
     String refactorMechanic;
     String description;
-    List<Instruction> allInstructions = new ArrayList<Instruction>();
+    List<Instruction> allInstructions = new ArrayList<>();
 
     @XmlElement(name="MECHANIC")
     public void setRefactorMechanic(String refactorMechanic) {

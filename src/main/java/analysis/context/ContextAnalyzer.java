@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class ContextAnalyzer {
 
-    List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();
+    List<IContextDetector> _contextDetectors = new ArrayList<>();
     EnumSet<CodeContext.CodeContextEnum> _detectedSet = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
     Map<String, String> _parameterDefinitions = new HashMap<>();
 
