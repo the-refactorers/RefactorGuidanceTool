@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static junit.framework.TestCase.fail;
+
 public class ClassMethodFinderTest {
 
     private ResourceExampleClassParser _loader;
@@ -101,7 +103,13 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
 
-        Assert.assertTrue(cmf.isMethodDeclaredFirstTimeInInterface("MethodOne"));
+        try {
+            Assert.assertTrue(cmf.isMethodDeclaredFirstTimeInInterface("MethodOne"));
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
     }
 
     @Test
@@ -111,7 +119,14 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
 
-        Assert.assertTrue(cmf.isMethodDefinedInSuperClass("MethodOne"));
+        try
+        {
+            Assert.assertTrue(cmf.isMethodDefinedInSuperClass("MethodOne"));
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
     }
 
     @Test
@@ -121,7 +136,14 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
 
-        Assert.assertFalse(cmf.isMethodDeclaredFirstTimeInInterface("MethodTwo"));
+        try {
+            Assert.assertFalse(cmf.isMethodDeclaredFirstTimeInInterface("MethodTwo"));
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+
     }
 
     @Test
@@ -131,6 +153,13 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
 
-        Assert.assertFalse(cmf.isMethodDefinedInSuperClass("MethodTwo"));
+        try
+        {
+            Assert.assertFalse(cmf.isMethodDefinedInSuperClass("MethodTwo"));
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
     }
 }

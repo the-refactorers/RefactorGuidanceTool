@@ -3,12 +3,14 @@ package analysis.context;
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MethodSingleDeclaration implements IContextDetector {
 
     ClassMethodFinder _analyzer = null;
     String _methodName = null;
+    private Map<String,String> _parameterMap = new HashMap<String, String>();
 
     public MethodSingleDeclaration(ClassMethodFinder cmf, String methodName) {
         this._analyzer = cmf;
@@ -30,8 +32,12 @@ public class MethodSingleDeclaration implements IContextDetector {
 
         if(_analyzer != null)
         {
-            result = !_analyzer.isMethodDefinedInSuperClass(_methodName) &&
-                    !_analyzer.isMethodDeclaredFirstTimeInInterface(_methodName);
+            if(!_analyzer.isMethodDefinedInSuperClass(_methodName) &&
+                !_analyzer.isMethodDeclaredFirstTimeInInterface(_methodName))
+            {
+                _parameterMap.put("$method", this._methodName);
+                result = true;
+            }
         }
         else
         {
@@ -43,7 +49,7 @@ public class MethodSingleDeclaration implements IContextDetector {
 
     @Override
     public Map<String,String> getParameterMap() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return _parameterMap;
     }
 
     @Override

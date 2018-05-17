@@ -35,8 +35,7 @@ public class ContextBuilderTests {
         }
         catch(Exception e)
         {
-            System.out.println(e.getMessage());
-            fail();
+            fail(e.getMessage());
         }
     }
 }

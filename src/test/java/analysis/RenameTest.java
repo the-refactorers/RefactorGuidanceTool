@@ -85,9 +85,16 @@ public class RenameTest {
         // Analyze context and set-up code context of generator
         generator.setContext(_analyzer.AnalyzeContext(cmf, methodName));
 
+        try
+        {
         if (cmf.contextDeclaredInInterface(methodName))
         {
             parameterMap.put("$interface", cmf.methodDefinedInInterface());
+        }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
         }
 
         List<String> instructionSteps = generator.generateInstruction();

@@ -37,24 +37,26 @@ public class RenameMethodAnalyzer {
     {
         EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
 
-        if (!cmf.contextMultipleDeclarations(methodName)) {
-            codeContext.add(CodeContext.CodeContextEnum.MethodSingleDeclaration);
-        }
-        else
-        {
-            codeContext.add(CodeContext.CodeContextEnum.MethodMultipleDeclarations);
-        }
+        try {
+            if (!cmf.contextMultipleDeclarations(methodName)) {
+                codeContext.add(CodeContext.CodeContextEnum.MethodSingleDeclaration);
+            } else {
+                codeContext.add(CodeContext.CodeContextEnum.MethodMultipleDeclarations);
+            }
 
-        if (cmf.contextDeclaredInInterface(methodName))
-        {
-            codeContext.add(CodeContext.CodeContextEnum.MethodInterfaceDeclaration);
-        }
-        if (cmf.contextDeclaredInSuperClass(methodName))
-        {
-            codeContext.add(CodeContext.CodeContextEnum.MethodOverride);
-        }
+            if (cmf.contextDeclaredInInterface(methodName)) {
+                codeContext.add(CodeContext.CodeContextEnum.MethodInterfaceDeclaration);
+            }
+            if (cmf.contextDeclaredInSuperClass(methodName)) {
+                codeContext.add(CodeContext.CodeContextEnum.MethodOverride);
+            }
 
-        codeContext.add(CodeContext.CodeContextEnum.always_true);
+            codeContext.add(CodeContext.CodeContextEnum.always_true);
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
 
         return codeContext;
     }

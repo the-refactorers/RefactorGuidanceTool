@@ -3,12 +3,14 @@ package analysis.context;
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MethodInterfaceDeclaration implements IContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private String _methodName = null;
+    private Map<String,String> _parameterMap = new HashMap<String, String>();
 
     public MethodInterfaceDeclaration(ClassMethodFinder cmf, String methodName) {
         this._analyzer = cmf;
@@ -25,7 +27,11 @@ public class MethodInterfaceDeclaration implements IContextDetector {
 
         if(_analyzer != null)
         {
-            result = _analyzer.isMethodDeclaredFirstTimeInInterface(_methodName);
+            if(_analyzer.isMethodDeclaredFirstTimeInInterface(_methodName))
+            {
+                _parameterMap.put("$interface", _analyzer.methodDefinedInInterface());
+                result = true;
+            }
         }
         else
         {
@@ -37,7 +43,7 @@ public class MethodInterfaceDeclaration implements IContextDetector {
 
     @Override
     public Map<String,String> getParameterMap() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return _parameterMap;
     }
 
     @Override

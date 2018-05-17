@@ -30,7 +30,7 @@ public class intraMethodContextTests extends JavaParserTestSetup {
         }
         catch (Exception e) {
             e.printStackTrace();
-            fail();
+            fail(e.getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ public class intraMethodContextTests extends JavaParserTestSetup {
             }
             catch (Exception e) {
                 e.printStackTrace();
-                fail();
+                fail(e.getMessage());
             }
     }
 

@@ -168,7 +168,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
      * @param methodName Name of method to be resolved
      * @return true, method name has been declared initially in an interface definition
      */
-    public boolean isMethodDeclaredFirstTimeInInterface(String methodName) {
+    public boolean isMethodDeclaredFirstTimeInInterface(String methodName) throws Exception {
 
         boolean methodDeclaredInInterface = false;
 
@@ -198,6 +198,10 @@ public class ClassMethodFinder implements ICodeAnalyzer {
                 }
             }
         }
+        else
+        {
+            throw new Exception("Method " + methodName + "does not exist");
+        }
 
         return methodDeclaredInInterface;
     }
@@ -223,7 +227,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         return methodFound;
     }
 
-    public boolean isMethodDefinedInSuperClass(String methodName) {
+    public boolean isMethodDefinedInSuperClass(String methodName) throws Exception {
         boolean methodDeclaredInSuperClass = false;
 
         // When specific method is visible in class, figure out if it has been defined
@@ -251,25 +255,26 @@ public class ClassMethodFinder implements ICodeAnalyzer {
                 }
             }
         }
+        else
+        {
+            throw new Exception("Method " + methodName + "does not exist");
+        }
 
         return methodDeclaredInSuperClass;
     }
 
     //@todo: has been moved to context
-    public boolean contextMultipleDeclarations(String methodName)
-    {
+    public boolean contextMultipleDeclarations(String methodName) throws Exception {
         return isMethodDefinedInSuperClass(methodName) || isMethodDeclaredFirstTimeInInterface(methodName);
     }
 
     //@todo: has been moved to context
-    public boolean contextDeclaredInInterface(String methodName)
-    {
+    public boolean contextDeclaredInInterface(String methodName) throws Exception {
         return isMethodDeclaredFirstTimeInInterface(methodName);
     }
 
     //@todo: has been moved to context
-    public boolean contextDeclaredInSuperClass(String methodName)
-    {
+    public boolean contextDeclaredInSuperClass(String methodName) throws Exception {
         return isMethodDefinedInSuperClass(methodName);
     }
 
