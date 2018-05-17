@@ -25,6 +25,7 @@ public class AIT_RenameGeneration {
         ContextDecision i2_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i3_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 4);
         ContextDecision i5_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodInterfaceDeclaration, 6);
+        i5_d1.setRiskDescription("");
         ContextDecision i5_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverride, 7);
         ContextDecision i6_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverride, 7);
         ContextDecision i6_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
