@@ -98,12 +98,12 @@ public class ContextDetectorSetBuilder {
                     if (!context.toString().contentEquals(CodeContext.CodeContextEnum.always_true.toString())) {
 
                         Class<?> classCtxt = Class.forName("analysis.context." + context.name());
-                        Class<?> classAnalyzer = Class.forName("analysis.MethodAnalyzer.ClassMethodFinder");
+                        Class<?> classConfig = Class.forName("analysis.context.ContextConfiguration");
 
-                        Constructor<?> constructor = classCtxt.getConstructor(classAnalyzer, String.class);
+                        Constructor<?> constructor = classCtxt.getConstructor(classConfig);
 
                         IContextDetector instance =
-                                (IContextDetector) constructor.newInstance(classAnalyzer.newInstance(), "methodA");
+                                (IContextDetector) constructor.newInstance(analyzerConfig);
 
                         // parameterinput should be retrieved from a configuration object
                         // By placing it in a seperate object we can instantiate all context detectors from a configuration description

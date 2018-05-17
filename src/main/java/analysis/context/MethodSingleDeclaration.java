@@ -3,15 +3,25 @@ package analysis.context;
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
+import java.util.Map;
+
 public class MethodSingleDeclaration implements IContextDetector {
 
     ClassMethodFinder _analyzer = null;
     String _methodName = null;
 
-    public MethodSingleDeclaration(ClassMethodFinder cmf, String methodName)
-    {
-        _analyzer = cmf;
-        _methodName = methodName;
+    public MethodSingleDeclaration(ClassMethodFinder cmf, String methodName) {
+        this._analyzer = cmf;
+        this._methodName = methodName;
+    }
+
+    /**
+     * Used in generic context builder
+     * @param cc
+     */
+    public MethodSingleDeclaration(ContextConfiguration cc) {
+        this._analyzer = cc.getCMFAnalyzer();
+        this._methodName = cc.getMethodName();
     }
 
     @Override
@@ -29,6 +39,11 @@ public class MethodSingleDeclaration implements IContextDetector {
         }
 
         return result;
+    }
+
+    @Override
+    public Map<String,String> getParameterMap() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override

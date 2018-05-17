@@ -5,17 +5,17 @@ import analysis.MethodAnalyzer.ClassMethodFinder;
 
 import java.util.Map;
 
-public class MethodMultipleDeclarations implements IContextDetector {
+public class MethodInterfaceDeclaration implements IContextDetector {
 
-    ClassMethodFinder _analyzer = null;
-    String _methodName = null;
+    private ClassMethodFinder _analyzer = null;
+    private String _methodName = null;
 
-    public MethodMultipleDeclarations(ClassMethodFinder cmf, String methodName) {
+    public MethodInterfaceDeclaration(ClassMethodFinder cmf, String methodName) {
         this._analyzer = cmf;
         this._methodName = methodName;
     }
 
-    public MethodMultipleDeclarations(ContextConfiguration cc) {
+    public MethodInterfaceDeclaration(ContextConfiguration cc) {
         this._analyzer = cc.getCMFAnalyzer();
         this._methodName = cc.getMethodName();
     }
@@ -25,8 +25,7 @@ public class MethodMultipleDeclarations implements IContextDetector {
 
         if(_analyzer != null)
         {
-            result = _analyzer.isMethodDefinedInSuperClass(_methodName) ||
-                     _analyzer.isMethodDeclaredFirstTimeInInterface(_methodName);
+            result = _analyzer.isMethodDeclaredFirstTimeInInterface(_methodName);
         }
         else
         {
@@ -43,7 +42,6 @@ public class MethodMultipleDeclarations implements IContextDetector {
 
     @Override
     public CodeContext.CodeContextEnum getType() {
-        return CodeContext.CodeContextEnum.MethodMultipleDeclarations;
+        return CodeContext.CodeContextEnum.MethodInterfaceDeclaration;
     }
-
 }

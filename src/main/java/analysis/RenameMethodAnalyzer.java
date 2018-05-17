@@ -81,12 +81,12 @@ public class RenameMethodAnalyzer {
         if (!methodName.isEmpty()) {
             // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
             Map<String, String> parameterMap = new HashMap<>();
-            parameterMap.put("$method", methodName);
-            parameterMap.put("$class", className);
+            //parameterMap.put("$method", methodName);
+            //parameterMap.put("$class", className);
 
-            if (cmf.contextDeclaredInInterface(methodName)) {
-                parameterMap.put("$interface", cmf.methodDefinedInInterface());
-            }
+            //if (cmf.contextDeclaredInInterface(methodName)) {
+               // parameterMap.put("$interface", cmf.methodDefinedInInterface());
+           // }
 
             AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
             InstructionGenerator generator = new InstructionGenerator(tree);
@@ -115,7 +115,8 @@ public class RenameMethodAnalyzer {
                 System.out.println(e.getMessage());
             }
 
-            //generator.setContext(AnalyzeContext(cmf, methodName));
+            generator.setParameterMap(ca.getParameterMap());
+
             generator.setContext(ca.getDetectedContextSet());
 
             instructionSteps = generator.generateInstruction();

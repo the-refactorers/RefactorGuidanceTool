@@ -2,6 +2,7 @@ package context;
 
 import analysis.JavaParserTestSetup;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.context.ContextConfiguration;
 import analysis.context.MethodInterfaceDeclaration;
 import analysis.context.MethodMultipleDeclarations;
 import analysis.context.MethodSingleDeclaration;
@@ -20,9 +21,15 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
     {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 
+
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
-        MethodSingleDeclaration msd = new MethodSingleDeclaration(cmf, "MethodTwo");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        cc.setCMFAnalyzer(cmf);
+        cc.setMethodName("A");
+
+        MethodSingleDeclaration msd = new MethodSingleDeclaration(cc);
 
         try {
             Assert.assertTrue(msd.detect());

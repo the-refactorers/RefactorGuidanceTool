@@ -2,6 +2,8 @@ package analysis.context;
 
 import ait.CodeContext;
 
+import java.util.Map;
+
 // A General interface which every context class should implement
 public interface IContextDetector {
 
@@ -16,7 +18,23 @@ public interface IContextDetector {
 
     // Analyse code to see if specific context is present in code
     // Built up relevant parameter set, which can be retrieved later
+
+    /**
+     * Detects if a specific context exists in code that is analyzed by detector
+     * @return Returns true if context exists
+     * @throws Exception
+     */
     boolean detect() throws Exception;
 
+    /**
+     * When a context exists a hashmap is filled with parametrized values in form <"$param","param-value">
+     * @return Hashmap with concrete values for parameters
+     */
+    Map<String, String> getParameterMap();
+
+    /**
+     * Type name of detector
+     * @return
+     */
     CodeContext.CodeContextEnum getType();
 }

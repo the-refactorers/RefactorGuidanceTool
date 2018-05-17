@@ -7,6 +7,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import java.util.List;
+import java.util.Map;
 
 public class MethodExtractSingleArgument implements IContextDetector {
     CompilationUnit _cu  = null;
@@ -45,6 +46,11 @@ public class MethodExtractSingleArgument implements IContextDetector {
         }
 
         return result;
+    }
+
+    @Override
+    public Map<String,String> getParameterMap() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
