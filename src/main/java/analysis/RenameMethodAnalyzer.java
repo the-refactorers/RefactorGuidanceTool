@@ -23,6 +23,7 @@ import ait.CodeContext;
 import ait.InstructionGenerator;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.context.ContextAnalyzer;
+import analysis.context.ContextConfiguration;
 import analysis.context.ContextDetectorSetBuilder;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
@@ -93,16 +94,29 @@ public class RenameMethodAnalyzer {
             generator.setParameterMap(parameterMap);
 
             // Analyze context and set-up code context of generator
+            ContextConfiguration cac = new ContextConfiguration();
+            cac.setMethodName(methodName);
+            cac.setCompilationUnit(cu);
+            cac.setClassName(className);
+
             ContextDetectorSetBuilder cb = new ContextDetectorSetBuilder();
+
+            cb.setConfiguration(cac);
             cb.setAIT(tree);
 
             ContextAnalyzer ca = new ContextAnalyzer();
-            ca.setContextDetectors(cb.getContextDetectors());
-            ca.run();
 
+            try {
+                ca.setContextDetectors(cb.getContextDetectors());
+                ca.run();
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
 
-            generator.setContext(AnalyzeContext(cmf, methodName));
-            //generator.setContext(ca.getDetectedContextSet());
+            //generator.setContext(AnalyzeContext(cmf, methodName));
+            generator.setContext(ca.getDetectedContextSet());
 
             instructionSteps = generator.generateInstruction();
         }

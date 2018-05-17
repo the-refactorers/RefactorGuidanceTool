@@ -3,10 +3,13 @@ package analysis.context;
 import ait.CodeContext;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * Determines which specific contexts are present in a piece of code in a generic way.
+ * by evaluating all given context detectors.
+ */
 public class ContextAnalyzer {
 
     List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();

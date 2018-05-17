@@ -17,15 +17,14 @@ import java.util.List;
  */
 public class ContextDetectorSetBuilder {
 
-    AdaptiveInstructionTree _ait = null;
+    private AdaptiveInstructionTree _ait = null;
 
-    ContextAnalyzerConfiguration _analyzerConfig = null;
+    private ContextConfiguration _analyzerConfig = null;
 
-    List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();
-    List<ICodeAnalyzer> _analyzers = new ArrayList<ICodeAnalyzer>();
+    private List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();
+    private List<ICodeAnalyzer> _analyzers = new ArrayList<ICodeAnalyzer>();
 
     public void SetAIT() {
-
     }
 
     public void SetAIT(AdaptiveInstructionTree ait)  {
@@ -36,8 +35,11 @@ public class ContextDetectorSetBuilder {
         this._ait = ait;
     }
 
-    public List<IContextDetector> getContextDetectors()
-    {
+    public List<IContextDetector> getContextDetectors() throws Exception {
+        if(_analyzerConfig == null) {
+            throw new Exception("No ContextConfiguration object was defined. call setContextAnalyzerConfiguration(...) first");
+        }
+
         EnumSet<CodeContext.CodeContextEnum> completeCodeContext = this._ait.allUniqueCodeContextInTree();
         String refactoringProcessName = this._ait.getRefactorMechanic();
 
@@ -65,18 +67,28 @@ public class ContextDetectorSetBuilder {
      * - to be used by the detectors to access necessary information
      * @return
      */
-    public ContextAnalyzerConfiguration getContextAnalyzerConfiguration()
+    public ContextConfiguration getContextAnalyzerConfiguration()
     {
         return _analyzerConfig;
     }
 
-    public void setContextAnalyzerConfiguration(ContextAnalyzerConfiguration config)
+    public void setContextConfiguration(ContextConfiguration config)
     {
         _analyzerConfig = config;
     }
 
-
     private void BuildRenameContextDetectors(EnumSet<CodeContext.CodeContextEnum> completeCodeContext)
+    {
+        // 1. setup the analyzers and add them to the generic config object.
+        _analyzerConfig.setCMFAnalyzer(new ClassMethodFinder());
+        _analyzerConfig.getCMFAnalyzer().initialize(_analyzerConfig.getCompilationUnit(), _analyzerConfig.getClassName());
+
+        // 2. Create the relevant detectors and provided them with the generic config object
+        UniversalBuildContextDetectors(completeCodeContext, _analyzerConfig);
+    }
+
+    private void UniversalBuildContextDetectors(EnumSet<CodeContext.CodeContextEnum> completeCodeContext,
+                                                ContextConfiguration analyzerConfig)
     {
             if (ContextDetectorForAllContextDecisions(completeCodeContext)) {
                 try {
@@ -136,5 +148,9 @@ public class ContextDetectorSetBuilder {
         }
 
         return allDefined;
+    }
+
+    public void setConfiguration(ContextConfiguration configuration) {
+        this._analyzerConfig = configuration;
     }
 }
