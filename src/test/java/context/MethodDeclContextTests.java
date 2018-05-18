@@ -157,9 +157,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
     }
 
     @Test
-    public void detectOverridenMethods()
+    public void detectOverrideMethods()
     {
-
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 
         ClassMethodFinder cmf = new ClassMethodFinder();
@@ -172,6 +171,33 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             Assert.assertTrue("No override detected", mod.detect());
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void parametersOverrideMethods()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        cc.setMethodName("MethodFour");
+        cc.setCMFAnalyzer(cmf);
+        MethodOverride mod = new MethodOverride(cc);
+
+        try {
+            mod.detect();
+
+            // 2 classes should be returned (B and E)
+            Assert.assertEquals(2, mod.getParameterMap().get("$class-list").size());
+            Assert.assertTrue("B not found", mod.getParameterMap().get("$class-list").contains("B"));
+            Assert.assertTrue("E not found", mod.getParameterMap().get("$class-list").contains("E"));
         }
         catch(Exception e)
         {

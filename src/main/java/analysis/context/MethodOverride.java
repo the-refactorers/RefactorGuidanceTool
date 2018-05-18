@@ -67,7 +67,7 @@ public class MethodOverride implements IContextDetector{
 
     @Override
     public Map<String,List<String>> getParameterMap() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return classesFound;
     }
 
     @Override
