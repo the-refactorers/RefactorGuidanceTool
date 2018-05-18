@@ -2,6 +2,7 @@ package analysis.context;
 
 import ait.CodeContext;
 
+import java.util.List;
 import java.util.Map;
 
 // A General interface which every context class should implement
@@ -30,7 +31,7 @@ public interface IContextDetector {
      * When a context exists a hashmap is filled with parametrized values in form <"$param","param-value">
      * @return Hashmap with concrete values for parameters
      */
-    Map<String, String> getParameterMap();
+    Map<String, List<String>> getParameterMap();
 
     /**
      * Type name of detector

@@ -57,7 +57,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         return _qname;
     }
 
-    private boolean isIgnoredPackage(ReferenceTypeDeclaration rtd)
+    public boolean isIgnoredPackage(ReferenceTypeDeclaration rtd)
     {
         boolean ignoredPackage = false;
 
@@ -82,8 +82,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
             allDefinedMethods.add(formattedOut);
             });
 
-        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
-        ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
+        ReferenceTypeDeclaration rtd = getReferenceTypeDeclarationOfClass();
 
          //simple test to find all declared methods in local class and all of its inherited classes
         List<ReferenceType> rt = rtd.getAllAncestors();
@@ -94,9 +93,9 @@ public class ClassMethodFinder implements ICodeAnalyzer {
             if (!isIgnoredPackage(rtd_ancestor)) {
                 rtd_ancestor.getDeclaredMethods().forEach(m ->
                 {
-                   // System.out.println(String.format("A:  %s", m.getQualifiedSignature()));
-                   // System.out.println(String.format("declared in:  %s", m.declaringType().getName()));
-                   // System.out.println(String.format("is interface? %s", m.declaringType().isInterface()?"yes": "no"));
+                   //System.out.println(String.format("A:  %s", m.getQualifiedSignature()));
+                   //System.out.println(String.format("declared in:  %s", m.declaringType().getName()));
+                   //System.out.println(String.format("is interface? %s", m.declaringType().isInterface()?"yes": "no"));
                 });
             }
         });
@@ -116,6 +115,10 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         return allDefinedMethods;
     }
 
+    /**
+     * Returns list of MethodDeclaration objects, describing properties of each method in specific class _qname
+     * @return
+     */
     private List<MethodDeclaration> getMethodDeclarations() {
 
         ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClassOrInterface(_cu, _qname);
@@ -183,8 +186,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         {
             // Get type declaration of given class, so we can resolve method declaration outside
             // the class definition
-            ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
-            ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
+            ReferenceTypeDeclaration rtd = getReferenceTypeDeclarationOfClass();
             List<ReferenceType> rt = rtd.asClass().getAllInterfaces();
 
             for(ReferenceType ancestor : rt)
@@ -209,6 +211,13 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         }
 
         return methodDeclaredInInterface;
+    }
+
+    public ReferenceTypeDeclaration getReferenceTypeDeclarationOfClass() {
+        ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
+        ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
+
+        return rtd;
     }
 
     public String methodDefinedInInterface()
@@ -241,8 +250,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         {
             // Get type declaration of given class, so we can resolve method declaration outside
             // the class definition
-            ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClass(_cu, _qname);
-            ReferenceTypeDeclaration rtd = JavaParserFacade.get(_symbolSolver).getTypeDeclaration(class4Analysis);
+            ReferenceTypeDeclaration rtd = getReferenceTypeDeclarationOfClass();
             List<ReferenceType> rt = rtd.asClass().getAllSuperClasses();
 
             for(ReferenceType ancestor : rt)
@@ -286,5 +294,9 @@ public class ClassMethodFinder implements ICodeAnalyzer {
     @Override
     public void start() {
         // No special processing has to be performed
+    }
+
+    public CompilationUnit getCompilationUnit() {
+        return _cu;
     }
 }

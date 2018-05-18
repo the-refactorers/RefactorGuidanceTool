@@ -19,6 +19,7 @@ package analysis.context;
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 
+import java.util.List;
 import java.util.Map;
 
 public class MethodOverload implements IContextDetector {
@@ -42,7 +43,7 @@ public class MethodOverload implements IContextDetector {
     }
 
     @Override
-    public Map<String,String> getParameterMap() {
+    public Map<String,List<String>> getParameterMap() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

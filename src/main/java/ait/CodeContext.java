@@ -16,6 +16,7 @@ public class CodeContext {
         MethodMultipleDeclarations,
         MethodOverload,
         MethodOverride,
+        MethodOverrideNoAnnotation,
         // Extract method
         intramethod_extract_none_local_dependencies,
         intramethod_extract_no_argument,

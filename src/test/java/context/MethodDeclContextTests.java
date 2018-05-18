@@ -2,10 +2,7 @@ package context;
 
 import analysis.JavaParserTestSetup;
 import analysis.MethodAnalyzer.ClassMethodFinder;
-import analysis.context.ContextConfiguration;
-import analysis.context.MethodInterfaceDeclaration;
-import analysis.context.MethodMultipleDeclarations;
-import analysis.context.MethodSingleDeclaration;
+import analysis.context.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -152,6 +149,29 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
             Assert.assertEquals(1, msd.getParameterMap().size());
             Assert.assertTrue(msd.getParameterMap().containsKey("$interface"));
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectOverridenMethods()
+    {
+
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        cc.setMethodName("MethodOne");
+        cc.setCMFAnalyzer(cmf);
+        MethodOverride mod = new MethodOverride(cc);
+
+        try {
+            Assert.assertTrue("No override detected", mod.detect());
         }
         catch(Exception e)
         {

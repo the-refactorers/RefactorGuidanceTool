@@ -12,7 +12,7 @@ public class ContextAnalyzer {
 
     List<IContextDetector> _contextDetectors = new ArrayList<>();
     EnumSet<CodeContext.CodeContextEnum> _detectedSet = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
-    Map<String, String> _parameterDefinitions = new HashMap<>();
+    Map<String, List<String>> _parameterDefinitions = new HashMap<>();
 
     public void setContextDetectors(List<IContextDetector> detectors) {
         this._contextDetectors = detectors;
@@ -37,11 +37,11 @@ public class ContextAnalyzer {
     }
 
     private void extendParameterDefinitions(IContextDetector detector) {
-        Map<String, String> parameters = detector.getParameterMap();
-        parameters.forEach((parameter, name) -> _parameterDefinitions.put(parameter, name));
+        Map<String, List<String>> parameters = detector.getParameterMap();
+        parameters.forEach((parameter, value) -> _parameterDefinitions.put(parameter, value));
     }
 
-    public Map<String,String> getParameterMap() {
+    public Map<String,List<String>> getParameterMap() {
         return _parameterDefinitions;
     }
 }

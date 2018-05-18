@@ -6,6 +6,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +42,9 @@ public class RenameTest {
         String methodName = cmf.getMethodNameForLocation(22);
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
-        Map<String, String> parameterMap = new HashMap<>();
-        parameterMap.put("$method", methodName);
-        parameterMap.put("$class", className);
+        Map<String, List<String>> parameterMap = new HashMap<>();
+        parameterMap.put("$method", Arrays.asList(methodName));
+        parameterMap.put("$class", Arrays.asList(className));
 
         AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
         InstructionGenerator generator = new InstructionGenerator(tree);
@@ -74,9 +75,9 @@ public class RenameTest {
         String methodName = cmf.getMethodNameForLocation(28);
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
-        Map<String, String> parameterMap = new HashMap<>();
-        parameterMap.put("$method", methodName);
-        parameterMap.put("$class", className);
+        Map<String, List<String>> parameterMap = new HashMap<>();
+        parameterMap.put("$method", Arrays.asList(methodName));
+        parameterMap.put("$class", Arrays.asList(className));
 
         AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
         InstructionGenerator generator = new InstructionGenerator(tree);
@@ -91,7 +92,7 @@ public class RenameTest {
         {
         if (cmf.contextDeclaredInInterface(methodName))
         {
-            parameterMap.put("$interface", cmf.methodDefinedInInterface());
+            parameterMap.put("$interface", Arrays.asList(cmf.methodDefinedInInterface()));
         }
         }
         catch(Exception e)

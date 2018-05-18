@@ -162,4 +162,24 @@ public class ClassMethodFinderTest {
             fail(e.getMessage());
         }
     }
+
+    @Test
+    public void GivenMethodDlistsalldeclarations()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        try
+        {
+            List<String> lst = cmf.getAllDefinedMethods();
+            for(String item : lst)
+                System.out.println(item);
+            Assert.assertFalse(true);
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
 }

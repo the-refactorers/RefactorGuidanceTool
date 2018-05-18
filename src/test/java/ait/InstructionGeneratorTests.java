@@ -3,10 +3,7 @@ package ait;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InstructionGeneratorTests {
 
@@ -44,9 +41,9 @@ public class InstructionGeneratorTests {
         InstructionGenerator generator = new InstructionGenerator(tree);
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
-        Map<String, String> parameterMap = new HashMap<>();
-        parameterMap.put("$method", "printHelloWorld");
-        parameterMap.put("$class", "Hello");
+        Map<String, List<String>> parameterMap = new HashMap<>();
+        parameterMap.put("$method", Arrays.asList("printHelloWorld"));
+        parameterMap.put("$class", Arrays.asList("Hello"));
 
         EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.of(CodeContext.CodeContextEnum.MethodOverride);
 
@@ -72,5 +69,6 @@ public class InstructionGeneratorTests {
         AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTreeWithRiskDescription();
         Assert.assertEquals(1, tree.getSetOfRiskContext().size());
         Assert.assertFalse(tree.allInstructions.get(0).decisions.get(1).getRiskDescription().isEmpty());
+        Assert.assertTrue(tree.allInstructions.get(0).decisions.get(0).getRiskDescription().isEmpty());
     }
 }

@@ -9,7 +9,7 @@ public class InstructionGenerator {
 
     AdaptiveInstructionTree aitTree = null;
     EnumSet<CodeContext.CodeContextEnum> contextSet = null;
-    private Map<String, String> parameterMap = null;
+    private Map<String, List<String>> parameterMap = null;
 
     public InstructionGenerator(AdaptiveInstructionTree tree)   {
         aitTree = tree;
@@ -24,7 +24,7 @@ public class InstructionGenerator {
      * Define the values of the parameters that are parsed in the template instructions
      * @param parameters Maps variables ($<var>) in instruction to a concrete value
      */
-    public void setParameterMap(Map<String, String> parameters) { this.parameterMap = parameters; }
+    public void setParameterMap(Map<String, List<String>> parameters) { this.parameterMap = parameters; }
 
 
     /**
@@ -91,9 +91,9 @@ public class InstructionGenerator {
 
                 String parsedInstructionLine = lineToParse;
 
-                for (Map.Entry<String, String> entry : parameterMap.entrySet()) {
+                for (Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
                     if (parsedInstructionLine.contains(entry.getKey())) {
-                        parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), entry.getValue());
+                        parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), String.join("", entry.getValue()));
                     }
                 }
 

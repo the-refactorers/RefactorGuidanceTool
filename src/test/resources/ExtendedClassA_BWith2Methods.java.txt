@@ -32,6 +32,7 @@ public class B implements C, D
 public class A extends B
 {
     // Overrides methodOne in class B, defined in interface C
+    @Override
     public void MethodOne()
     {
     }
