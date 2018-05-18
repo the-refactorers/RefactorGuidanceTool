@@ -127,7 +127,7 @@ public class RenameMethodAnalyzer {
             generator.setContext(ca.getDetectedContextSet());
 
             // GENERATE (=Filter nodes from tree + parsing of parametrized values in resulting nodes)
-            instructionSteps = generator.generateInstruction();
+            instructionSteps = generator.generateInstruction(true);
         }
         else
         {

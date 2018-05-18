@@ -28,13 +28,23 @@ public class InstructionGenerator {
 
 
     /**
+     * Default behavior when no parameters are provided
+     * @return
+     */
+    public List<String> generateInstruction()
+    {
+        boolean riskOverview = false;
+        return generateInstruction(riskOverview);
+    }
+
+    /**
      * Based on code context information encoded in contextSet
      * and the variable Name information in the parameter map
      * Instruction is generated based on the given instruction tree
      *
      * @return  List of strings describing refactor steps based, empty list when invalid no context set, parameter map or missing instruction tree
      */
-    public List<String> generateInstruction()
+    public List<String> generateInstruction(boolean riskOverview)
     {
         String errStr = "ERROR: unknown";
         boolean inputErr = false;
@@ -53,15 +63,21 @@ public class InstructionGenerator {
 
         if (!inputErr)
         {
+            if(riskOverview) {
+                generatedInstructionList.add("Identified RISKS in your code that need special attention when performing " + aitTree.getRefactorMechanic());
+                SummarizeRisks(generatedInstructionList, contextSet);
+            }
+
             // built up the instruction list, based on the code context set
             Instruction _instr = aitTree.getFirstInstruction();
+
             generatedInstructionList.add(_instr.getInstructionDescription());
 
             while (!_instr.endNode()) {
                 for (ContextDecision decision : _instr.getDecisions()) {
                     // Check if context for specific decision exists in code
                     if (contextSet.contains(decision.getContextType())) {
-                        _instr = aitTree.findInstruction(decision.nextInstructionID);
+                        _instr = aitTree.findInstruction(decision.getNextInstructionID());
                         generatedInstructionList.add(_instr.getInstructionDescription());
                     }
                 }
@@ -91,6 +107,17 @@ public class InstructionGenerator {
             ArrayList<String> resultString = new ArrayList<>();
             resultString.add(errStr);
             return resultString;
+        }
+    }
+
+    private void SummarizeRisks(List<String> generatedInstructionList,
+                                EnumSet<CodeContext.CodeContextEnum> contextSet) {
+
+        EnumSet<CodeContext.CodeContextEnum> riskContext = aitTree.getSetOfRiskContext();
+
+        if (riskContext.isEmpty())
+        {
+            generatedInstructionList.add("<none>\n");
         }
     }
 

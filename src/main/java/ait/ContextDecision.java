@@ -11,10 +11,10 @@ public class ContextDecision {
     @XmlTransient
     Instruction previousInstruction;
     @XmlTransient
-    Instruction nextInstruction;
-    CodeContext.CodeContextEnum contextType;
-    int         nextInstructionID = AdaptiveInstructionTree.FINAL_NODE;
-    private String _riskDescription;
+    private Instruction                     nextInstruction;
+    private CodeContext.CodeContextEnum     contextType;
+    private int                             nextInstructionID = AdaptiveInstructionTree.FINAL_NODE;
+    private String                          _riskDescription = new String("");
 
     public ContextDecision(CodeContext.CodeContextEnum decisionCtxt, int resultsIn)
     {
@@ -25,6 +25,10 @@ public class ContextDecision {
     public ContextDecision(CodeContext.CodeContextEnum decisionCtxt)
     {
         contextType = decisionCtxt;
+    }
+
+    public String getRiskDescription(){
+        return _riskDescription;
     }
 
     @XmlAttribute
@@ -38,9 +42,6 @@ public class ContextDecision {
     @XmlAttribute
     public void setRiskDescription(String s) {
         this._riskDescription = s;
-    }
-    public String getRiskDescription(){
-        return _riskDescription;
     }
 
     @XmlElement(name="NEXT_INSTRUCTION")

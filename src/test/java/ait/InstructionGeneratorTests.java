@@ -57,4 +57,20 @@ public class InstructionGeneratorTests {
         Assert.assertEquals("Parameter fill test: Dummy method printHelloWorld is located in dummy Hello", instructionSteps.get(0));
         Assert.assertEquals("Instruction 3: Overrides class Hello", instructionSteps.get(1));
     }
+
+    @Test
+    public void defaultNoRiskContextDescribed()
+    {
+        AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
+        Assert.assertEquals(0, tree.getSetOfRiskContext().size());
+        Assert.assertEquals("", tree.allInstructions.get(0).decisions.get(0).getRiskDescription());
+    }
+
+    @Test
+    public void treeWithRiskDescriptions()
+    {
+        AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTreeWithRiskDescription();
+        Assert.assertEquals(1, tree.getSetOfRiskContext().size());
+        Assert.assertFalse(tree.allInstructions.get(0).decisions.get(1).getRiskDescription().isEmpty());
+    }
 }

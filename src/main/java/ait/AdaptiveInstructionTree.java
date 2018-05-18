@@ -47,7 +47,7 @@ public class AdaptiveInstructionTree {
     {
         for(Instruction i : allInstructions) {
             for(ContextDecision cd : i.getDecisions()) {
-                if(!contextSet.contains(cd.contextType)) contextSet.add(cd.contextType);
+                if(!contextSet.contains(cd.getContextType())) contextSet.add(cd.getContextType());
             }
         }
 
@@ -110,5 +110,19 @@ public class AdaptiveInstructionTree {
         }
 
         return lookedupInstruction;
+    }
+
+    public EnumSet<CodeContext.CodeContextEnum> getSetOfRiskContext() {
+        EnumSet<CodeContext.CodeContextEnum> contextWithRisk = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
+
+        for(Instruction i : allInstructions) {
+            for(ContextDecision cd : i.getDecisions()) {
+                if(!cd.getRiskDescription().isEmpty())
+                {
+                    contextWithRisk.add(cd.getContextType());
+                }
+            }
+        }
+        return contextWithRisk;
     }
 }
