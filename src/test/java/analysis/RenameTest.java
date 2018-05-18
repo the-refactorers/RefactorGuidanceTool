@@ -90,10 +90,10 @@ public class RenameTest {
 
         try
         {
-        if (cmf.contextDeclaredInInterface(methodName))
-        {
-            parameterMap.put("$interface", Arrays.asList(cmf.methodDefinedInInterface()));
-        }
+            if (cmf.contextDeclaredInInterface(methodName))
+            {
+                parameterMap.put("$interface", Arrays.asList(cmf.methodDefinedInInterface()));
+            }
         }
         catch(Exception e)
         {

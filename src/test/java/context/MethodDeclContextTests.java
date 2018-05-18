@@ -166,7 +166,7 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         cmf.initialize(_cu, "A");
 
         ContextConfiguration cc = new ContextConfiguration();
-        cc.setMethodName("MethodOne");
+        cc.setMethodName("MethodFour");
         cc.setCMFAnalyzer(cmf);
         MethodOverride mod = new MethodOverride(cc);
 

@@ -17,6 +17,10 @@ public class MethodOverride implements IContextDetector{
     private ClassMethodFinder _analyzer = null;
     private String _methodName = null;
 
+    private Map<String,List<String>> classesFound = new HashMap<>();
+
+    private final String V_CLASS_LIST = "$class-list";
+
     public MethodOverride() {
     }
 
@@ -33,6 +37,8 @@ public class MethodOverride implements IContextDetector{
     @Override
     public boolean detect() throws Exception {
 
+        boolean ovveride_exists = false;
+
         // Determine all classes/interfaces that are superseeding the class being analyzed
         ReferenceTypeDeclaration rtd = _analyzer.getReferenceTypeDeclarationOfClass();
         List<ReferenceType> rt = rtd.getAllAncestors();
@@ -41,29 +47,22 @@ public class MethodOverride implements IContextDetector{
         {
             ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
 
-            if (!_analyzer.isIgnoredPackage(rtd_ancestor)) {
-                // when ancestor is not a interface declaration, check if method equals name of qualified method name
-                if(!ancestor.getTypeDeclaration().isInterface()) {
-
-                    rtd_ancestor.getDeclaredMethods().forEach(m ->
-                    {
-                            String nameOfMethod = m.getName();
-
-                            if (nameOfMethod.contentEquals(_methodName)) {
-                                System.out.println("Class " + m.declaringType().getQualifiedName() + " has method " + nameOfMethod);
-                                System.out.println("Full signature = " + m.getSignature());
-                            }
-
-
-                        //System.out.println(String.format("A:  %s", m.getQualifiedSignature()));
-                        //System.out.println(String.format("declared in:  %s", m.declaringType().getName()));
-                        //System.out.println(String.format("is interface? %s", m.declaringType().isInterface()?"yes": "no"));
-                    });
-                }
+            if (!_analyzer.isIgnoredPackage(rtd_ancestor) && !ancestor.getTypeDeclaration().isInterface()) {
+                // when ancestor is not a interface declaration, check if any method in super classes equals name of
+                // provided method name
+                rtd_ancestor.getDeclaredMethods().forEach(m ->
+                {
+                        if (m.getName().contentEquals(_methodName)) {
+                            //System.out.println("Class " + m.declaringType().getQualifiedName() + " has method " + nameOfMethod);
+                            //System.out.println("Full signature = " + m.getSignature());
+                            addClassNameToClassList(m.declaringType().getQualifiedName());
+                        }
+                });
             }
+
         });
 
-        return false;
+        return !classesFound.isEmpty();
     }
 
     @Override
@@ -74,5 +73,20 @@ public class MethodOverride implements IContextDetector{
     @Override
     public CodeContext.CodeContextEnum getType() {
         return CodeContext.CodeContextEnum.MethodOverride;
+    }
+
+    protected void addClassNameToClassList(String className) {
+        if(!classesFound.isEmpty())
+        {
+            List<String> actualList = new ArrayList<>(classesFound.get(V_CLASS_LIST));
+            if(!actualList.contains(className)) {
+                actualList.add(className);
+                classesFound.put(V_CLASS_LIST, actualList);
+            }
+        }
+        else
+        {
+            classesFound.put(V_CLASS_LIST, Arrays.asList(className));
+        }
     }
 }
