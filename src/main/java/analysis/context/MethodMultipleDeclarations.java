@@ -33,7 +33,7 @@ public class MethodMultipleDeclarations implements IContextDetector {
             {
 
                 _parameterMap.put("$method", Arrays.asList(this._methodName));
-                _parameterMap.put("$class", Arrays.asList(this._analyzer.getQualifiedMethodName()));
+                _parameterMap.put("$class", Arrays.asList(this._analyzer.getQualifiedClassName()));
                 result = true;
             }
         }

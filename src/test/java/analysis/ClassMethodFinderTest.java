@@ -175,7 +175,7 @@ public class ClassMethodFinderTest {
             List<String> lst = cmf.getAllDefinedMethods();
             for(String item : lst)
                 System.out.println(item);
-            Assert.assertFalse(true);
+            Assert.assertEquals(2, lst.size());
         }
         catch(Exception e)
         {

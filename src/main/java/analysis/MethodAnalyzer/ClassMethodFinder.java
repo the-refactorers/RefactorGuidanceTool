@@ -52,7 +52,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         );
     }
 
-    public String getQualifiedMethodName()
+    public String getQualifiedClassName()
     {
         return _qname;
     }
