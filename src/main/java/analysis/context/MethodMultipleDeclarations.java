@@ -2,24 +2,26 @@ package analysis.context;
 
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.MethodAnalyzer.MethodDescriber;
 
 import java.util.*;
 
 public class MethodMultipleDeclarations implements IContextDetector {
 
     private ClassMethodFinder _analyzer = null;
-    private String _methodName = null;
+    private MethodDescriber _method = null;
 
     private Map<String,List<String>> _parameterMap = new HashMap<>();
 
-    public MethodMultipleDeclarations(ClassMethodFinder cmf, String methodName) {
+    public MethodMultipleDeclarations(ClassMethodFinder cmf, MethodDescriber md)
+    {
         this._analyzer = cmf;
-        this._methodName = methodName;
+        this._method = md;
     }
 
     public MethodMultipleDeclarations(ContextConfiguration cc) {
         this._analyzer = cc.getCMFAnalyzer();
-        this._methodName = cc.getMethodName();
+        this._method   = cc.getMethodDescriber();
     }
 
     public boolean detect() throws Exception {
@@ -27,12 +29,11 @@ public class MethodMultipleDeclarations implements IContextDetector {
 
         if(_analyzer != null)
         {
-            if(_analyzer.isMethodDefinedInSuperClass(_methodName) ||
-                _analyzer.isMethodDeclaredFirstTimeInInterface(_methodName))
+            if(_analyzer.isMethodDefinedInSuperClass(_method) ||
+                _analyzer.isMethodDeclaredFirstTimeInInterface(_method))
 
             {
-
-                _parameterMap.put("$method", Arrays.asList(this._methodName));
+                _parameterMap.put("$method", Arrays.asList(this._method.fullTypeSignature()));
                 _parameterMap.put("$class", Arrays.asList(this._analyzer.getQualifiedClassName()));
                 result = true;
             }

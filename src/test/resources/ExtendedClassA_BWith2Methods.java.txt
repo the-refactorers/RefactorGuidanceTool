@@ -10,16 +10,6 @@ interface D
 
 public class E implements D
 {
-    public int MethodFour(boolean t)
-    {
-        return 0;
-    }
-
-    public int MethodFour()
-    {
-        return 2;
-    }
-
     public void MethodFour()
     {
 
@@ -39,6 +29,16 @@ public class B extends E implements C, D
     public void MethodFour()
     {
 
+    }
+
+    public int MethodFour(boolean t)
+    {
+        return 0;
+    }
+
+    public int MethodFour()
+    {
+        return 2;
     }
 
     // Unique method

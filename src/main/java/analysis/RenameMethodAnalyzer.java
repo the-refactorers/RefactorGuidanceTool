@@ -22,6 +22,7 @@ import ait.AdaptiveInstructionTree;
 import ait.CodeContext;
 import ait.InstructionGenerator;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.context.ContextAnalyzer;
 import analysis.context.ContextConfiguration;
 import analysis.context.ContextDetectorSetBuilder;
@@ -34,21 +35,21 @@ import java.util.*;
 public class RenameMethodAnalyzer {
 
     @Deprecated
-    public EnumSet<CodeContext.CodeContextEnum> AnalyzeContext(ClassMethodFinder cmf, String methodName)
+    public EnumSet<CodeContext.CodeContextEnum> AnalyzeContext(ClassMethodFinder cmf, MethodDescriber method)
     {
         EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
 
         try {
-            if (!cmf.contextMultipleDeclarations(methodName)) {
+            if (!cmf.contextMultipleDeclarations(method)) {
                 codeContext.add(CodeContext.CodeContextEnum.MethodSingleDeclaration);
             } else {
                 codeContext.add(CodeContext.CodeContextEnum.MethodMultipleDeclarations);
             }
 
-            if (cmf.contextDeclaredInInterface(methodName)) {
+            if (cmf.contextDeclaredInInterface(method)) {
                 codeContext.add(CodeContext.CodeContextEnum.MethodInterfaceDeclaration);
             }
-            if (cmf.contextDeclaredInSuperClass(methodName)) {
+            if (cmf.contextDeclaredInSuperClass(method)) {
                 codeContext.add(CodeContext.CodeContextEnum.MethodOverride);
             }
 
@@ -82,7 +83,7 @@ public class RenameMethodAnalyzer {
         cmf.initialize(cu, className);
 
         // Determine name based on location
-        String methodName = cmf.getMethodNameForLocation(lineNumber).getName();
+        String methodName = cmf.getMethodDescriberForLocation(lineNumber).getName();
 
         List<String> instructionSteps = new ArrayList<>();
 
@@ -95,7 +96,8 @@ public class RenameMethodAnalyzer {
             ContextConfiguration cac = new ContextConfiguration();
 
             // SPECIFY necessary refactoring properties
-            cac.setMethodName(methodName);
+            MethodDescriber md = new MethodDescriber("void",methodName,"()");
+            cac.setMethodDescriber(md);
             cac.setCompilationUnit(cu);
             cac.setClassName(className);
 

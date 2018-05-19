@@ -2,9 +2,13 @@ package context;
 
 import analysis.JavaParserTestSetup;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.context.*;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.fail;
 
@@ -22,7 +26,9 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         ContextConfiguration cc = new ContextConfiguration();
         cc.setCMFAnalyzer(cmf);
-        cc.setMethodName("A");
+
+        MethodDescriber method = new MethodDescriber("void","A","()");
+        cc.setMethodDescriber(method);
 
         MethodSingleDeclaration msd = new MethodSingleDeclaration(cc);
         msd.detect();
@@ -34,11 +40,12 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 
         ClassMethodFinder cmf = new ClassMethodFinder();
-        cmf.initialize(_cu, "A");
+        cmf.initialize(_cu, "B");
 
         ContextConfiguration cc = new ContextConfiguration();
         cc.setCMFAnalyzer(cmf);
-        cc.setMethodName("MethodTwo");
+        MethodDescriber method = new MethodDescriber("int","MethodFour","(boolean)");
+        cc.setMethodDescriber(method);
 
         MethodSingleDeclaration msd = new MethodSingleDeclaration(cc);
 
@@ -59,7 +66,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
-        MethodSingleDeclaration msd = new MethodSingleDeclaration(cmf, "MethodTwo");
+        MethodDescriber method = new MethodDescriber("void","MethodTwo","()");
+        MethodSingleDeclaration msd = new MethodSingleDeclaration(cmf, method);
 
         try {
             msd.detect();
@@ -81,7 +89,9 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
-        MethodMultipleDeclarations msd = new MethodMultipleDeclarations(cmf, "MethodOne");
+
+        MethodDescriber method = new MethodDescriber("void","MethodOne","()");
+        MethodMultipleDeclarations msd = new MethodMultipleDeclarations(cmf, method);
 
         try {
             Assert.assertTrue(msd.detect());
@@ -100,7 +110,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
-        MethodMultipleDeclarations mmd = new MethodMultipleDeclarations(cmf, "MethodOne");
+        MethodDescriber method = new MethodDescriber("void","MethodOne","()");
+        MethodMultipleDeclarations mmd = new MethodMultipleDeclarations(cmf, method);
 
         try {
             mmd.detect();
@@ -123,7 +134,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
-        MethodInterfaceDeclaration msd = new MethodInterfaceDeclaration(cmf, "MethodOne");
+        MethodDescriber method = new MethodDescriber("void","MethodOne","()");
+        MethodInterfaceDeclaration msd = new MethodInterfaceDeclaration(cmf, method);
 
         try {
             Assert.assertTrue(msd.detect());
@@ -142,7 +154,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "A");
-        MethodInterfaceDeclaration msd = new MethodInterfaceDeclaration(cmf, "MethodOne");
+        MethodDescriber method = new MethodDescriber("void","MethodOne","()");
+        MethodInterfaceDeclaration msd = new MethodInterfaceDeclaration(cmf, method);
 
         try {
             msd.detect();
@@ -165,7 +178,9 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         cmf.initialize(_cu, "A");
 
         ContextConfiguration cc = new ContextConfiguration();
-        cc.setMethodName("MethodFour");
+        MethodDescriber method = new MethodDescriber("void","MethodFour","()");
+        cc.setMethodDescriber(method);
+
         cc.setCMFAnalyzer(cmf);
         MethodOverride mod = new MethodOverride(cc);
 
@@ -187,17 +202,23 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         cmf.initialize(_cu, "A");
 
         ContextConfiguration cc = new ContextConfiguration();
-        cc.setMethodName("MethodFour");
+
+        MethodDescriber md = new MethodDescriber("void", "MethodFour","()");
+
+        cc.setMethodDescriber(md);
         cc.setCMFAnalyzer(cmf);
-        MethodOverride mod = new MethodOverride(cc);
+
+        MethodOverride overrideDetector = new MethodOverride(cc);
 
         try {
-            mod.detect();
+            overrideDetector.detect();
 
-            // 2 classes should be returned (B and E)
-            Assert.assertEquals(2, mod.getParameterMap().get("$class-list").size());
-            Assert.assertTrue("B not found", mod.getParameterMap().get("$class-list").contains("B"));
-            Assert.assertTrue("E not found", mod.getParameterMap().get("$class-list").contains("E"));
+            Map<String,List<String>> paramValues = overrideDetector.getParameterMap();
+
+            //  classes should be returned (B and E)
+            Assert.assertEquals(2, paramValues.get("$class-list").size());
+            Assert.assertTrue("B not found", paramValues.get("$class-list").contains("B"));
+            Assert.assertTrue("E not found", paramValues.get("$class-list").contains("E"));
         }
         catch(Exception e)
         {
@@ -214,7 +235,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         cmf.initialize(_cu, "B");
 
         ContextConfiguration cc = new ContextConfiguration();
-        cc.setMethodName("MethodFour");
+        MethodDescriber md = new MethodDescriber("void","MethodFour","()");
+        cc.setMethodDescriber(md);
         cc.setCMFAnalyzer(cmf);
         MethodOverrideNoAnnotation mod = new MethodOverrideNoAnnotation(cc);
 
@@ -233,16 +255,22 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 
         ClassMethodFinder cmf = new ClassMethodFinder();
-        cmf.initialize(_cu, "A");
+        cmf.initialize(_cu, "B");
 
-        // This method is overloaded; but no override
         ContextConfiguration cc = new ContextConfiguration();
-        cc.setMethodName("MethodEight");
+
+        MethodDescriber md = new MethodDescriber("int", "MethodFour","(boolean)");
+
+        cc.setMethodDescriber(md);
         cc.setCMFAnalyzer(cmf);
-        MethodOverride mod = new MethodOverride(cc);
+
+        MethodOverride overrideDetector = new MethodOverride(cc);
 
         try {
-            Assert.assertFalse(mod.detect());
+            overrideDetector.detect();
+
+            // Expect there is no #class-list key defined, while this is a unique method
+            Assert.assertFalse(overrideDetector.getParameterMap().containsKey("$class-list"));
         }
         catch(Exception e)
         {

@@ -32,6 +32,7 @@ import com.github.javaparser.symbolsolver.model.typesystem.ReferenceType;
 import helpers.Checker;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,7 +154,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
      * @param location  Line number in .java file
      * @return Method name when location is inside a method, otherwise empty string
      */
-    public MethodDescriber getMethodNameForLocation(int location) {
+    public MethodDescriber getMethodDescriberForLocation(int location) {
         MethodDescriber methodName = new MethodDescriber();
 
         if(isLocationInMethod(location)) {
@@ -178,13 +179,13 @@ public class ClassMethodFinder implements ICodeAnalyzer {
      * @param methodName Name of method to be resolved
      * @return true, method name has been declared initially in an interface definition
      */
-    public boolean isMethodDeclaredFirstTimeInInterface(String methodName) throws Exception {
+    public boolean isMethodDeclaredFirstTimeInInterface(MethodDescriber method) throws Exception {
 
         boolean methodDeclaredInInterface = false;
 
         // When specific method is visible in class, figure out if it has been defined
         // in an interface or not
-        if (hasMethodDefined(methodName))
+        if (hasMethodDefined(method))
         {
             // Get type declaration of given class, so we can resolve method declaration outside
             // the class definition
@@ -199,7 +200,11 @@ public class ClassMethodFinder implements ICodeAnalyzer {
                 // Check if provided methodName is present in the stream of declared methods
                 // of this interface
                 if (!isIgnoredPackage(rtd_ancestor) &&
-                        rtd_ancestor.getDeclaredMethods().stream().anyMatch(method -> method.getName().equals(methodName)))
+                        rtd_ancestor.getDeclaredMethods().stream().anyMatch(m ->
+                                m.getName().equals(method.getName()) &&
+                                m.getReturnType().describe().contentEquals(method.getType()) &&
+                                m.getSignature().contentEquals(method.getSignature())
+                        ))
                 {
                     _declaredInInterface = rtd_ancestor.getName();
                     methodDeclaredInInterface = true;
@@ -209,7 +214,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         }
         else
         {
-            throw new Exception("Method " + methodName + "does not exist");
+            throw new Exception("Method " + toFullMethod(method) + "does not exist");
         }
 
         return methodDeclaredInInterface;
@@ -232,23 +237,25 @@ public class ClassMethodFinder implements ICodeAnalyzer {
      * @param methodName Name of method to be looked up
      * @return true, method name exists in class definition
      */
-    public boolean hasMethodDefined(String methodName) {
+    public boolean hasMethodDefined(MethodDescriber method) {
         boolean methodFound = false;
 
         for (MethodDeclaration methodDecl : getMethodDeclarations())
         {
-            methodFound = methodDecl.getName().toString().equals(methodName) || methodFound;
+            //methodFound = methodDecl.getName().toString().equals(method) || methodFound;
+            System.out.print(methodDecl.getSignature().toString());
+            methodFound = fullSignatureMatch(method, methodDecl) || methodFound;
         }
 
         return methodFound;
     }
 
-    public boolean isMethodDefinedInSuperClass(String methodName) throws Exception {
+    public boolean isMethodDefinedInSuperClass(MethodDescriber method) throws Exception {
         boolean methodDeclaredInSuperClass = false;
 
         // When specific method is visible in class, figure out if it has been defined
         // in an interface or not
-        if (hasMethodDefined(methodName))
+        if (hasMethodDefined(method))
         {
             // Get type declaration of given class, so we can resolve method declaration outside
             // the class definition
@@ -263,7 +270,11 @@ public class ClassMethodFinder implements ICodeAnalyzer {
                 // Check if provided methodName is present in the stream of declared methods
                 // of this interface
                 if (!isIgnoredPackage(rtd_ancestor) &&
-                        rtd_ancestor.getDeclaredMethods().stream().anyMatch(method -> method.getName().equals(methodName)))
+                    rtd_ancestor.getDeclaredMethods().stream().anyMatch(m ->
+                            m.getName().equals(method.getName()) &&
+                            m.getReturnType().describe().contentEquals(method.getType()) &&
+                            m.getSignature().contentEquals(method.getSignature())
+                    ))
                 {
                     methodDeclaredInSuperClass = true;
                     break;
@@ -272,25 +283,46 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         }
         else
         {
-            throw new Exception("Method " + methodName + "does not exist");
+            throw new Exception("Method " + toFullMethod(method) + " does not exist");
         }
 
         return methodDeclaredInSuperClass;
     }
 
-    //@todo: has been moved to context
-    public boolean contextMultipleDeclarations(String methodName) throws Exception {
-        return isMethodDefinedInSuperClass(methodName) || isMethodDeclaredFirstTimeInInterface(methodName);
+    private String toFullMethod(MethodDescriber method)
+    {
+        return method.getType() + " " + method.getSignature();
     }
 
     //@todo: has been moved to context
-    public boolean contextDeclaredInInterface(String methodName) throws Exception {
-        return isMethodDeclaredFirstTimeInInterface(methodName);
+    public boolean contextMultipleDeclarations(MethodDescriber method) throws Exception {
+        return isMethodDefinedInSuperClass(method) || isMethodDeclaredFirstTimeInInterface(method);
     }
 
     //@todo: has been moved to context
-    public boolean contextDeclaredInSuperClass(String methodName) throws Exception {
-        return isMethodDefinedInSuperClass(methodName);
+    public boolean contextDeclaredInInterface(MethodDescriber method) throws Exception {
+        return isMethodDeclaredFirstTimeInInterface(method);
+    }
+
+    //@todo: has been moved to context
+    public boolean contextDeclaredInSuperClass(MethodDescriber method) throws Exception {
+        return isMethodDefinedInSuperClass(method);
+    }
+
+    private boolean fullSignatureMatch(MethodDescriber given, MethodDeclaration match) {
+
+        if(!given.getType().contentEquals(match.getType().asString()))
+            System.out.println("Return type mismatch");
+
+        if(!given.getName().contentEquals(match.getName().asString()))
+            System.out.println("Method name mismatch");
+
+        if(!given.getSignature().contentEquals(match.getSignature().asString()))
+            System.out.println("Param signature mismatch");
+
+        return  given.getType().contentEquals(match.getType().asString()) &&
+                given.getName().contentEquals(match.getName().asString()) &&
+                given.getSignature().contentEquals(match.getSignature().asString());
     }
 
     @Override

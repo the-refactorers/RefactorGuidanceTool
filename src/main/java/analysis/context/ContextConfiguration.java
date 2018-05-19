@@ -1,17 +1,21 @@
 package analysis.context;
 
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.CompilationUnit;
 
 public class ContextConfiguration {
 
     String _methodName;
+    MethodDescriber _method;
+
     CompilationUnit _cu;
     String _className;
 
     ClassMethodFinder _cmf;
     MethodDataFlowAnalyzer _mdfa;
+
 
     public void setCompilationUnit(CompilationUnit cu) {
         _cu = cu;
@@ -27,10 +31,6 @@ public class ContextConfiguration {
 
     public String getClassName() {
         return _className;
-    }
-
-    public void setMethodName(String methodName) {
-        this._methodName = methodName;
     }
 
     public String getMethodName()
@@ -52,5 +52,14 @@ public class ContextConfiguration {
     }
     public MethodDataFlowAnalyzer getMethodDataFlowAnalyzer() {
         return this._mdfa;
+    }
+
+    public void setMethodDescriber(MethodDescriber md) {
+        this._method = md;
+        this._methodName = md.getName();
+    }
+
+    public MethodDescriber getMethodDescriber() {
+        return this._method;
     }
 }

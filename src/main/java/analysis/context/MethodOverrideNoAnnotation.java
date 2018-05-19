@@ -29,7 +29,7 @@ public class MethodOverrideNoAnnotation extends MethodOverride {
             List<MethodDeclaration> md = class4Analysis.getMethods();
             for(MethodDeclaration item : md)
             {
-                if (item.getName().toString().contentEquals(_methodName))
+                if (item.getName().toString().contentEquals(_method.getName()))
                 {
                     NodeList<AnnotationExpr> annotations = item.getAnnotations();
                     if (!annotations.isEmpty())

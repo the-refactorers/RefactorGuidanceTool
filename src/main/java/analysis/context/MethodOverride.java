@@ -2,6 +2,7 @@ package analysis.context;
 
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.MethodAnalyzer.MethodDescriber;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -24,7 +25,7 @@ public class MethodOverride implements IContextDetector{
 
     private String _className = null;
     protected ClassMethodFinder _analyzer = null;
-    protected String _methodName = null;
+    protected MethodDescriber _method = null;
 
     protected Map<String,List<String>> classesFound = new HashMap<>();
     private final String V_CLASS_LIST = "$class-list";
@@ -32,14 +33,14 @@ public class MethodOverride implements IContextDetector{
     public MethodOverride() {
     }
 
-    public MethodOverride(ClassMethodFinder cmf, String methodName) {
+    public MethodOverride(ClassMethodFinder cmf, MethodDescriber md) {
         this._analyzer = cmf;
-        this._methodName = methodName;
+        this._method = md;
     }
 
     public MethodOverride(ContextConfiguration cc) {
         this._analyzer = cc.getCMFAnalyzer();
-        this._methodName = cc.getMethodName();
+        this._method = cc.getMethodDescriber();
         this._className = cc.getClassName();
     }
 
@@ -61,8 +62,8 @@ public class MethodOverride implements IContextDetector{
                 // provided method name
                 rtd_ancestor.getDeclaredMethods().forEach(m ->
                 {
-
-                        if (m.getName().contentEquals(_methodName)) {
+                        if(fullSignatureMatch(m)) {
+                        //if (m.getName().contentEquals(_method.getName())) {
                             //System.out.println("Class " + m.declaringType().getQualifiedName() + " has method " + nameOfMethod);
                             System.out.println("Full signature = " + m.getSignature());
                             System.out.println("Returns " + m.getReturnType().describe());
@@ -76,6 +77,12 @@ public class MethodOverride implements IContextDetector{
         });
 
         return !classesFound.isEmpty();
+    }
+
+    private boolean fullSignatureMatch(MethodDeclaration m) {
+        return  m.getReturnType().describe().contentEquals(_method.getType()) &&
+                m.getName().contentEquals(_method.getName()) &&
+                m.getSignature().contentEquals(_method.getSignature());
     }
 
     @Override

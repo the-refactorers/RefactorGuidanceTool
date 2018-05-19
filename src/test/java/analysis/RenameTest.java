@@ -2,6 +2,7 @@ package analysis;
 
 import ait.*;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.MethodAnalyzer.MethodDescriber;
 import com.github.javaparser.ast.CompilationUnit;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,11 +40,11 @@ public class RenameTest {
         cmf.initialize(_cu, className);
 
         // Determine name based on location context
-        String methodName = cmf.getMethodNameForLocation(22).getName();
+        MethodDescriber method = cmf.getMethodDescriberForLocation(22);
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
         Map<String, List<String>> parameterMap = new HashMap<>();
-        parameterMap.put("$method", Arrays.asList(methodName));
+        parameterMap.put("$method", Arrays.asList(method.fullTypeSignature()));
         parameterMap.put("$class", Arrays.asList(className));
 
         AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
@@ -53,7 +54,7 @@ public class RenameTest {
         generator.setParameterMap(parameterMap);
 
         // Analyze context and set-up code context of generator
-        generator.setContext(_analyzer.AnalyzeContext(cmf, methodName));
+        generator.setContext(_analyzer.AnalyzeContext(cmf, method));
 
         List<String> instructionSteps = generator.generateInstruction();
 
@@ -72,11 +73,11 @@ public class RenameTest {
         cmf.initialize(_cu, className);
 
         // Determine name based on location context
-        String methodName = cmf.getMethodNameForLocation(28).getName();
+        MethodDescriber method = cmf.getMethodDescriberForLocation(28);
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
         Map<String, List<String>> parameterMap = new HashMap<>();
-        parameterMap.put("$method", Arrays.asList(methodName));
+        parameterMap.put("$method", Arrays.asList(method.fullTypeSignature()));
         parameterMap.put("$class", Arrays.asList(className));
 
         AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
@@ -86,11 +87,11 @@ public class RenameTest {
         generator.setParameterMap(parameterMap);
 
         // Analyze context and set-up code context of generator
-        generator.setContext(_analyzer.AnalyzeContext(cmf, methodName));
+        generator.setContext(_analyzer.AnalyzeContext(cmf, method));
 
         try
         {
-            if (cmf.contextDeclaredInInterface(methodName))
+            if (cmf.contextDeclaredInInterface(method))
             {
                 parameterMap.put("$interface", Arrays.asList(cmf.methodDefinedInInterface()));
             }

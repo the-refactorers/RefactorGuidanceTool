@@ -1,6 +1,7 @@
 package analysis;
 
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.MethodAnalyzer.MethodDescriber;
 import com.github.javaparser.ast.CompilationUnit;
 import org.junit.Assert;
 import org.junit.Before;
@@ -62,8 +63,8 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "TwoMethodClass");
 
-        Assert.assertEquals("MethodOne", cmf.getMethodNameForLocation(6).getName());
-        Assert.assertEquals("MethodTwo", cmf.getMethodNameForLocation(12).getName());
+        Assert.assertEquals("MethodOne", cmf.getMethodDescriberForLocation(6).getName());
+        Assert.assertEquals("MethodTwo", cmf.getMethodDescriberForLocation(12).getName());
     }
 
     @Test
@@ -73,7 +74,7 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "TwoMethodClass");
 
-        Assert.assertEquals("", cmf.getMethodNameForLocation(14).getName());
+        Assert.assertEquals("", cmf.getMethodDescriberForLocation(14).getName());
     }
 
     @Test
@@ -83,7 +84,8 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "TwoMethodClass");
 
-        Assert.assertEquals(true, cmf.hasMethodDefined("MethodTwo"));
+        MethodDescriber method = new MethodDescriber("void","MethodTwo","()");
+        Assert.assertEquals(true, cmf.hasMethodDefined(method));
     }
 
     @Test
@@ -93,7 +95,8 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "D");
 
-        Assert.assertEquals(true, cmf.hasMethodDefined("MethodFour"));
+        MethodDescriber method = new MethodDescriber("void","MethodFour","()");
+        Assert.assertEquals(true, cmf.hasMethodDefined(method));
     }
 
     @Test
@@ -104,7 +107,8 @@ public class ClassMethodFinderTest {
         cmf.initialize(_cu, "A");
 
         try {
-            Assert.assertTrue(cmf.isMethodDeclaredFirstTimeInInterface("MethodOne"));
+            MethodDescriber method = new MethodDescriber("void","MethodOne","()");
+            Assert.assertTrue(cmf.isMethodDeclaredFirstTimeInInterface(method));
         }
         catch(Exception e)
         {
@@ -121,7 +125,8 @@ public class ClassMethodFinderTest {
 
         try
         {
-            Assert.assertTrue(cmf.isMethodDefinedInSuperClass("MethodOne"));
+            MethodDescriber method = new MethodDescriber("void","MethodOne","()");
+            Assert.assertTrue(cmf.isMethodDefinedInSuperClass(method));
         }
         catch(Exception e)
         {
@@ -137,7 +142,8 @@ public class ClassMethodFinderTest {
         cmf.initialize(_cu, "A");
 
         try {
-            Assert.assertFalse(cmf.isMethodDeclaredFirstTimeInInterface("MethodTwo"));
+            MethodDescriber method = new MethodDescriber("void","MethodTwo","()");
+            Assert.assertFalse(cmf.isMethodDeclaredFirstTimeInInterface(method));
         }
         catch(Exception e)
         {
@@ -155,7 +161,8 @@ public class ClassMethodFinderTest {
 
         try
         {
-            Assert.assertFalse(cmf.isMethodDefinedInSuperClass("MethodTwo"));
+            MethodDescriber method = new MethodDescriber("void","MethodTwo","()");
+            Assert.assertFalse(cmf.isMethodDefinedInSuperClass(method));
         }
         catch(Exception e)
         {
