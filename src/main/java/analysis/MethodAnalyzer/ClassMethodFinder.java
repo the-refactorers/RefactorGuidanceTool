@@ -153,8 +153,8 @@ public class ClassMethodFinder implements ICodeAnalyzer {
      * @param location  Line number in .java file
      * @return Method name when location is inside a method, otherwise empty string
      */
-    public String getMethodNameForLocation(int location) {
-        String methodName = "";
+    public MethodDescriber getMethodNameForLocation(int location) {
+        MethodDescriber methodName = new MethodDescriber();
 
         if(isLocationInMethod(location)) {
             // Find in the AST the class declaration of the provided class in the Ctor
@@ -162,7 +162,9 @@ public class ClassMethodFinder implements ICodeAnalyzer {
 
             for (MethodDeclaration method : lmd) {
                 if (Checker.inRangeInclusive(method.getRange().get().begin.line, method.getRange().get().end.line, location)) {
-                    methodName = method.getNameAsString();
+                    methodName.setName(method.getNameAsString());
+                    methodName.setSignature(method.getSignature().asString());
+                    methodName.setReturnType(method.getType().asString());
                     break;
                 }
             }

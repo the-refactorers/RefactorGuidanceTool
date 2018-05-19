@@ -62,8 +62,8 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "TwoMethodClass");
 
-        Assert.assertEquals("MethodOne", cmf.getMethodNameForLocation(6));
-        Assert.assertEquals("MethodTwo", cmf.getMethodNameForLocation(12));
+        Assert.assertEquals("MethodOne", cmf.getMethodNameForLocation(6).getName());
+        Assert.assertEquals("MethodTwo", cmf.getMethodNameForLocation(12).getName());
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ClassMethodFinderTest {
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(_cu, "TwoMethodClass");
 
-        Assert.assertEquals("", cmf.getMethodNameForLocation(14));
+        Assert.assertEquals("", cmf.getMethodNameForLocation(14).getName());
     }
 
     @Test
@@ -175,7 +175,7 @@ public class ClassMethodFinderTest {
             List<String> lst = cmf.getAllDefinedMethods();
             for(String item : lst)
                 System.out.println(item);
-            Assert.assertEquals(2, lst.size());
+            Assert.assertEquals(3, lst.size());
         }
         catch(Exception e)
         {

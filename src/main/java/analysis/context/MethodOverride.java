@@ -16,6 +16,10 @@ import javassist.compiler.ast.MethodDecl;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
+/**
+ * Determines if given method is an override of any parent class.
+ * It is not taken into account an interface. This is done bu MethodInterfaceDeclaration
+ */
 public class MethodOverride implements IContextDetector{
 
     private String _className = null;
@@ -57,31 +61,14 @@ public class MethodOverride implements IContextDetector{
                 // provided method name
                 rtd_ancestor.getDeclaredMethods().forEach(m ->
                 {
+
                         if (m.getName().contentEquals(_methodName)) {
                             //System.out.println("Class " + m.declaringType().getQualifiedName() + " has method " + nameOfMethod);
-                            //System.out.println("Full signature = " + m.getSignature());
+                            System.out.println("Full signature = " + m.getSignature());
+                            System.out.println("Returns " + m.getReturnType().describe());
+                            System.out.println("Returns " + m.getQualifiedSignature());
+
                             addClassNameToClassList(m.declaringType().getQualifiedName());
-
-                            ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClassOrInterface(
-                                    _analyzer.getCompilationUnit(),
-                                    _analyzer.getQualifiedClassName());
-
-                            List<com.github.javaparser.ast.body.MethodDeclaration> md = class4Analysis.getMethods();
-                            for(com.github.javaparser.ast.body.MethodDeclaration item : md)
-                            {
-                                if (item.getName().toString().contentEquals(_methodName))
-                                {
-                                    NodeList<AnnotationExpr> annotations = item.getAnnotations();
-                                    if (!annotations.isEmpty())
-                                    {
-                                        for(AnnotationExpr ea : annotations)
-                                        {
-                                            System.out.println(ea.getName().asString());
-                                        }
-                                    }
-                                }
-                            }
-                            NodeList<AnnotationExpr> ae =  md.get(0).getAnnotations();
                         }
                 });
             }

@@ -82,7 +82,7 @@ public class RenameMethodAnalyzer {
         cmf.initialize(cu, className);
 
         // Determine name based on location
-        String methodName = cmf.getMethodNameForLocation(lineNumber);
+        String methodName = cmf.getMethodNameForLocation(lineNumber).getName();
 
         List<String> instructionSteps = new ArrayList<>();
 

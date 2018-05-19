@@ -1,41 +1,52 @@
 package analysis.context;
 
 import ait.CodeContext;
-import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
-import com.github.javaparser.symbolsolver.model.typesystem.ReferenceType;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.symbolsolver.javaparser.Navigator;
 
 import java.util.List;
 
 public class MethodOverrideNoAnnotation extends MethodOverride {
 
+    public MethodOverrideNoAnnotation(ContextConfiguration cc) {
+        super(cc);
+    }
+
     @Override
     public boolean detect() throws Exception {
 
-        boolean ovveride_exists = false;
+        boolean no_annotation = false;
 
-        // Determine all classes/interfaces that are superseeding the class being analyzed
-        ReferenceTypeDeclaration rtd = _analyzer.getReferenceTypeDeclarationOfClass();
-        List<ReferenceType> rt = rtd.getAllAncestors();
-
-        rt.forEach( ancestor ->
+        if(super.detect())
         {
-            ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
+            ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClassOrInterface(
+                    _analyzer.getCompilationUnit(),
+                    _analyzer.getQualifiedClassName());
 
-            if (!_analyzer.isIgnoredPackage(rtd_ancestor) && !ancestor.getTypeDeclaration().isInterface()) {
-                // when ancestor is not a interface declaration, check if any method in super classes equals name of
-                // provided method name
-                rtd_ancestor.getDeclaredMethods().forEach(m ->
+            List<MethodDeclaration> md = class4Analysis.getMethods();
+            for(MethodDeclaration item : md)
+            {
+                if (item.getName().toString().contentEquals(_methodName))
                 {
-                    if (m.getName().contentEquals(_methodName)) {
-                        m.declaringType().getClass().getAnnotations();
-                        addClassNameToClassList(m.declaringType().getQualifiedName());
+                    NodeList<AnnotationExpr> annotations = item.getAnnotations();
+                    if (!annotations.isEmpty())
+                    {
+                        for(AnnotationExpr ea : annotations)
+                        {
+                            System.out.println(ea.getName().asString());
+                        }
                     }
-                });
+                }
             }
 
-        });
+            NodeList<AnnotationExpr> ae =  md.get(0).getAnnotations();
+            if(ae.isEmpty()) no_annotation = true;
+        }
 
-        return !classesFound.isEmpty();
+        return no_annotation;
     }
 
     @Override

@@ -39,7 +39,7 @@ public class RenameTest {
         cmf.initialize(_cu, className);
 
         // Determine name based on location context
-        String methodName = cmf.getMethodNameForLocation(22);
+        String methodName = cmf.getMethodNameForLocation(22).getName();
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
         Map<String, List<String>> parameterMap = new HashMap<>();
@@ -72,7 +72,7 @@ public class RenameTest {
         cmf.initialize(_cu, className);
 
         // Determine name based on location context
-        String methodName = cmf.getMethodNameForLocation(28);
+        String methodName = cmf.getMethodNameForLocation(28).getName();
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
         Map<String, List<String>> parameterMap = new HashMap<>();

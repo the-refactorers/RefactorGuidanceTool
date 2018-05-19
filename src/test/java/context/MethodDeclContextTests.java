@@ -205,4 +205,49 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         }
     }
 
+    @Test
+    public void detectNoOverridesOnMethods()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "B");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        cc.setMethodName("MethodFour");
+        cc.setCMFAnalyzer(cmf);
+        MethodOverrideNoAnnotation mod = new MethodOverrideNoAnnotation(cc);
+
+        try {
+            Assert.assertTrue(mod.detect());
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectNoOverrideOnMethodsWithDifferentSignature()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        // This method is overloaded; but no override
+        ContextConfiguration cc = new ContextConfiguration();
+        cc.setMethodName("MethodEight");
+        cc.setCMFAnalyzer(cmf);
+        MethodOverride mod = new MethodOverride(cc);
+
+        try {
+            Assert.assertFalse(mod.detect());
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
 }
