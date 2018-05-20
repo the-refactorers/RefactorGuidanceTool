@@ -83,12 +83,12 @@ public class RenameMethodAnalyzer {
         cmf.initialize(cu, className);
 
         // Determine name based on location
-        String methodName = cmf.getMethodDescriberForLocation(lineNumber).getName();
+        MethodDescriber selectedMethod = cmf.getMethodDescriberForLocation(lineNumber);
 
         List<String> instructionSteps = new ArrayList<>();
 
         // When we have a method name, start generating instructions for renaming this method
-        if (!methodName.isEmpty()) {
+        if (!selectedMethod.getName().isEmpty()) {
             // SELECT refactoring
             AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
 
@@ -96,8 +96,7 @@ public class RenameMethodAnalyzer {
             ContextConfiguration cac = new ContextConfiguration();
 
             // SPECIFY necessary refactoring properties
-            MethodDescriber md = new MethodDescriber("void",methodName,"()");
-            cac.setMethodDescriber(md);
+            cac.setMethodDescriber(selectedMethod);
             cac.setCompilationUnit(cu);
             cac.setClassName(className);
 
