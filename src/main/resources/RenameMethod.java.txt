@@ -12,6 +12,11 @@ class Base {
     {
         return;
     }
+
+    public void MethodOverload()
+    {
+
+    }
 }
 
 class MyMethod extends Base implements SimpleInterface
@@ -31,5 +36,10 @@ class MyMethod extends Base implements SimpleInterface
     public void MethodOverrideInInterface()
     {
         return;
+    }
+
+    public int MethodOverload()
+    {
+        return 0;
     }
 }

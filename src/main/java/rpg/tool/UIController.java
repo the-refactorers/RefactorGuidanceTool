@@ -12,7 +12,7 @@ public class UIController {
     private JTextArea hereTheGeneratedTextTextPane;
     private JButton generateInstructionsButton;
     private JRadioButton renameRadioButton;
-    private JRadioButton largeClassRadioButton;
+    private JRadioButton extractMethodRadioButton;
     private JTextField inputJavaFile;
     private JButton browseJavaFileButton;
     private JButton projectDirButton;
@@ -28,8 +28,22 @@ public class UIController {
         generateInstructionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 RenameMethodAnalyzer analyzer = new RenameMethodAnalyzer();
-                List<String> instructions = analyzer.generateInstructions(inputJavaFile.getText(), Integer.parseInt(inputCodeLineSmell.getText()));
+                List<String> instructions = new ArrayList<>();
+
+                if(renameRadioButton.isSelected())
+                {
+                    // Selection of method to rename is based on provided line number
+                    instructions = analyzer.generateInstructions(
+                            "Rename",
+                            inputJavaFile.getText(),
+                            "MyMethod",
+                            Integer.parseInt(inputCodeLineSmell.getText()));                }
+                else
+                {
+                    instructions.add("Extract method not available yet");
+                }
 
                 hereTheGeneratedTextTextPane.setText("");
                 for(String s : instructions)

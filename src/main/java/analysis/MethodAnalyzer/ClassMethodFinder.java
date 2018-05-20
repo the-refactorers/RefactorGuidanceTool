@@ -111,7 +111,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
             });
         }
 
-         System.out.println();
+        // System.out.println();
 
         return allDefinedMethods;
     }
@@ -311,18 +311,10 @@ public class ClassMethodFinder implements ICodeAnalyzer {
 
     private boolean fullSignatureMatch(MethodDescriber given, MethodDeclaration match) {
 
-        if(!given.getType().contentEquals(match.getType().asString()))
-            System.out.println("Return type mismatch");
-
-        if(!given.getName().contentEquals(match.getName().asString()))
-            System.out.println("Method name mismatch");
-
-        if(!given.getSignature().contentEquals(match.getSignature().asString()))
-            System.out.println("Param signature mismatch");
-
         return  given.getType().contentEquals(match.getType().asString()) &&
                 given.getName().contentEquals(match.getName().asString()) &&
                 given.getSignature().contentEquals(match.getSignature().asString());
+
     }
 
     @Override

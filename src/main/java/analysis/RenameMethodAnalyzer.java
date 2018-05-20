@@ -17,10 +17,7 @@
 
 package analysis;
 
-import ait.AIT_RenameGeneration;
-import ait.AdaptiveInstructionTree;
-import ait.CodeContext;
-import ait.InstructionGenerator;
+import ait.*;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.context.ContextAnalyzer;
@@ -64,7 +61,7 @@ public class RenameMethodAnalyzer {
     }
 
 
-    public List<String> generateInstructions(String testResource, int lineNumber) {
+    public List<String> generateInstructions(String refactorAction, String testResource, String className, int lineNumber) {
 
         // load java class from the resource set
         InputStream parseStream = this.getClass().getClassLoader().getResourceAsStream(testResource);
@@ -78,7 +75,6 @@ public class RenameMethodAnalyzer {
 
         // set up analyzer to make it possible to retrieve method-number based on line number
         // @todo: This should be taken out of analyzer class
-        String className = "MyMethod";
         ClassMethodFinder cmf = new ClassMethodFinder();
         cmf.initialize(cu, className);
 
@@ -90,7 +86,11 @@ public class RenameMethodAnalyzer {
         // When we have a method name, start generating instructions for renaming this method
         if (!selectedMethod.getName().isEmpty()) {
             // SELECT refactoring
-            AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
+            AdaptiveInstructionTree tree = null;
+            if(refactorAction.contentEquals("Rename"))
+                 tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
+            else if(refactorAction.contentEquals("Extract_Method"))
+                tree = new AIT_ExtractMethodGeneration().getAdaptiveInstructionTree();
 
             // Analyze context and set-up code context of generator
             ContextConfiguration cac = new ContextConfiguration();
