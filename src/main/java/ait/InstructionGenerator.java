@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InstructionGenerator {
 
@@ -92,7 +94,7 @@ public class InstructionGenerator {
                 String parsedInstructionLine = lineToParse;
 
                 for (Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
-                    if (parsedInstructionLine.contains(entry.getKey())) {
+                    if (exactMatchInString(parsedInstructionLine, entry.getKey())) {
                         parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), String.join("", entry.getValue()));
                     }
                 }
@@ -109,6 +111,14 @@ public class InstructionGenerator {
             return resultString;
         }
     }
+
+    private static boolean exactMatchInString(String source, String subItem){
+        String pattern = "\\b" + subItem + "\\b";
+        Pattern p=Pattern.compile(pattern);
+        Matcher m=p.matcher(source);
+        return m.find();
+    }
+
 
     private void SummarizeRisks(List<String> generatedInstructionList,
                                 EnumSet<CodeContext.CodeContextEnum> contextSet) {

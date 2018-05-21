@@ -15,8 +15,8 @@ public class AIT_RenameGeneration {
         Instruction i4 = new Instruction(4, "Build project. Resolve any unresolved references to $method indicated by compiler.");
         Instruction i5 = new Instruction(5, "Method $method is not declared for the first time in class $class");
         Instruction i6 = new Instruction(6, "A declaration exists in (public) interface $interface.\nIt is a good practice to \n\t1. Mark public $method deprecated in $interface with @deprecated \n\t2. Declare new method in $interface \n\t 3. Create your new method in $class and call this method from within $method");
-        Instruction i7 = new Instruction(7, "Method $method has been defined in the following superclasses: $super-list\nCheck if you want to rename them also to preserve application behavior.\n When no risk. proceed...");
-        Instruction i8 = new Instruction( 8, "To eliminate any side-effect risks, I suggest to rename $method also in $super-list\n");
+        Instruction i7 = new Instruction(7, "Method $method has been defined in the following superclasses: $class-list\nCheck if you want to rename them also to preserve application behavior.\n When no risk. proceed...");
+        Instruction i8 = new Instruction( 8, "To eliminate any side-effect risks, I suggest to rename $method also in $class-list\n");
         Instruction i9 = new Instruction( 9, "There are methods present in your class hierarchy with the same name (method override), but different number of parameters.\nIt is a good practice to rename also these methods to the new name you have choosen ");
 
         ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodSingleDeclaration, 2);
