@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class MethodExtractNoneLocalDependencies implements IContextDetector {
 
-    CompilationUnit _cu  = null;
     MethodDataFlowAnalyzer _analyzer = null;
 
     public MethodExtractNoneLocalDependencies(ContextConfiguration cc) {

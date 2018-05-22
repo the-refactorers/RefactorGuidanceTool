@@ -4,6 +4,7 @@ import ait.AdaptiveInstructionTree;
 import ait.CodeContext;
 import analysis.ICodeAnalyzer;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.dataflow.MethodDataFlowAnalyzer;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -57,6 +58,11 @@ public class ContextDetectorSetBuilder {
             // Voeg de analuzers toe aan ContextAnalyzerCOnfiguration
             BuildRenameContextDetectors(completeCodeContext); // provides possible analyzers + input
         }
+        else
+            if(refactoringProcessName.contentEquals("Extract Method") )
+        {
+            BuildExtractMethodContextDetectors(completeCodeContext);
+        }
 
         return this._contextDetectors;
     }
@@ -96,6 +102,11 @@ public class ContextDetectorSetBuilder {
         // 1. setup the analyzers and add them to the generic config object.
         _analyzerConfig.setCMFAnalyzer(new ClassMethodFinder());
         _analyzerConfig.getCMFAnalyzer().initialize(_analyzerConfig.getCompilationUnit(), _analyzerConfig.getClassName());
+
+        _analyzerConfig.setMethodDataFlowAnalyzer(new MethodDataFlowAnalyzer());
+        _analyzerConfig.getMethodDataFlowAnalyzer().initialize(
+                _analyzerConfig.getCMFAnalyzer().getMethodDescriberForLocation(27).getMethodDeclaration(),
+                _analyzerConfig.getCodeSection());
 
         // Intra-method detectors need:
         // MethodDescriptor AST Javaparser, identifying method from which to extract

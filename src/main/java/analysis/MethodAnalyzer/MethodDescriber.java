@@ -1,10 +1,13 @@
 package analysis.MethodAnalyzer;
 
+import com.github.javaparser.ast.body.MethodDeclaration;
+
 public class MethodDescriber {
 
     private String _name = new String();
     private String _signature = new String();
     private String _type = new String();
+    private MethodDeclaration _declarationAST;
 
     public MethodDescriber()
     {
@@ -36,5 +39,15 @@ public class MethodDescriber {
 
     public String fullTypeSignature() {
         return _type+" "+_signature;
+    }
+
+    public MethodDeclaration getMethodDeclaration()
+    {
+        return _declarationAST;
+    }
+
+    public void setMethodDeclaration(MethodDeclaration mDecl)
+    {
+        _declarationAST = mDecl;
     }
 }

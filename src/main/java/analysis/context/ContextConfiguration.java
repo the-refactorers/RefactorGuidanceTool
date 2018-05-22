@@ -17,6 +17,8 @@ public class ContextConfiguration {
     ClassMethodFinder _cmf;
     MethodDataFlowAnalyzer _mdfa;
 
+    CodeSection _codeSection = new CodeSection(-1, -1);
+
     public void setCompilationUnit(CompilationUnit cu) {
         _cu = cu;
     }
@@ -61,5 +63,13 @@ public class ContextConfiguration {
 
     public MethodDescriber getMethodDescriber() {
         return this._method;
+    }
+
+    public CodeSection getCodeSection() {
+        return _codeSection;
+    }
+
+    public void setCodeSection(CodeSection cs) {
+         _codeSection = cs;
     }
 }

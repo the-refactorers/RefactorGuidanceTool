@@ -166,6 +166,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
                     methodName.setName(method.getNameAsString());
                     methodName.setSignature(method.getSignature().asString());
                     methodName.setReturnType(method.getType().asString());
+                    methodName.setMethodDeclaration(method);
                     break;
                 }
             }

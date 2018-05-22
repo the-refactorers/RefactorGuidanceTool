@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MethodExtractSingleArgument implements IContextDetector {
-    CompilationUnit _cu  = null;
+
     MethodDataFlowAnalyzer _analyzer = null;
 
     public MethodExtractSingleArgument(ContextConfiguration cc) {
