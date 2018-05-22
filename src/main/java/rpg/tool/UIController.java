@@ -19,6 +19,8 @@ public class UIController {
     private JTextField inputProjectDir;
     private JTextField inputCodeLineSmell;
     private JComboBox prefabExamplesSelection;
+    private JTextField newMethodName;
+    private JTextField textField1;
 
 
     public UIController() {
@@ -39,10 +41,21 @@ public class UIController {
                             "Rename",
                             inputJavaFile.getText(),
                             "MyMethod",
-                            Integer.parseInt(inputCodeLineSmell.getText()));                }
-                else
+                            newMethodName.getText(),
+                            Integer.parseInt(inputCodeLineSmell.getText()));
+
+                } else if(extractMethodRadioButton.isSelected())
                 {
-                    instructions.add("Extract method not available yet");
+                    instructions = analyzer.generateInstructions(
+                            "ExtractMethod",
+                            inputJavaFile.getText(),
+                            "MyMethod",
+                            newMethodName.getText(),
+                            Integer.parseInt(inputCodeLineSmell.getText()));
+
+                } else
+                {
+                    instructions.add("Unknown refactoring process selected");
                 }
 
                 hereTheGeneratedTextTextPane.setText("");
@@ -74,6 +87,9 @@ public class UIController {
         prefabExamplesSelection.addItem("RenameMethod.java.txt");
         prefabExamplesSelection.addItem("SimpleClassWith2Methods.java.txt");
 
-        prefabExamplesSelection.setSelectedIndex(0);
+        prefabExamplesSelection.setSelectedIndex(1);
+
+        //renameRadioButton.setSelected(true);
+        extractMethodRadioButton.setSelected(true);
     }
 }

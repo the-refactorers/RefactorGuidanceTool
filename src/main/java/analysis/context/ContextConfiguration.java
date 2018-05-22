@@ -4,6 +4,7 @@ import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.MethodDeclaration;
 
 public class ContextConfiguration {
 
@@ -15,7 +16,6 @@ public class ContextConfiguration {
 
     ClassMethodFinder _cmf;
     MethodDataFlowAnalyzer _mdfa;
-
 
     public void setCompilationUnit(CompilationUnit cu) {
         _cu = cu;

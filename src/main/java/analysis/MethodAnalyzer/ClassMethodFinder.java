@@ -227,6 +227,11 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         return rtd;
     }
 
+    public MethodDeclaration getMethodDeclarationAST(String methodName)
+    {
+        return Navigator.demandMethod(Navigator.demandClass(_cu, _qname), methodName);
+    }
+
     public String methodDefinedInInterface()
     {
         return _declaredInInterface;

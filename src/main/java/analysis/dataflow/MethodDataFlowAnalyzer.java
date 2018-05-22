@@ -6,10 +6,12 @@ package analysis.dataflow;
 
 import analysis.ICodeAnalyzer;
 import analysis.context.CodeSection;
+import analysis.context.ContextConfiguration;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
+import javassist.compiler.ast.MethodDecl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +22,15 @@ public class MethodDataFlowAnalyzer implements ICodeAnalyzer {
     private VariableFlowSet variableDataFlowSet;
     private List<MarkVariableFlowList> markRunners = new ArrayList<>();
     private boolean analyzed = false;
+    private ContextConfiguration _cc = null;
 
-    public void setMethod(MethodDeclaration md)
+    // To satisfy the condition that when no valid code section is set, analyzers for testing still work.
+    public boolean initialize (MethodDeclaration md)
+    {
+        return initialize(md, new CodeSection(-1,-1));
+    }
+
+    public boolean initialize(MethodDeclaration md, CodeSection cs)
     {
         this._md = md;
         addLocalDeclaredVarsToVariableFlowSet();
@@ -29,6 +38,12 @@ public class MethodDataFlowAnalyzer implements ICodeAnalyzer {
         markRunners.add(new LocalVariableWrittenMarker(_md, variableDataFlowSet));
         markRunners.add(new LocalVariableReadMarker(_md, variableDataFlowSet));
         markRunners.add(new LocalVariableLiveMarker(_md, variableDataFlowSet));
+
+        setExtractSection(cs.begin(), cs.end());
+
+        analyzed = false;
+
+        return false;
     }
 
     private void addLocalDeclaredVarsToVariableFlowSet() {
@@ -43,7 +58,7 @@ public class MethodDataFlowAnalyzer implements ICodeAnalyzer {
         return variableDataFlowSet;
     }
 
-    public void setExtractSection(int start, int end)
+    private void setExtractSection(int start, int end)
     {
         for(MarkVariableFlowList markRunner : markRunners)
             markRunner.setExtractMethodRegion(start, end);

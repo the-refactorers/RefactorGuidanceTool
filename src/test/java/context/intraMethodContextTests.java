@@ -2,6 +2,7 @@ package context;
 
 import analysis.JavaParserTestSetup;
 import analysis.context.CodeSection;
+import analysis.context.ContextConfiguration;
 import analysis.context.MethodExtractNoneLocalDependencies;
 import analysis.context.MethodExtractSingleArgument;
 import analysis.dataflow.MethodDataFlowAnalyzer;
@@ -18,12 +19,15 @@ public class intraMethodContextTests extends JavaParserTestSetup {
         try {
             MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
 
+            CodeSection code2Extract = new CodeSection(7, 10);
             MethodDataFlowAnalyzer _analyzer = new MethodDataFlowAnalyzer();
-            _analyzer.setMethod(md);
-            MethodExtractNoneLocalDependencies nlvdCtxt = new MethodExtractNoneLocalDependencies(_analyzer);
 
-            CodeSection cs = new CodeSection(7, 10);
-            _analyzer.setExtractSection(cs.begin(),cs.end());
+            _analyzer.initialize(md, code2Extract);
+
+            ContextConfiguration cc = new ContextConfiguration();
+            cc.setMethodDataFlowAnalyzer(_analyzer);
+
+            MethodExtractNoneLocalDependencies nlvdCtxt = new MethodExtractNoneLocalDependencies(cc);
 
             assertEquals(true, nlvdCtxt.detect());
         }
@@ -40,11 +44,13 @@ public class intraMethodContextTests extends JavaParserTestSetup {
                 MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Input");
 
                 MethodDataFlowAnalyzer _analyzer = new MethodDataFlowAnalyzer();
-                _analyzer.setMethod(md);
+                CodeSection code2Extract = new CodeSection(19, 22);
+                _analyzer.initialize(md, code2Extract);
 
-                MethodExtractSingleArgument mesp = new MethodExtractSingleArgument(_analyzer);
-                CodeSection cs = new CodeSection(19, 22);
-                _analyzer.setExtractSection(cs.begin(),cs.end());
+                ContextConfiguration cc = new ContextConfiguration();
+                cc.setMethodDataFlowAnalyzer(_analyzer);
+
+                MethodExtractSingleArgument mesp = new MethodExtractSingleArgument(cc);
 
                 assertEquals(true, mesp.detect());
             }
@@ -53,5 +59,4 @@ public class intraMethodContextTests extends JavaParserTestSetup {
                 fail(e.getMessage());
             }
     }
-
 }

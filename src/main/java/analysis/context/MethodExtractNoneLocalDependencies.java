@@ -14,20 +14,8 @@ public class MethodExtractNoneLocalDependencies implements IContextDetector {
     CompilationUnit _cu  = null;
     MethodDataFlowAnalyzer _analyzer = null;
 
-    public MethodExtractNoneLocalDependencies(MethodDataFlowAnalyzer mdfa)
-    {
-        super();
-        _analyzer = mdfa;
-    }
-
-    public void setupAnalysis(CompilationUnit cu, String className, String methodName, CodeSection cs) {
-
-        _cu = cu;
-
-        MethodDeclaration md = Navigator.demandMethod(Navigator.demandClass(_cu, className), methodName);
-        _analyzer = new MethodDataFlowAnalyzer();
-        _analyzer.setMethod(md);
-        _analyzer.setExtractSection(cs.begin(),cs.end());
+    public MethodExtractNoneLocalDependencies(ContextConfiguration cc) {
+        this._analyzer = cc.getMethodDataFlowAnalyzer();
     }
 
     public boolean detect() throws Exception {
@@ -57,6 +45,6 @@ public class MethodExtractNoneLocalDependencies implements IContextDetector {
 
     @Override
     public CodeContext.CodeContextEnum getType() {
-        return CodeContext.CodeContextEnum.intramethod_extract_no_argument;
+        return CodeContext.CodeContextEnum.MethodExtractNoneLocalDependencies;
     }
 }

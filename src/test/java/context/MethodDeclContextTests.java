@@ -5,6 +5,7 @@ import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.context.*;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -227,7 +228,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
     }
 
     @Test
-    public void detectNoOverridesOnMethods()
+    @Ignore
+    public void detectNoOverrideAnnotationOnMethods()
     {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 

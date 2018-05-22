@@ -89,6 +89,24 @@ public class ContextDetectorSetBuilder {
         UniversalBuildContextDetectors(completeCodeContext, _analyzerConfig);
     }
 
+    //@Todo Move each specifc initiation of objects needed in a refactoring generator to a seperate Factory
+    //
+    private void BuildExtractMethodContextDetectors(EnumSet<CodeContext.CodeContextEnum> completeCodeContext)
+    {
+        // 1. setup the analyzers and add them to the generic config object.
+        _analyzerConfig.setCMFAnalyzer(new ClassMethodFinder());
+        _analyzerConfig.getCMFAnalyzer().initialize(_analyzerConfig.getCompilationUnit(), _analyzerConfig.getClassName());
+
+        // Intra-method detectors need:
+        // MethodDescriptor AST Javaparser, identifying method from which to extract
+        // Code section to extract (this is sufficent to extract MethodDescirptor)
+        // Class name where method is defined
+
+
+        // 2. Create the relevant detectors and provided them with the generic config object
+        UniversalBuildContextDetectors(completeCodeContext, _analyzerConfig);
+    }
+
     /**
      * A set of context detectors is build based on the context set that is provided.
      * The @ContextConfiguration object is used to provide detectors with necessary input in a generic way

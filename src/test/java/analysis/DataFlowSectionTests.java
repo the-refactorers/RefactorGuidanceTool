@@ -1,5 +1,6 @@
 package analysis;
 
+import analysis.context.CodeSection;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import analysis.dataflow.VariableFlowSet;
 import analysis.dataflow.VariableFlowTable;
@@ -18,9 +19,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(0,0);
+        analyzer.initialize(md, new CodeSection(0,0));
         analyzer.start();
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
 
@@ -31,7 +30,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
         varFT = dataFlowSet.getVariableFlowTable("g");
         Assert.assertTrue(varFT.within_region.write);
 
-        analyzer.setExtractSection(-1,-1);
+        analyzer.initialize(md, new CodeSection(-1,-1));
         analyzer.start();
         dataFlowSet = analyzer.getVariableFlowSet();
 
@@ -47,9 +46,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
     public void WriteValidSectionsBeforeTest() {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(16, 17);
+        analyzer.initialize(md, new CodeSection(16,17));
         analyzer.start();
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
 
@@ -62,9 +59,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
     public void WriteValidSectionsWithinTest() {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(16, 17);
+        analyzer.initialize(md, new CodeSection(16,17));
         analyzer.start();
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
 
@@ -78,9 +73,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
     public void WriteValidSectionsAfterTest() {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "WriteMarkers");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(16, 17);
+        analyzer.initialize(md, new CodeSection(16,17));
         analyzer.start();
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
 
@@ -93,9 +86,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
     public void ReadValidSectionsBeforeTest() {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "multipleReads");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(81, 82);
+        analyzer.initialize(md, new CodeSection(81,82));
         analyzer.start();
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
 
@@ -111,9 +102,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
     public void ReadValidSectionsWithinTest() {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "multipleReads");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(81, 82);
+        analyzer.initialize(md, new CodeSection(81,82));
         analyzer.start();
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
 
@@ -128,8 +117,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "multipleReads");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
 
-        analyzer.setMethod(md);
-        analyzer.setExtractSection(81, 82);
+        analyzer.initialize(md, new CodeSection(81,82));
 
         analyzer.start();
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
@@ -144,9 +132,7 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodMarkerCases", "multipleReads");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(81, 82);
+        analyzer.initialize(md, new CodeSection(81,82));
         analyzer.start();
         VariableFlowSet dataFlowSet = analyzer.getVariableFlowSet();
 

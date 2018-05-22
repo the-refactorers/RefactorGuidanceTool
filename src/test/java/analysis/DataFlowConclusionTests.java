@@ -1,5 +1,6 @@
 package analysis;
 
+import analysis.context.CodeSection;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import org.junit.Assert;
@@ -19,9 +20,7 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(7,10);
+        analyzer.initialize(md, new CodeSection(7,10));
         analyzer.start();
 
         List<String> vfi = analyzer.variablesForInput();
@@ -33,9 +32,7 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Input");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(19,22);
+        analyzer.initialize(md, new CodeSection(19,22));
         analyzer.start();
 
         List<String> vfi = analyzer.variablesForInput();
@@ -47,9 +44,7 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith2Input");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(32,35);
+        analyzer.initialize(md, new CodeSection(32,35));
         analyzer.start();
 
         List<String> vfi = analyzer.variablesForInput();
@@ -61,9 +56,7 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Output");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(43,46);
+        analyzer.initialize(md, new CodeSection(43,46));
         analyzer.start();
 
         List<String> vfi = analyzer.variablesForOutput();
@@ -75,9 +68,7 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWith1OutputButVariableUsedAfter");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(55,58);
+        analyzer.initialize(md, new CodeSection(55,58));
         analyzer.start();
 
         List<String> vfi = analyzer.variablesForOutput();
@@ -89,9 +80,7 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWith2Output");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(68,72);
+        analyzer.initialize(md, new CodeSection(68,72));
         analyzer.start();
 
         List<String> vfi = analyzer.variablesForOutput();
@@ -103,9 +92,7 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     {
         MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWhereBeforeVariableIsReadAfterWrittenInWithin");
         MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.setMethod(md);
-
-        analyzer.setExtractSection(82,85);
+        analyzer.initialize(md, new CodeSection(82,85));
         analyzer.start();
 
         // Because the variable is assigned, before a read. It is not

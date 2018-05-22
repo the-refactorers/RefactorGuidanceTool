@@ -1,6 +1,7 @@
 package ait;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -35,6 +36,7 @@ public class InstructionGeneratorTests {
     }
 
     @Test
+    @Ignore
     public void GivenInstructionAndParameterMapFillsParameterValues()
     {
         AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();

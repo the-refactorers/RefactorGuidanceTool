@@ -17,9 +17,10 @@ public class CodeContext {
         MethodOverload,
         MethodOverride,
         MethodOverrideNoAnnotation,
+
         // Extract method
-        intramethod_extract_none_local_dependencies,
-        intramethod_extract_no_argument,
+        MethodExtractNoneLocalDependencies,
+        MethodExtractSingleArgument,
         intramethod_extract_single_argument,
         intramethod_extract_multi_argument,
         intramethod_extract_no_result,
@@ -28,7 +29,8 @@ public class CodeContext {
         intramethod_extract_double_name_binding, // variable name is binded on different scopes
         intramethod_extract_flow_break,
         intramethod_extract_flow_return,
-        method_overload, method_multiple_declaration, always_true     // used to link multiple actions together, where no decision is required
+
+        always_true     // used to link multiple actions together, where no decision is required
     }
 }
 

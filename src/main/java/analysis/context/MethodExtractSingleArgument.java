@@ -13,20 +13,8 @@ public class MethodExtractSingleArgument implements IContextDetector {
     CompilationUnit _cu  = null;
     MethodDataFlowAnalyzer _analyzer = null;
 
-    public MethodExtractSingleArgument(MethodDataFlowAnalyzer mdfa)
-    {
-        super();
-        _analyzer = mdfa;
-    }
-
-    public void setupAnalysis(CompilationUnit cu, String className, String methodName, CodeSection cs) {
-
-        _cu = cu;
-
-        MethodDeclaration md = Navigator.demandMethod(Navigator.demandClass(_cu, className), methodName);
-        _analyzer = new MethodDataFlowAnalyzer();
-        _analyzer.setMethod(md);
-        _analyzer.setExtractSection(cs.begin(),cs.end());
+    public MethodExtractSingleArgument(ContextConfiguration cc) {
+        this._analyzer = cc.getMethodDataFlowAnalyzer();
     }
 
     public boolean detect() throws Exception {
@@ -55,6 +43,6 @@ public class MethodExtractSingleArgument implements IContextDetector {
 
     @Override
     public CodeContext.CodeContextEnum getType() {
-        return CodeContext.CodeContextEnum.intramethod_extract_single_argument;
+        return CodeContext.CodeContextEnum.MethodExtractSingleArgument;
     }
 }

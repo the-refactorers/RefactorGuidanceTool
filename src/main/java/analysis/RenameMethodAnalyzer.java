@@ -61,7 +61,7 @@ public class RenameMethodAnalyzer {
     }
 
 
-    public List<String> generateInstructions(String refactorAction, String testResource, String className, int lineNumber) {
+    public List<String> generateInstructions(String refactorAction, String testResource, String className, String newMethodName, int lineNumber) {
 
         // load java class from the resource set
         InputStream parseStream = this.getClass().getClassLoader().getResourceAsStream(testResource);
@@ -89,7 +89,7 @@ public class RenameMethodAnalyzer {
             AdaptiveInstructionTree tree = null;
             if(refactorAction.contentEquals("Rename"))
                  tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
-            else if(refactorAction.contentEquals("Extract_Method"))
+            else if(refactorAction.contentEquals("ExtractMethod"))
                 tree = new AIT_ExtractMethodGeneration().getAdaptiveInstructionTree();
 
             // Analyze context and set-up code context of generator
