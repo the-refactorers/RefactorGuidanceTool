@@ -61,6 +61,7 @@ public class RenameMethodAnalyzer {
     }
 
 
+    // @todo: rename code section to specify which part of code to be extracted
     public List<String> generateInstructions(String refactorAction, String testResource, String className, String newMethodName, int lineNumber) {
 
         // load java class from the resource set

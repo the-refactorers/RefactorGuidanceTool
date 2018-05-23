@@ -33,8 +33,8 @@ public class MethodMultipleDeclarations implements IContextDetector {
                 _analyzer.isMethodDeclaredFirstTimeInInterface(_method))
 
             {
-                _parameterMap.put("$method", Arrays.asList(this._method.fullTypeSignature()));
-                _parameterMap.put("$class", Arrays.asList(this._analyzer.getQualifiedClassName()));
+                _parameterMap.put("#method", Arrays.asList(this._method.fullTypeSignature()));
+                _parameterMap.put("#class", Arrays.asList(this._analyzer.getQualifiedClassName()));
                 result = true;
             }
         }

@@ -28,7 +28,7 @@ public class MethodOverride implements IContextDetector{
     protected MethodDescriber _method = null;
 
     protected Map<String,List<String>> classesFound = new HashMap<>();
-    private final String V_CLASS_LIST = "$class-list";
+    private final String V_CLASS_LIST = "#class-list";
 
     public MethodOverride() {
     }

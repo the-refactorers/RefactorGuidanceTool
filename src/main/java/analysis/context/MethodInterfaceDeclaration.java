@@ -33,7 +33,7 @@ public class MethodInterfaceDeclaration implements IContextDetector {
         {
             if(_analyzer.isMethodDeclaredFirstTimeInInterface(_method))
             {
-                _parameterMap.put("$interface", Arrays.asList(_analyzer.methodDefinedInInterface()));
+                _parameterMap.put("#interface", Arrays.asList(_analyzer.methodDefinedInInterface()));
                 result = true;
             }
         }

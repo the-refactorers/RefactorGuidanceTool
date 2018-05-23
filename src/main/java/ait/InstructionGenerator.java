@@ -113,7 +113,7 @@ public class InstructionGenerator {
     }
 
     private static boolean exactMatchInString(String source, String subItem){
-        String pattern = "\\b" + subItem + "\\b";
+        String pattern = "\\s" + subItem + "\\s";
         Pattern p=Pattern.compile(pattern);
         Matcher m=p.matcher(source);
         return m.find();
