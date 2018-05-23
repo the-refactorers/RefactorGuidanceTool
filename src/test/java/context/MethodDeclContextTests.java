@@ -74,8 +74,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
             msd.detect();
 
             Assert.assertEquals(2, msd.getParameterMap().size());
-            Assert.assertTrue(msd.getParameterMap().containsKey("$method"));
-            Assert.assertTrue(msd.getParameterMap().containsKey("$class"));
+            Assert.assertTrue(msd.getParameterMap().containsKey("#method"));
+            Assert.assertTrue(msd.getParameterMap().containsKey("#class"));
         }
         catch(Exception e)
         {
@@ -118,8 +118,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
             mmd.detect();
 
             Assert.assertEquals(2, mmd.getParameterMap().size());
-            Assert.assertTrue(mmd.getParameterMap().containsKey("$method"));
-            Assert.assertTrue(mmd.getParameterMap().containsKey("$class"));
+            Assert.assertTrue(mmd.getParameterMap().containsKey("#method"));
+            Assert.assertTrue(mmd.getParameterMap().containsKey("#class"));
         }
         catch(Exception e)
         {
@@ -162,7 +162,7 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
             msd.detect();
 
             Assert.assertEquals(1, msd.getParameterMap().size());
-            Assert.assertTrue(msd.getParameterMap().containsKey("$interface"));
+            Assert.assertTrue(msd.getParameterMap().containsKey("#interface"));
         }
         catch(Exception e)
         {
@@ -217,9 +217,9 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
             Map<String,List<String>> paramValues = overrideDetector.getParameterMap();
 
             //  classes should be returned (B and E)
-            Assert.assertEquals(2, paramValues.get("$class-list").size());
-            Assert.assertTrue("B not found", paramValues.get("$class-list").contains("B"));
-            Assert.assertTrue("E not found", paramValues.get("$class-list").contains("E"));
+            Assert.assertEquals(2, paramValues.get("#class-list").size());
+            Assert.assertTrue("B not found", paramValues.get("#class-list").contains("B"));
+            Assert.assertTrue("E not found", paramValues.get("#class-list").contains("E"));
         }
         catch(Exception e)
         {
@@ -272,7 +272,7 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
             overrideDetector.detect();
 
             // Expect there is no #class-list key defined, while this is a unique method
-            Assert.assertFalse(overrideDetector.getParameterMap().containsKey("$class-list"));
+            Assert.assertFalse(overrideDetector.getParameterMap().containsKey("#class-list"));
         }
         catch(Exception e)
         {

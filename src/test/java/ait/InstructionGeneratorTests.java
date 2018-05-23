@@ -36,7 +36,6 @@ public class InstructionGeneratorTests {
     }
 
     @Test
-    @Ignore
     public void GivenInstructionAndParameterMapFillsParameterValues()
     {
         AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
@@ -44,8 +43,8 @@ public class InstructionGeneratorTests {
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
         Map<String, List<String>> parameterMap = new HashMap<>();
-        parameterMap.put("$method", Arrays.asList("printHelloWorld"));
-        parameterMap.put("$class", Arrays.asList("Hello"));
+        parameterMap.put("#method", Arrays.asList("printHelloWorld"));
+        parameterMap.put("#class", Arrays.asList("Hello"));
 
         EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.of(CodeContext.CodeContextEnum.MethodOverride);
 
@@ -53,8 +52,8 @@ public class InstructionGeneratorTests {
         generator.setContext(codeContext);
 
         List<String> instructionSteps = generator.generateInstruction();
-        Assert.assertEquals("Parameter fill test: Dummy method printHelloWorld is located in dummy Hello", instructionSteps.get(0));
-        Assert.assertEquals("Instruction 3: Overrides class Hello", instructionSteps.get(1));
+        Assert.assertEquals("Parameter fill test: Dummy method printHelloWorld is located in dummy Hello ", instructionSteps.get(0));
+        Assert.assertEquals("Instruction 3: Overrides class Hello ", instructionSteps.get(1));
     }
 
     @Test
