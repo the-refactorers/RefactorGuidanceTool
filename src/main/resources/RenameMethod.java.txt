@@ -15,11 +15,20 @@ class Base {
 
     public void MethodOverload()
     {
-
     }
 }
 
-class MyMethod extends Base implements SimpleInterface
+class Middle extends Base {
+      public void MethodOverride(){
+       }
+
+       public void MethodOverrideInInterface()
+       {
+           return;
+       }
+}
+
+class MyMethod extends Middle implements SimpleInterface
 {
     public int MethodXYZ()
     {
@@ -41,5 +50,9 @@ class MyMethod extends Base implements SimpleInterface
     public int MethodOverload()
     {
         return 0;
+    }
+
+    public void MethodOverride()
+    {
     }
 }

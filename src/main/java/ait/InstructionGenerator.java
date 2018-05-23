@@ -66,7 +66,7 @@ public class InstructionGenerator {
         if (!inputErr)
         {
             if(riskOverview) {
-                generatedInstructionList.add("Identified RISKS in your code that need special attention when performing " + aitTree.getRefactorMechanic());
+                generatedInstructionList.add("Identified RISKS in your code that need special attention when performing " + aitTree.getRefactorMechanic() + " on method #method \n");
                 SummarizeRisks(generatedInstructionList, contextSet);
             }
 
@@ -95,7 +95,7 @@ public class InstructionGenerator {
 
                 for (Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
                     if (exactMatchInString(parsedInstructionLine, entry.getKey())) {
-                        parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), String.join("", entry.getValue()));
+                        parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), String.join(" ++\n", entry.getValue()));
                     }
                 }
 
@@ -123,11 +123,14 @@ public class InstructionGenerator {
     private void SummarizeRisks(List<String> generatedInstructionList,
                                 EnumSet<CodeContext.CodeContextEnum> contextSet) {
 
-        EnumSet<CodeContext.CodeContextEnum> riskContext = aitTree.getSetOfRiskContext();
-
-        if (riskContext.isEmpty())
+        if (contextSet.isEmpty())
         {
             generatedInstructionList.add("<none>\n");
+        }
+        else
+        {
+            for(CodeContext.CodeContextEnum cce : contextSet)
+                generatedInstructionList.add(aitTree.getRiskDescription(cce));
         }
     }
 

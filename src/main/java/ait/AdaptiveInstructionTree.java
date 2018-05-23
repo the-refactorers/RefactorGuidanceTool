@@ -125,4 +125,18 @@ public class AdaptiveInstructionTree {
         }
         return contextWithRisk;
     }
+
+    public String getRiskDescription(CodeContext.CodeContextEnum riskContext) {
+
+        String riskDescription = "";
+
+        for(Instruction i : allInstructions) {
+            for(ContextDecision cd : i.getDecisions()) {
+                if(riskContext == cd.getContextType())
+                    riskDescription = cd.getRiskDescription();
+            }
+        }
+
+        return riskDescription;
+    }
 }
