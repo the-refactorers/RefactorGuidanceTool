@@ -85,6 +85,7 @@ public class ClassMethodFinderTest {
         cmf.initialize(_cu, "TwoMethodClass");
 
         MethodDescriber method = new MethodDescriber("void","MethodTwo","()");
+
         Assert.assertEquals(true, cmf.hasMethodDefined(method));
     }
 
