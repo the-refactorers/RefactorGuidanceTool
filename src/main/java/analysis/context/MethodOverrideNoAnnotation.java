@@ -62,7 +62,7 @@ public class MethodOverrideNoAnnotation extends MethodOverride {
         return no_annotation;
     }
 
-    @Override
+        @Override
     public CodeContext.CodeContextEnum getType() {
         return CodeContext.CodeContextEnum.MethodOverrideNoAnnotation;
     }
