@@ -155,6 +155,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
      * @return Method name when location is inside a method, otherwise empty string
      */
     public MethodDescriber getMethodDescriberForLocation(int location) {
+
         MethodDescriber methodName = new MethodDescriber();
 
         if(isLocationInMethod(location)) {
@@ -163,10 +164,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
 
             for (MethodDeclaration method : lmd) {
                 if (Checker.inRangeInclusive(method.getRange().get().begin.line, method.getRange().get().end.line, location)) {
-                    methodName.setName(method.getNameAsString());
-                    methodName.setSignature(method.getSignature().asString());
-                    methodName.setReturnType(method.getType().asString());
-                    methodName.setMethodDeclaration(method);
+                    methodName = new MethodDescriber(method);
                     break;
                 }
             }

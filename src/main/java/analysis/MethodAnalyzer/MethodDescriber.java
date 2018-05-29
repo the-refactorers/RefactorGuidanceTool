@@ -21,15 +21,34 @@ public class MethodDescriber {
         setSignature(methodName+methodParamSignature);
     }
 
-    public void setName(String nameAsString) {
+    public MethodDescriber(MethodDeclaration item) {
+        setReturnType(item.getType().asString());
+        setName(item.getName().asString());
+        setSignature(item.getSignature().asString());
+        setMethodDeclaration(item);
+    }
+
+    public boolean equals(MethodDescriber md)
+    {
+        System.out.println(this.getType() + " " +
+                this.getName() + " " + this.getSignature());
+        System.out.println(md.getType() + " " +
+                md.getName() + " " + md.getSignature());
+
+        return (md.getType().contentEquals(this._type) &&
+                md.getName().contentEquals(this._name) &&
+                md.getSignature().contentEquals(this._signature));
+    }
+
+    private void setName(String nameAsString) {
         _name = nameAsString;
     }
 
-    public void setSignature(String s) {
+    private void setSignature(String s) {
         _signature = s;
     }
 
-    public void setReturnType(String t) {
+    private void setReturnType(String t) {
         _type = t;
     }
 

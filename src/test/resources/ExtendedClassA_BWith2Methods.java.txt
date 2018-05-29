@@ -10,6 +10,8 @@ interface D
 
 public class E implements D
 {
+    @ignore
+    @yes
     public void MethodFour()
     {
 

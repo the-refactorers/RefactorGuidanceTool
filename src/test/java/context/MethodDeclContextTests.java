@@ -228,7 +228,6 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
     }
 
     @Test
-    @Ignore
     public void detectNoOverrideAnnotationOnMethods()
     {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");

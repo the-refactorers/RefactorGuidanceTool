@@ -27,6 +27,8 @@ public class MethodOverride implements IContextDetector{
     protected ClassMethodFinder _analyzer = null;
     protected MethodDescriber _method = null;
 
+    protected List<ReferenceType> _rt = null;
+
     protected Map<String,List<String>> classesFound = new HashMap<>();
     private final String V_CLASS_LIST = "#class-list";
 
@@ -51,9 +53,9 @@ public class MethodOverride implements IContextDetector{
 
         // Determine all classes/interfaces that are superseeding the class being analyzed
         ReferenceTypeDeclaration rtd = _analyzer.getReferenceTypeDeclarationOfClass();
-        List<ReferenceType> rt = rtd.getAllAncestors();
+        _rt = rtd.getAllAncestors();
 
-        rt.forEach( ancestor ->
+        _rt.forEach( ancestor ->
         {
             ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
 
@@ -73,13 +75,12 @@ public class MethodOverride implements IContextDetector{
                         }
                 });
             }
-
         });
 
         return !classesFound.isEmpty();
     }
 
-    private boolean fullSignatureMatch(MethodDeclaration m) {
+    protected boolean fullSignatureMatch(MethodDeclaration m) {
         return  m.getReturnType().describe().contentEquals(_method.getType()) &&
                 m.getName().contentEquals(_method.getName()) &&
                 m.getSignature().contentEquals(_method.getSignature());
