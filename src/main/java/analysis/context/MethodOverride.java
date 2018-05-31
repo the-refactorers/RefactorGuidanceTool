@@ -16,14 +16,14 @@ import java.util.*;
  */
 public class MethodOverride implements IContextDetector{
 
-    private String _className = null;
+    protected String _className = null;
     protected ClassMethodFinder _analyzer = null;
     protected MethodDescriber _method = null;
 
     protected List<ReferenceType> _rt = null;
 
-    protected Map<String,List<String>> classesFound = new HashMap<>();
-    private final String V_CLASS_LIST = "#class-list";
+    protected Map<String,List<String>> paramList = new HashMap<>();
+    protected final String V_CLASS_LIST = "#class-list";
 
     protected List<JavaParserMethodDeclaration>  listOfNodesForOverrideMethods = new ArrayList<>();
 
@@ -66,14 +66,14 @@ public class MethodOverride implements IContextDetector{
                             //System.out.println("Returns " + m.getReturnType().describe());
                             //System.out.println("Returns " + m.getQualifiedSignature());
 
-                            addClassNameToClassList((JavaParserMethodDeclaration)m);
+                            addClassNameToVariableList((JavaParserMethodDeclaration)m);
                             listOfNodesForOverrideMethods.add((JavaParserMethodDeclaration)m);
                         }
                 });
             }
         });
 
-        return !classesFound.isEmpty();
+        return !paramList.isEmpty();
     }
 
     protected boolean fullSignatureMatch(MethodDeclaration m) {
@@ -84,7 +84,7 @@ public class MethodOverride implements IContextDetector{
 
     @Override
     public Map<String,List<String>> getParameterMap() {
-        return classesFound;
+        return paramList;
     }
 
     @Override
@@ -92,19 +92,20 @@ public class MethodOverride implements IContextDetector{
         return CodeContext.CodeContextEnum.MethodOverride;
     }
 
-    protected void addClassNameToClassList(JavaParserMethodDeclaration jpClass) {
-        if(!classesFound.isEmpty())
+    protected void addClassNameToVariableList(JavaParserMethodDeclaration jpClass) {
+
+        if(paramList.get(V_CLASS_LIST) != null)
         {
-            List<String> actualList = new ArrayList<>(classesFound.get(V_CLASS_LIST));
+            List<String> actualList = new ArrayList<>(paramList.get(V_CLASS_LIST));
 
             if(!actualList.contains(jpClass.declaringType().getQualifiedName())) {
                 actualList.add(jpClass.declaringType().getQualifiedName());
-                classesFound.put(V_CLASS_LIST, actualList);
+                paramList.put(V_CLASS_LIST, actualList);
             }
         }
         else
         {
-            classesFound.put(V_CLASS_LIST, Arrays.asList(jpClass.declaringType().getQualifiedName()));
+            paramList.put(V_CLASS_LIST, Arrays.asList(jpClass.declaringType().getQualifiedName()));
         }
     }
 

@@ -21,7 +21,6 @@ public class E implements D
 public class B extends E implements C, D
 {
     // Implementation of interface C method
-    @Override
     public void MethodOne()
     {
 

@@ -9,9 +9,21 @@ import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
 import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Analyzes overriden methods if thyey have @Override specified or not
+ * This is done for the local class and all of its overriden methods in the ancestors
+ *
+ */
 public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
+
+    // We assume the situation is true, cycling through all methods
+    private boolean method_without_override_annotation = true;
+
+    private final String V_METHOD_LIST = "#method-list";
 
     public MethodOverrideWithoutNoAnnotation(ContextConfiguration cc) {
         super(cc);
@@ -20,15 +32,14 @@ public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
     @Override
     public boolean detect() throws Exception {
 
-        boolean no_annotation = true;
+        setNoAnnotation(false);
 
         if(super.detect())
         {
-            // first check local class
+            // first check local class in analyzed method
             ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClassOrInterface(
                     _analyzer.getCompilationUnit(),
                    _analyzer.getQualifiedClassName());
-
 
             List<MethodDeclaration> md = class4Analysis.getMethods();
 
@@ -38,18 +49,7 @@ public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
 
                 if (methDescr.equals(_method))
                 {
-                    // method which are overriden should have an override annotation @todo
-                    NodeList<AnnotationExpr> annotations = item.getAnnotations();
-                    if (!annotations.isEmpty())
-                    {
-                        for(AnnotationExpr ea : annotations)
-                        {
-                            if(ea.getName().toString().contentEquals("Override"))
-                            {
-                                no_annotation = false;
-                            }
-                        }
-                    }
+                    determineMethodHasNoAnnotation(item, _analyzer.getQualifiedClassName());
                 }
             }
 
@@ -57,26 +57,49 @@ public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
             getOverridenMethods().forEach( method ->
             {
                 // Retrieve list of annotations from the wrapped node stored
-                NodeList<AnnotationExpr> annotations = method.getWrappedNode().getAnnotations();
-
-                if (!annotations.isEmpty())
-                {
-                    for(AnnotationExpr ea : annotations)
-                    {
-                        if(ea.getName().toString().contentEquals("Override"))
-                        {
-                            //no_annotation = false;
-                        }
-                    }
-                }
+                determineMethodHasNoAnnotation(method.getWrappedNode(), method.declaringType().getClassName());
             });
         }
 
-        return no_annotation;
+        return method_without_override_annotation;
     }
 
+    private void determineMethodHasNoAnnotation(MethodDeclaration item, String className) {
+        // method which are overriden should have an override annotation
+        NodeList<AnnotationExpr> annotations = item.getAnnotations();
 
-        @Override
+        // Set no annotation flag, if none of the overrides of the local method says @Override
+        if(!annotations.stream().anyMatch(anno -> anno.getName().toString().contentEquals("Override")))
+        {
+            setNoAnnotation(true);
+            addMethodNameToVariableList(item, className);
+        }
+    }
+
+    private void addMethodNameToVariableList(MethodDeclaration item, String className) {
+
+        String methodName =  className + "::" + item.getSignature().toString();
+
+        if(paramList.get(V_METHOD_LIST) != null)
+        {
+            List<String> actualList = new ArrayList<>(paramList.get(V_METHOD_LIST));
+
+            if(!actualList.contains(methodName)) {
+                actualList.add(methodName);
+                paramList.put(V_METHOD_LIST, actualList);
+            }
+        }
+        else
+        {
+            paramList.put(V_METHOD_LIST, Arrays.asList(methodName));
+        }
+    }
+
+    private void setNoAnnotation(boolean b) {
+        method_without_override_annotation = b;
+    }
+
+    @Override
     public CodeContext.CodeContextEnum getType() {
         return CodeContext.CodeContextEnum.MethodOverrideNoAnnotation;
     }

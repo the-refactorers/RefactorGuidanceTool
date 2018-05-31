@@ -228,7 +228,7 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
     }
 
     @Test
-    public void detectNoOverrideAnnotationOnMethods()
+    public void detectOverrideMethodsWithNoAnnotationLocal()
     {
         CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
 
@@ -242,7 +242,35 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         MethodOverrideWithoutNoAnnotation mod = new MethodOverrideWithoutNoAnnotation(cc);
 
         try {
+            // Detector should indicate that class B has methods that do not contain an @Override marker
             Assert.assertTrue(mod.detect());
+            Assert.assertTrue(mod.getParameterMap().get("#method-list").contains("B::MethodFour()"));
+            Assert.assertTrue(mod.getParameterMap().get("#method-list").contains("E::MethodFour()"));
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectOverrideMethodsWithNoAnnotationInOverride()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        MethodDescriber md = new MethodDescriber("void","MethodOne","()");
+        cc.setMethodDescriber(md);
+        cc.setCMFAnalyzer(cmf);
+        MethodOverrideWithoutNoAnnotation mod = new MethodOverrideWithoutNoAnnotation(cc);
+
+        try {
+            Assert.assertTrue(mod.detect());
+            Assert.assertFalse(mod.getParameterMap().get("#method-list").contains("A::MethodOne()"));
+            Assert.assertTrue(mod.getParameterMap().get("#method-list").contains("B::MethodOne()"));
         }
         catch(Exception e)
         {
