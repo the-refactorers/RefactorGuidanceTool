@@ -26,6 +26,7 @@ import analysis.context.ContextDetectorSetBuilder;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 
@@ -73,6 +74,7 @@ public class RenameMethodAnalyzer {
 
         // Initialize compilation unit
         CompilationUnit cu = JavaParser.parse(parseStream);
+       // CompilationUnit cu = JavaParser.parse("src/main/java/");
 
         // set up analyzer to make it possible to retrieve method-number based on line number
         // @todo: This should be taken out of analyzer class

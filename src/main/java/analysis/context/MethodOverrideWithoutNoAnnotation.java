@@ -11,9 +11,9 @@ import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclar
 
 import java.util.List;
 
-public class MethodOverrideNoAnnotation extends MethodOverride {
+public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
 
-    public MethodOverrideNoAnnotation(ContextConfiguration cc) {
+    public MethodOverrideWithoutNoAnnotation(ContextConfiguration cc) {
         super(cc);
     }
 
@@ -27,7 +27,8 @@ public class MethodOverrideNoAnnotation extends MethodOverride {
             // first check local class
             ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClassOrInterface(
                     _analyzer.getCompilationUnit(),
-                    _analyzer.getQualifiedClassName());
+                   _analyzer.getQualifiedClassName());
+
 
             List<MethodDeclaration> md = class4Analysis.getMethods();
 
@@ -37,6 +38,7 @@ public class MethodOverrideNoAnnotation extends MethodOverride {
 
                 if (methDescr.equals(_method))
                 {
+                    // method which are overriden should have an override annotation @todo
                     NodeList<AnnotationExpr> annotations = item.getAnnotations();
                     if (!annotations.isEmpty())
                     {
@@ -52,15 +54,27 @@ public class MethodOverrideNoAnnotation extends MethodOverride {
             }
 
             //  Check all ancestors for matching methods
-            _rt.forEach( ancestor ->
+            getOverridenMethods().forEach( method ->
             {
-               // list from symbolsolver cannot easily get annotations from ast ...@todo
-                //NodeList<AnnotationExpr> ae =  md.get(0).getAnnotations();
+                // Retrieve list of annotations from the wrapped node stored
+                NodeList<AnnotationExpr> annotations = method.getWrappedNode().getAnnotations();
+
+                if (!annotations.isEmpty())
+                {
+                    for(AnnotationExpr ea : annotations)
+                    {
+                        if(ea.getName().toString().contentEquals("Override"))
+                        {
+                            //no_annotation = false;
+                        }
+                    }
+                }
             });
         }
 
         return no_annotation;
     }
+
 
         @Override
     public CodeContext.CodeContextEnum getType() {

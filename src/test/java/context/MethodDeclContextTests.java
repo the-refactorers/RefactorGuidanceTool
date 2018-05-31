@@ -239,7 +239,7 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         MethodDescriber md = new MethodDescriber("void","MethodFour","()");
         cc.setMethodDescriber(md);
         cc.setCMFAnalyzer(cmf);
-        MethodOverrideNoAnnotation mod = new MethodOverrideNoAnnotation(cc);
+        MethodOverrideWithoutNoAnnotation mod = new MethodOverrideWithoutNoAnnotation(cc);
 
         try {
             Assert.assertTrue(mod.detect());

@@ -3,18 +3,11 @@ package analysis.context;
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.symbolsolver.javaparser.Navigator;
-import com.github.javaparser.symbolsolver.javaparsermodel.JavaParserFacade;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration;
 import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
 import com.github.javaparser.symbolsolver.model.typesystem.ReferenceType;
-import javassist.compiler.ast.MethodDecl;
 
-import java.lang.annotation.Annotation;
 import java.util.*;
 
 /**
@@ -31,6 +24,8 @@ public class MethodOverride implements IContextDetector{
 
     protected Map<String,List<String>> classesFound = new HashMap<>();
     private final String V_CLASS_LIST = "#class-list";
+
+    protected List<JavaParserMethodDeclaration>  listOfNodesForOverrideMethods = new ArrayList<>();
 
     public MethodOverride() {
     }
@@ -67,11 +62,12 @@ public class MethodOverride implements IContextDetector{
                         if(fullSignatureMatch(m)) {
                         //if (m.getName().contentEquals(_method.getName())) {
                             //System.out.println("Class " + m.declaringType().getQualifiedName() + " has method " + nameOfMethod);
-                            System.out.println("Full signature = " + m.getSignature());
-                            System.out.println("Returns " + m.getReturnType().describe());
-                            System.out.println("Returns " + m.getQualifiedSignature());
+                            //System.out.println("Full signature = " + m.getSignature());
+                            //System.out.println("Returns " + m.getReturnType().describe());
+                            //System.out.println("Returns " + m.getQualifiedSignature());
 
-                            addClassNameToClassList(m.declaringType().getQualifiedName());
+                            addClassNameToClassList((JavaParserMethodDeclaration)m);
+                            listOfNodesForOverrideMethods.add((JavaParserMethodDeclaration)m);
                         }
                 });
             }
@@ -96,18 +92,24 @@ public class MethodOverride implements IContextDetector{
         return CodeContext.CodeContextEnum.MethodOverride;
     }
 
-    protected void addClassNameToClassList(String className) {
+    protected void addClassNameToClassList(JavaParserMethodDeclaration jpClass) {
         if(!classesFound.isEmpty())
         {
             List<String> actualList = new ArrayList<>(classesFound.get(V_CLASS_LIST));
-            if(!actualList.contains(className)) {
-                actualList.add(className);
+
+            if(!actualList.contains(jpClass.declaringType().getQualifiedName())) {
+                actualList.add(jpClass.declaringType().getQualifiedName());
                 classesFound.put(V_CLASS_LIST, actualList);
             }
         }
         else
         {
-            classesFound.put(V_CLASS_LIST, Arrays.asList(className));
+            classesFound.put(V_CLASS_LIST, Arrays.asList(jpClass.declaringType().getQualifiedName()));
         }
+    }
+
+    protected List<JavaParserMethodDeclaration> getOverridenMethods()
+    {
+        return listOfNodesForOverrideMethods;
     }
 }
