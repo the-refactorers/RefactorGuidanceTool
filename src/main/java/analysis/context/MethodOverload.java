@@ -20,10 +20,9 @@ import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
-import com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration;
 import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
 import com.github.javaparser.symbolsolver.model.typesystem.ReferenceType;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 
 import java.util.*;
 
@@ -36,8 +35,6 @@ public class MethodOverload extends ContextDetector {
     private ClassMethodFinder _analyzer = null;
     private MethodDescriber _md = null;
     private List<JavaParserMethodDeclaration>  methodsMatchingInName = new ArrayList<>();
-
-    private final String V_METHOD_LIST = "#method-list";
 
     public MethodOverload(ContextConfiguration cc) {
         super(cc);

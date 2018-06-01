@@ -7,11 +7,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
-import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
-import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,7 +64,7 @@ public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
         NodeList<AnnotationExpr> annotations = item.getAnnotations();
 
         // Set no annotation flag, if none of the overrides of the local method says @Override
-        if(!annotations.stream().anyMatch(anno -> anno.getName().toString().contentEquals("Override")))
+        if(annotations.stream().noneMatch(anno -> anno.getName().toString().contentEquals("Override")))
         {
             setNoAnnotation(true);
             parameters.addMethodNameToVariableList(item, className);

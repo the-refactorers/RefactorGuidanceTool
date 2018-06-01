@@ -25,9 +25,6 @@ public class ContextDetectorSetBuilder {
     private List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();
     private List<ICodeAnalyzer> _analyzers = new ArrayList<ICodeAnalyzer>();
 
-    public void SetAIT() {
-    }
-
     public void SetAIT(AdaptiveInstructionTree ait)  {
         setAIT(ait);
     }

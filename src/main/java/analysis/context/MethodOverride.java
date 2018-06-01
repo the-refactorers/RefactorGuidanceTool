@@ -48,8 +48,6 @@ public class MethodOverride extends ContextDetector{
     @Override
     public boolean detect() throws Exception {
 
-        boolean ovveride_exists = false;
-
         // Determine all classes/interfaces that are superseeding the class being analyzed
         ReferenceTypeDeclaration rtd = _analyzer.getReferenceTypeDeclarationOfClass();
         _rt = rtd.getAllAncestors();

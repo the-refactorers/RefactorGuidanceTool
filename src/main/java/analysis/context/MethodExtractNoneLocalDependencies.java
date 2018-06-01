@@ -2,17 +2,12 @@ package analysis.context;
 
 import ait.CodeContext;
 import analysis.dataflow.MethodDataFlowAnalyzer;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.symbolsolver.javaparser.Navigator;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.List;
-import java.util.Map;
 
 public class MethodExtractNoneLocalDependencies extends ContextDetector {
 
-    MethodDataFlowAnalyzer _analyzer = null;
+    private MethodDataFlowAnalyzer _analyzer = null;
 
     public MethodExtractNoneLocalDependencies(ContextConfiguration cc) {
         this._analyzer = cc.getMethodDataFlowAnalyzer();

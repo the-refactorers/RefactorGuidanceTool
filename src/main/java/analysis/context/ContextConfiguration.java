@@ -4,7 +4,6 @@ import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
 
 /**
  * Class is a container that can be used to access specific analyzers or other type of
@@ -13,16 +12,16 @@ import com.github.javaparser.ast.body.MethodDeclaration;
  */
 public class ContextConfiguration {
 
-    String _methodName;
-    MethodDescriber _method;
+    private String _methodName;
+    private  MethodDescriber _method;
 
-    CompilationUnit _cu;
-    String _className;
+    private CompilationUnit _cu;
+    private String _className;
 
-    ClassMethodFinder _cmf;
-    MethodDataFlowAnalyzer _mdfa;
+    private ClassMethodFinder _cmf;
+    private MethodDataFlowAnalyzer _mdfa;
 
-    CodeSection _codeSection = new CodeSection(-1, -1);
+    private CodeSection _codeSection = new CodeSection(-1, -1);
 
     public void setCompilationUnit(CompilationUnit cu) {
         _cu = cu;
