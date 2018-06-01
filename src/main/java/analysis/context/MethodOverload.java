@@ -18,6 +18,7 @@ package analysis.context;
 
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import analysis.MethodAnalyzer.MethodDescriber;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration;
 import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
@@ -33,19 +34,14 @@ import java.util.*;
 public class MethodOverload implements IContextDetector {
 
     private ClassMethodFinder _analyzer = null;
-    private String _methodName = null;
+    private MethodDescriber _md = null;
     private List<JavaParserMethodDeclaration>  methodsMatchingInName = new ArrayList<>();
     private ParameterCollector pc = new ParameterCollector();
     private final String V_METHOD_LIST = "#method-list";
 
-    public MethodOverload(ClassMethodFinder cmf, String methodName) {
-        this._analyzer = cmf;
-        this._methodName = methodName;
-    }
-
     public MethodOverload(ContextConfiguration cc) {
         this._analyzer = cc.getCMFAnalyzer();
-        this._methodName = cc.getMethodName();
+        this._md = cc.getMethodDescriber();
     }
 
     @Override
@@ -64,7 +60,8 @@ public class MethodOverload implements IContextDetector {
                 // provided method name
                 rtd_ancestor.getDeclaredMethods().forEach(m ->
                 {
-                    if(MethodNameOnlyMatch(m)) {
+                    if(_analyzer.MethodNameOnlyMatch(m, _md) &&
+                            !_analyzer.fullMethodSignatureMatch(m, _md)) {
                         pc.addMethodNameToVariableList(((JavaParserMethodDeclaration)m).getWrappedNode(), m.declaringType().getClassName());
                         methodsMatchingInName.add((JavaParserMethodDeclaration)m);
                     }
@@ -73,10 +70,6 @@ public class MethodOverload implements IContextDetector {
         });
 
         return !methodsMatchingInName.isEmpty();
-    }
-
-    private boolean MethodNameOnlyMatch(MethodDeclaration m) {
-        return m.getName().contentEquals(_methodName);
     }
 
     @Override

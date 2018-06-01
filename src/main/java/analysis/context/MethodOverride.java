@@ -58,7 +58,7 @@ public class MethodOverride implements IContextDetector{
                 // provided method name
                 rtd_ancestor.getDeclaredMethods().forEach(m ->
                 {
-                        if(fullSignatureMatch(m)) {
+                        if(_analyzer.fullMethodSignatureMatch(m, _method)) {
                         //if (m.getName().contentEquals(_method.getName())) {
                             //System.out.println("Class " + m.declaringType().getQualifiedName() + " has method " + nameOfMethod);
                             //System.out.println("Full signature = " + m.getSignature());
@@ -73,14 +73,6 @@ public class MethodOverride implements IContextDetector{
         });
 
         return !parameters.getCollection().isEmpty();
-    }
-
-    // Check for an exact match of the method
-    // This is also done on the parameter signature level on types, so names of parameters are allowed to be different
-    protected boolean fullSignatureMatch(MethodDeclaration m) {
-        return  m.getReturnType().describe().contentEquals(_method.getType()) &&
-                m.getName().contentEquals(_method.getName()) &&
-                m.getSignature().contentEquals(_method.getSignature());
     }
 
     @Override

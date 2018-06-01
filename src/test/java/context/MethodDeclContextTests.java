@@ -368,4 +368,28 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         }
     }
 
+    // A bug was present triggering overload for override methods
+    @Test
+    public void detectOverrideMethodAsNotOverloaded()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        MethodDescriber md = new MethodDescriber("void","MethodOne","()");
+        cc.setMethodDescriber(md);
+        cc.setCMFAnalyzer(cmf);
+        MethodOverload mod = new MethodOverload(cc);
+
+        try {
+            Assert.assertFalse(mod.detect());
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
 }

@@ -248,7 +248,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         {
             //methodFound = methodDecl.getName().toString().equals(method) || methodFound;
             System.out.print(methodDecl.getSignature().toString());
-            methodFound = fullSignatureMatch(method, methodDecl) || methodFound;
+            methodFound = fullSignatureMatchAST(method, methodDecl) || methodFound;
         }
 
         return methodFound;
@@ -313,12 +313,26 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         return isMethodDefinedInSuperClass(method);
     }
 
-    private boolean fullSignatureMatch(MethodDescriber given, MethodDeclaration match) {
+    private boolean fullSignatureMatchAST(MethodDescriber given, MethodDeclaration match) {
 
         return  given.getType().contentEquals(match.getType().asString()) &&
                 given.getName().contentEquals(match.getName().asString()) &&
                 given.getSignature().contentEquals(match.getSignature().asString());
 
+    }
+
+    // Check for an exact match of the method
+    // This is also done on the parameter signature level on types, so names of parameters are allowed to be different
+    public boolean fullMethodSignatureMatch(com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration m,
+                                            MethodDescriber md) {
+        return  m.getReturnType().describe().contentEquals(md.getType()) &&
+                m.getName().contentEquals(md.getName()) &&
+                m.getSignature().contentEquals(md.getSignature());
+    }
+
+    public boolean MethodNameOnlyMatch(com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration method,
+                                       MethodDescriber md) {
+        return method.getName().contentEquals(md.getName());
     }
 
     @Override
