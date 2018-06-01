@@ -1,4 +1,5 @@
 package analysis.context;
 
-public class MethodExtractSingleResult {
+public class MethodExtractSingleResult extends MethodExtract {
+
 }

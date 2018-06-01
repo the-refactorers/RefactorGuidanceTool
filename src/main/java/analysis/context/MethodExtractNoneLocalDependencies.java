@@ -5,19 +5,17 @@ import analysis.dataflow.MethodDataFlowAnalyzer;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.List;
 
-public class MethodExtractNoneLocalDependencies extends ContextDetector {
-
-    private MethodDataFlowAnalyzer _analyzer = null;
+public class MethodExtractNoneLocalDependencies extends MethodExtract {
 
     public MethodExtractNoneLocalDependencies(ContextConfiguration cc) {
-        this._analyzer = cc.getMethodDataFlowAnalyzer();
+        super(cc);
     }
 
     public boolean detect() throws Exception {
 
         boolean result = false;
 
-        if (_analyzer != null) {
+        if (validDataFlowAnalyzer()) {
 
             _analyzer.start();
             List<String> vfi = _analyzer.variablesForInput();
@@ -25,17 +23,8 @@ public class MethodExtractNoneLocalDependencies extends ContextDetector {
 
             result = vfi.isEmpty() && vfo.isEmpty();
         }
-        else
-        {
-            throw new Exception("Valid MethodDataFlowAnalyzer should be provided in ContextConfiguration");
-        }
 
         return result;
-    }
-
-    @Override
-    public ParameterCollector getParameters() {
-        throw new NotImplementedException();
     }
 
     @Override
