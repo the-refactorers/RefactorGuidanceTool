@@ -37,7 +37,7 @@ public class ContextAnalyzer {
     }
 
     private void extendParameterDefinitions(IContextDetector detector) {
-        Map<String, List<String>> parameters = detector.getParameterMap();
+        Map<String, List<String>> parameters = detector.getParameters().getCollection();
         parameters.forEach((parameter, value) -> _parameterDefinitions.put(parameter, value));
     }
 

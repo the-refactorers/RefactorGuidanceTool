@@ -15,7 +15,7 @@ public class MethodInterfaceDeclaration implements IContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private MethodDescriber _method = null;
-    private Map<String,List<String>> _parameterMap = new HashMap<>();
+    private ParameterCollector _params = new ParameterCollector();
 
     public MethodInterfaceDeclaration(ClassMethodFinder cmf, MethodDescriber method) {
         this._analyzer = cmf;
@@ -34,7 +34,7 @@ public class MethodInterfaceDeclaration implements IContextDetector {
         {
             if(_analyzer.isMethodDeclaredFirstTimeInInterface(_method))
             {
-                _parameterMap.put("#interface", Arrays.asList(_analyzer.methodDefinedInInterface()));
+                _params.addInterfaceName(_analyzer.methodDefinedInInterface());
                 result = true;
             }
         }
@@ -47,12 +47,8 @@ public class MethodInterfaceDeclaration implements IContextDetector {
     }
 
     @Override
-    public Map<String,List<String>> getParameterMap() {
-        return _parameterMap;
-    }
-
     public ParameterCollector getParameters() {
-        throw new NotImplementedException();
+        return _params;
     }
 
     @Override

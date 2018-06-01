@@ -85,11 +85,6 @@ public class MethodOverload implements IContextDetector {
     }
 
     @Override
-    public Map<String, List<String>> getParameterMap() {
-        return null;
-    }
-
-    @Override
     public CodeContext.CodeContextEnum getType() {
         return CodeContext.CodeContextEnum.MethodOverload;
     }

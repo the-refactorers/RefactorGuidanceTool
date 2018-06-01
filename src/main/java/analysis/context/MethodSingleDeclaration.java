@@ -14,7 +14,8 @@ public class MethodSingleDeclaration implements IContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private MethodDescriber _method = null;
-    private Map<String,List<String>> _parameterMap = new HashMap<>();
+
+    private ParameterCollector _params = new ParameterCollector();
 
     public MethodSingleDeclaration(ClassMethodFinder cmf, MethodDescriber method) {
         this._analyzer = cmf;
@@ -32,17 +33,14 @@ public class MethodSingleDeclaration implements IContextDetector {
 
     @Override
     public boolean detect() throws Exception {
-        boolean result = false;
 
         if(_analyzer != null)
         {
             if(!_analyzer.isMethodDefinedInSuperClass(_method) &&
                 !_analyzer.isMethodDeclaredFirstTimeInInterface(_method))
             {
-                _parameterMap.put("#method", Arrays.asList(this._method.fullTypeSignature()));
-                _parameterMap.put("#class", Arrays.asList(this._analyzer.getQualifiedClassName()));
-
-                result = true;
+                _params.addSingleMethodName(this._method.fullTypeSignature());
+                _params.addSingleClassName(this._analyzer.getQualifiedClassName());
             }
         }
         else
@@ -50,16 +48,11 @@ public class MethodSingleDeclaration implements IContextDetector {
             throw(new Exception("Analyzer = null"));
         }
 
-        return result;
-    }
-
-    @Override
-    public Map<String,List<String>> getParameterMap() {
-        return _parameterMap;
+        return !_params.getCollection().isEmpty();
     }
 
     public ParameterCollector getParameters(){
-        throw new NotImplementedException();
+        return _params;
     }
 
     @Override

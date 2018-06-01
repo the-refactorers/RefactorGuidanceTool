@@ -33,9 +33,6 @@ public interface IContextDetector {
      */
     public ParameterCollector getParameters();
 
-    @Deprecated
-    public Map<String,List<String>> getParameterMap();
-
     /**
      * Type name of detector
      * @return

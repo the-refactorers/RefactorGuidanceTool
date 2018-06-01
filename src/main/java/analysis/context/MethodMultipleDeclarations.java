@@ -12,7 +12,7 @@ public class MethodMultipleDeclarations implements IContextDetector {
     private ClassMethodFinder _analyzer = null;
     private MethodDescriber _method = null;
 
-    private Map<String,List<String>> _parameterMap = new HashMap<>();
+    private ParameterCollector _params = new ParameterCollector();
 
     public MethodMultipleDeclarations(ClassMethodFinder cmf, MethodDescriber md)
     {
@@ -26,17 +26,14 @@ public class MethodMultipleDeclarations implements IContextDetector {
     }
 
     public boolean detect() throws Exception {
-        boolean result = false;
 
         if(_analyzer != null)
         {
             if(_analyzer.isMethodDefinedInSuperClass(_method) ||
                 _analyzer.isMethodDeclaredFirstTimeInInterface(_method))
-
             {
-                _parameterMap.put("#method", Arrays.asList(this._method.fullTypeSignature()));
-                _parameterMap.put("#class", Arrays.asList(this._analyzer.getQualifiedClassName()));
-                result = true;
+                _params.addSingleMethodName(this._method.fullTypeSignature());
+                _params.addSingleClassName(this._analyzer.getQualifiedClassName());
             }
         }
         else
@@ -44,16 +41,12 @@ public class MethodMultipleDeclarations implements IContextDetector {
             throw(new Exception("Analyzer = null"));
         }
 
-        return result;
-    }
-
-    public ParameterCollector getParameters() {
-        throw new NotImplementedException();
+        return !_params.getCollection().isEmpty();
     }
 
     @Override
-    public Map<String,List<String>> getParameterMap() {
-        return _parameterMap;
+    public ParameterCollector getParameters() {
+        return _params;
     }
 
     @Override

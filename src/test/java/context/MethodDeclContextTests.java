@@ -72,10 +72,11 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             msd.detect();
+            retrieveParams(msd);
 
-            Assert.assertEquals(2, msd.getParameterMap().size());
-            Assert.assertTrue(msd.getParameterMap().containsKey("#method"));
-            Assert.assertTrue(msd.getParameterMap().containsKey("#class"));
+            Assert.assertEquals(2, _params.size());
+            Assert.assertTrue(_params.containsKey(_pc.getMethodType()));
+            Assert.assertTrue(_params.containsKey(_pc.getClassType()));
         }
         catch(Exception e)
         {
@@ -116,10 +117,11 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             mmd.detect();
+            retrieveParams(mmd);
 
-            Assert.assertEquals(2, mmd.getParameterMap().size());
-            Assert.assertTrue(mmd.getParameterMap().containsKey("#method"));
-            Assert.assertTrue(mmd.getParameterMap().containsKey("#class"));
+            Assert.assertEquals(2, _params.size());
+            Assert.assertTrue(_params.containsKey(_pc.getMethodType()) &&
+                    _params.containsKey(_pc.getClassType()));
         }
         catch(Exception e)
         {
@@ -160,9 +162,10 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             msd.detect();
+            retrieveParams(msd);
 
-            Assert.assertEquals(1, msd.getParameterMap().size());
-            Assert.assertTrue(msd.getParameterMap().containsKey("#interface"));
+            Assert.assertEquals(1, _params.size());
+            Assert.assertTrue(_params.containsKey(_pc.getInterfaceType()));
         }
         catch(Exception e)
         {

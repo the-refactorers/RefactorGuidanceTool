@@ -38,10 +38,6 @@ public class MethodExtractSingleArgument implements IContextDetector {
     }
 
     @Override
-    public Map<String,List<String>> getParameterMap() {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
     public ParameterCollector getParameters() {
         throw new NotImplementedException();
     }

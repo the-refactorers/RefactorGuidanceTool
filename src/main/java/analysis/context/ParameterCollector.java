@@ -11,9 +11,15 @@ public class ParameterCollector {
 
     private final String V_CLASS_LIST = "#class-list";
     private final String V_METHOD_LIST = "#method-list";
+    private final String V_CLASS = "#class";
+    private final String V_METHOD = "#method";
+    private final String V_INTERFACE = "#interface";
 
     public  String getMethodListType() {return V_METHOD_LIST;}
     public  String getClassListType() {return V_CLASS_LIST;}
+    public String  getMethodType() { return V_METHOD;}
+    public String  getClassType() { return V_CLASS;}
+    public String getInterfaceType() { return V_INTERFACE;}
 
     protected void addClassNameToVariableList(JavaParserMethodDeclaration jpClass) {
 
@@ -44,4 +50,16 @@ public class ParameterCollector {
     }
 
     public Map<String,List<String>> getCollection() { return paramList; }
+
+    public void addInterfaceName(String interfaceName) {
+        addParameterValue(getInterfaceType(), interfaceName);
+    }
+
+    public void addSingleMethodName(String methodName)    {
+        addParameterValue(getMethodType(), methodName);
+    }
+
+    public void addSingleClassName(String className)    {
+        addParameterValue(getClassType(), className);
+    }
 }
