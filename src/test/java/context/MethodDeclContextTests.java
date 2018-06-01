@@ -244,8 +244,10 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         try {
             // Detector should indicate that class B has methods that do not contain an @Override marker
             Assert.assertTrue(mod.detect());
-            Assert.assertTrue(mod.getParameters().getCollection().get("#method-list").contains("B :: void MethodFour()"));
-            Assert.assertTrue(mod.getParameters().getCollection().get("#method-list").contains("E :: void MethodFour()"));
+
+            ParameterCollector p = mod.getParameters();
+            Assert.assertTrue(p.getCollection().get(p.getMethodListType()).contains("B :: void MethodFour()"));
+            Assert.assertTrue(p.getCollection().get(p.getMethodListType()).contains("E :: void MethodFour()"));
         }
         catch(Exception e)
         {
@@ -269,8 +271,11 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             Assert.assertTrue(mod.detect());
-            Assert.assertFalse(mod.getParameterMap().get("#method-list").contains("A :: void MethodOne()"));
-            Assert.assertTrue(mod.getParameterMap().get("#method-list").contains("B :: void MethodOne()"));
+
+            ParameterCollector p = mod.getParameters();
+
+            Assert.assertFalse(p.getCollection().get(p.getMethodListType()).contains("A :: void MethodOne()"));
+            Assert.assertTrue(p.getCollection().get(p.getMethodListType()).contains("B :: void MethodOne()"));
         }
         catch(Exception e)
         {
@@ -324,8 +329,11 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             Assert.assertTrue(mod.detect());
-            Assert.assertTrue(mod.getParameters().getCollection().get("#method-list").contains("B :: void MethodEight(boolean)"));
-            Assert.assertTrue(mod.getParameters().getCollection().get("#method-list").contains("E :: boolean MethodEight(boolean)"));
+
+            ParameterCollector p = mod.getParameters();
+
+            Assert.assertTrue(p.getCollection().get(p.getMethodListType()).contains("B :: void MethodEight(boolean)"));
+            Assert.assertTrue(p.getCollection().get(p.getMethodListType()).contains("E :: boolean MethodEight(boolean)"));
         }
         catch(Exception e)
         {
