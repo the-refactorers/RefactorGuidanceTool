@@ -31,15 +31,17 @@ import java.util.*;
  * Determine those methods that have the same name as the given method
  * but differ in parameters or type
  */
-public class MethodOverload implements IContextDetector {
+public class MethodOverload extends ContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private MethodDescriber _md = null;
     private List<JavaParserMethodDeclaration>  methodsMatchingInName = new ArrayList<>();
-    private ParameterCollector pc = new ParameterCollector();
+
     private final String V_METHOD_LIST = "#method-list";
 
     public MethodOverload(ContextConfiguration cc) {
+        super(cc);
+
         this._analyzer = cc.getCMFAnalyzer();
         this._md = cc.getMethodDescriber();
     }
@@ -62,7 +64,7 @@ public class MethodOverload implements IContextDetector {
                 {
                     if(_analyzer.MethodNameOnlyMatch(m, _md) &&
                             !_analyzer.fullMethodSignatureMatch(m, _md)) {
-                        pc.addMethodNameToVariableList(((JavaParserMethodDeclaration)m).getWrappedNode(), m.declaringType().getClassName());
+                        parameters.addMethodNameToVariableList(((JavaParserMethodDeclaration)m).getWrappedNode(), m.declaringType().getClassName());
                         methodsMatchingInName.add((JavaParserMethodDeclaration)m);
                     }
                 });
@@ -70,11 +72,6 @@ public class MethodOverload implements IContextDetector {
         });
 
         return !methodsMatchingInName.isEmpty();
-    }
-
-    @Override
-    public ParameterCollector getParameters() {
-        return pc;
     }
 
     @Override

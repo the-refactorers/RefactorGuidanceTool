@@ -7,12 +7,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
-public class MethodMultipleDeclarations implements IContextDetector {
+public class MethodMultipleDeclarations extends ContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private MethodDescriber _method = null;
-
-    private ParameterCollector _params = new ParameterCollector();
 
     public MethodMultipleDeclarations(ClassMethodFinder cmf, MethodDescriber md)
     {
@@ -32,8 +30,8 @@ public class MethodMultipleDeclarations implements IContextDetector {
             if(_analyzer.isMethodDefinedInSuperClass(_method) ||
                 _analyzer.isMethodDeclaredFirstTimeInInterface(_method))
             {
-                _params.addSingleMethodName(this._method.fullTypeSignature());
-                _params.addSingleClassName(this._analyzer.getQualifiedClassName());
+                getParameters().addSingleMethodName(this._method.fullTypeSignature());
+                getParameters().addSingleClassName(this._analyzer.getQualifiedClassName());
             }
         }
         else
@@ -41,12 +39,7 @@ public class MethodMultipleDeclarations implements IContextDetector {
             throw(new Exception("Analyzer = null"));
         }
 
-        return !_params.getCollection().isEmpty();
-    }
-
-    @Override
-    public ParameterCollector getParameters() {
-        return _params;
+        return !getParameters().getCollection().isEmpty();
     }
 
     @Override

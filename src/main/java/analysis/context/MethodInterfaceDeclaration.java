@@ -11,11 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MethodInterfaceDeclaration implements IContextDetector {
+public class MethodInterfaceDeclaration extends ContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private MethodDescriber _method = null;
-    private ParameterCollector _params = new ParameterCollector();
 
     public MethodInterfaceDeclaration(ClassMethodFinder cmf, MethodDescriber method) {
         this._analyzer = cmf;
@@ -34,7 +33,7 @@ public class MethodInterfaceDeclaration implements IContextDetector {
         {
             if(_analyzer.isMethodDeclaredFirstTimeInInterface(_method))
             {
-                _params.addInterfaceName(_analyzer.methodDefinedInInterface());
+                getParameters().addInterfaceName(_analyzer.methodDefinedInInterface());
                 result = true;
             }
         }
@@ -44,11 +43,6 @@ public class MethodInterfaceDeclaration implements IContextDetector {
         }
 
         return result;
-    }
-
-    @Override
-    public ParameterCollector getParameters() {
-        return _params;
     }
 
     @Override

@@ -6,6 +6,11 @@ import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
+/**
+ * Class is a container that can be used to access specific analyzers or other type of
+ * data in a generic way. All detectors should use this container construction to
+ * pass in detector specific data
+ */
 public class ContextConfiguration {
 
     String _methodName;

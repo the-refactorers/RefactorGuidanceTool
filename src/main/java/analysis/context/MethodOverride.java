@@ -14,15 +14,13 @@ import java.util.*;
  * Determines if given method is an override of any parent class.
  * It is not taken into account an interface. This is done bu MethodInterfaceDeclaration
  */
-public class MethodOverride implements IContextDetector{
+public class MethodOverride extends ContextDetector{
 
     protected String _className = null;
     protected ClassMethodFinder _analyzer = null;
     protected MethodDescriber _method = null;
 
     protected List<ReferenceType> _rt = null;
-
-    ParameterCollector parameters = new ParameterCollector();
 
     protected List<JavaParserMethodDeclaration>  listOfNodesForOverrideMethods = new ArrayList<>();
 
@@ -35,9 +33,16 @@ public class MethodOverride implements IContextDetector{
     }
 
     public MethodOverride(ContextConfiguration cc) {
+        super(cc);
+
         this._analyzer = cc.getCMFAnalyzer();
         this._method = cc.getMethodDescriber();
         this._className = cc.getClassName();
+    }
+
+    protected List<JavaParserMethodDeclaration> getOverridenMethods()
+    {
+        return listOfNodesForOverrideMethods;
     }
 
     @Override
@@ -76,22 +81,7 @@ public class MethodOverride implements IContextDetector{
     }
 
     @Override
-    public ParameterCollector getParameters() {
-        return parameters;
-    }
-
-    public Map<String,List<String>> getParameterMap()
-    {
-        return getParameters().getCollection();
-    }
-
-    @Override
     public CodeContext.CodeContextEnum getType() {
         return CodeContext.CodeContextEnum.MethodOverride;
-    }
-
-    protected List<JavaParserMethodDeclaration> getOverridenMethods()
-    {
-        return listOfNodesForOverrideMethods;
     }
 }

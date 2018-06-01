@@ -10,12 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MethodSingleDeclaration implements IContextDetector {
+public class MethodSingleDeclaration extends ContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private MethodDescriber _method = null;
-
-    private ParameterCollector _params = new ParameterCollector();
 
     public MethodSingleDeclaration(ClassMethodFinder cmf, MethodDescriber method) {
         this._analyzer = cmf;
@@ -39,8 +37,8 @@ public class MethodSingleDeclaration implements IContextDetector {
             if(!_analyzer.isMethodDefinedInSuperClass(_method) &&
                 !_analyzer.isMethodDeclaredFirstTimeInInterface(_method))
             {
-                _params.addSingleMethodName(this._method.fullTypeSignature());
-                _params.addSingleClassName(this._analyzer.getQualifiedClassName());
+                getParameters().addSingleMethodName(this._method.fullTypeSignature());
+                getParameters().addSingleClassName(this._analyzer.getQualifiedClassName());
             }
         }
         else
@@ -48,11 +46,7 @@ public class MethodSingleDeclaration implements IContextDetector {
             throw(new Exception("Analyzer = null"));
         }
 
-        return !_params.getCollection().isEmpty();
-    }
-
-    public ParameterCollector getParameters(){
-        return _params;
+        return !getParameters().getCollection().isEmpty();
     }
 
     @Override

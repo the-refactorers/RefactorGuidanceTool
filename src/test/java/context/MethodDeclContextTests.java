@@ -216,13 +216,12 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             overrideDetector.detect();
-
-            Map<String,List<String>> paramValues = overrideDetector.getParameterMap();
+            retrieveParams(overrideDetector);
 
             //  classes should be returned (B and E)
-            Assert.assertEquals(2, paramValues.get("#class-list").size());
-            Assert.assertTrue("B not found", paramValues.get("#class-list").contains("B"));
-            Assert.assertTrue("E not found", paramValues.get("#class-list").contains("E"));
+            Assert.assertEquals(2,_params.get(_pc.getClassListType()).size());
+            Assert.assertTrue("B not found", _params.get(_pc.getClassListType()).contains("B"));
+            Assert.assertTrue("E not found", _params.get(_pc.getClassListType()).contains("E"));
         }
         catch(Exception e)
         {
@@ -305,9 +304,10 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             boolean needsOverride = overrideDetector.detect();
+            retrieveParams(overrideDetector);
 
             // Expect there is no #class-list key defined, while this is a unique method
-            Assert.assertFalse(overrideDetector.getParameterMap().containsKey("#class-list"));
+            Assert.assertFalse(_params.containsKey(_pc.getClassListType()));
             Assert.assertFalse(needsOverride);
         }
         catch(Exception e)

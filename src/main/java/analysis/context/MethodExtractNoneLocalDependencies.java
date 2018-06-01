@@ -10,7 +10,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.List;
 import java.util.Map;
 
-public class MethodExtractNoneLocalDependencies implements IContextDetector {
+public class MethodExtractNoneLocalDependencies extends ContextDetector {
 
     MethodDataFlowAnalyzer _analyzer = null;
 
