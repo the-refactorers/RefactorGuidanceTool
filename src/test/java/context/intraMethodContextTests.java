@@ -7,8 +7,10 @@ import analysis.context.MethodExtractNoneLocalDependencies;
 import analysis.context.MethodExtractSingleArgument;
 import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class intraMethodContextTests extends JavaParserTestSetup {
@@ -52,7 +54,11 @@ public class intraMethodContextTests extends JavaParserTestSetup {
 
                 MethodExtractSingleArgument mesp = new MethodExtractSingleArgument(cc);
 
-                assertEquals(true, mesp.detect());
+                Assert.assertEquals(true, mesp.detect());
+                retrieveParams(mesp);
+
+                Assert.assertTrue(_params.get(_pc.getArgumentListType()).contains("a"));
+                Assert.assertEquals(1, _params.get(_pc.getArgumentListType()).size());
             }
             catch (Exception e) {
                 e.printStackTrace();

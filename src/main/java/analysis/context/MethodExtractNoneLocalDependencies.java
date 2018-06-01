@@ -27,7 +27,7 @@ public class MethodExtractNoneLocalDependencies extends ContextDetector {
         }
         else
         {
-            throw new Exception("Analyzer not configured. Call setupAnalysis(...) first");
+            throw new Exception("Valid MethodDataFlowAnalyzer should be provided in ContextConfiguration");
         }
 
         return result;

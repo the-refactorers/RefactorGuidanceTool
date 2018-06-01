@@ -22,19 +22,16 @@ public class MethodExtractSingleArgument extends ContextDetector {
             _analyzer.start();
             List<String> vfi = _analyzer.variablesForInput();
 
-            result = (vfi.size() == 1);
+            if (vfi.size() == 1) {
+                parameters.addArgumentName(vfi.get(0));
+            }
         }
         else
         {
-            throw new Exception("Analyzer not configured. Call setupAnalysis(...) first");
+            throw new Exception("Valid MethodDataFlowAnalyzer should be provided in ContextConfiguration");
         }
 
-        return result;
-    }
-
-    @Override
-    public ParameterCollector getParameters() {
-        throw new NotImplementedException();
+        return !parameters.getCollection().isEmpty();
     }
 
     @Override
