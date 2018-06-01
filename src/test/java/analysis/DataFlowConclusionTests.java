@@ -18,86 +18,80 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
     @Test
     public void ExtractCodeWithoutDependenciesNoInputNeeded()
     {
-        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.initialize(md, new CodeSection(7,10));
-        analyzer.start();
+        extractRegion(7, 10);
+        setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
 
-        List<String> vfi = analyzer.variablesForInput();
+        mdfaAnalysis();
+
+        List<String> vfi = _mdfaAna.variablesForInput();
         Assert.assertEquals(0, vfi.size());
     }
 
     @Test
     public void ExtractCodeWith1ParamInput()
     {
-        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Input");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.initialize(md, new CodeSection(19,22));
-        analyzer.start();
+        extractRegion(19,22);
+        setupTestClass("ExtractMethodCases", "ExtractionWith1Input");
+        mdfaAnalysis();
 
-        List<String> vfi = analyzer.variablesForInput();
+        List<String> vfi = _mdfaAna.variablesForInput();
         Assert.assertEquals(1, vfi.size());
     }
 
     @Test
     public void ExtractCodeWith2ParamInput()
     {
-        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith2Input");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.initialize(md, new CodeSection(32,35));
-        analyzer.start();
+        extractRegion(32,35);
+        setupTestClass("ExtractMethodCases", "ExtractionWith2Input");
+        mdfaAnalysis();
 
-        List<String> vfi = analyzer.variablesForInput();
+        List<String> vfi = _mdfaAna.variablesForInput();
         Assert.assertEquals(2, vfi.size());
     }
 
     @Test
     public void ExtractCodeWith1ParamOutput()
     {
-        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractionWith1Output");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.initialize(md, new CodeSection(43,46));
-        analyzer.start();
+        extractRegion(43,46);
+        setupTestClass("ExtractMethodCases", "ExtractionWith1Output");
+        mdfaAnalysis();
 
-        List<String> vfi = analyzer.variablesForOutput();
+        List<String> vfi = _mdfaAna.variablesForOutput();
         Assert.assertEquals(1, vfi.size());
     }
 
     @Test
     public void ExtractCodeWith1ParamOutputAndUseOfParameterAfterThatWasOnlyRead()
     {
-        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWith1OutputButVariableUsedAfter");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.initialize(md, new CodeSection(55,58));
-        analyzer.start();
+        extractRegion(55,58);
+        setupTestClass("ExtractMethodCases", "ExtractWith1OutputButVariableUsedAfter");
+        mdfaAnalysis();
 
-        List<String> vfi = analyzer.variablesForOutput();
+        List<String> vfi = _mdfaAna.variablesForOutput();
         Assert.assertEquals(1, vfi.size());
     }
 
     @Test
     public void ExtractCodeWith2Output()
     {
-        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWith2Output");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.initialize(md, new CodeSection(68,72));
-        analyzer.start();
+        extractRegion(68,72);
+        setupTestClass("ExtractMethodCases", "ExtractWith2Output");
+        mdfaAnalysis();
 
-        List<String> vfi = analyzer.variablesForOutput();
+        List<String> vfi = _mdfaAna.variablesForOutput();
         Assert.assertEquals(2, vfi.size());
     }
 
     @Test
     public void ExtractCodeWhereBeforeVariableIsReadAfterWrittenInWithin()
     {
-        MethodDeclaration md = setupTestClass("ExtractMethodCases", "ExtractWhereBeforeVariableIsReadAfterWrittenInWithin");
-        MethodDataFlowAnalyzer analyzer = new MethodDataFlowAnalyzer();
-        analyzer.initialize(md, new CodeSection(82,85));
-        analyzer.start();
+        extractRegion(82,85);
+        setupTestClass("ExtractMethodCases", "ExtractWhereBeforeVariableIsReadAfterWrittenInWithin");
+        mdfaAnalysis();
 
         // Because the variable is assigned, before a read. It is not
         // needed to pass on to extract method
-        List<String> vfi = analyzer.variablesForInput();
+        List<String> vfi = _mdfaAna.variablesForInput();
         Assert.assertEquals(0, vfi.size());
     }
 }

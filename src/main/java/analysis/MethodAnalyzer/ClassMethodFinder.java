@@ -173,6 +173,25 @@ public class ClassMethodFinder implements ICodeAnalyzer {
         return methodName;
     }
 
+    public MethodDeclaration getMethodDeclarationForLocation(int location) {
+
+        MethodDeclaration methodDecl = null;
+
+        if(isLocationInMethod(location)) {
+            // Find in the AST the class declaration of the provided class in the Ctor
+            List<MethodDeclaration> lmd = getMethodDeclarations();
+
+            for (MethodDeclaration method : lmd) {
+                if (Checker.inRangeInclusive(method.getRange().get().begin.line, method.getRange().get().end.line, location)) {
+                    methodDecl = method;
+                    break;
+                }
+            }
+        }
+
+        return methodDecl;
+    }
+
     /**
      * Determine if the provided methodName has been declared in an interface or not
      * @param methodName Name of method to be resolved
