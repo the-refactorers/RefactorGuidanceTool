@@ -7,6 +7,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
 import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
 
 import java.util.ArrayList;
@@ -23,8 +24,6 @@ public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
     // We assume the situation is true, cycling through all methods
     private boolean method_without_override_annotation = true;
 
-    private final String V_METHOD_LIST = "#method-list";
-
     public MethodOverrideWithoutNoAnnotation(ContextConfiguration cc) {
         super(cc);
     }
@@ -36,7 +35,7 @@ public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
 
         if(super.detect())
         {
-            // first check local class in analyzed method
+            // first check local class in analyzed method if annotation exists
             ClassOrInterfaceDeclaration class4Analysis = Navigator.demandClassOrInterface(
                     _analyzer.getCompilationUnit(),
                    _analyzer.getQualifiedClassName());
@@ -72,26 +71,7 @@ public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
         if(!annotations.stream().anyMatch(anno -> anno.getName().toString().contentEquals("Override")))
         {
             setNoAnnotation(true);
-            addMethodNameToVariableList(item, className);
-        }
-    }
-
-    private void addMethodNameToVariableList(MethodDeclaration item, String className) {
-
-        String methodName =  className + "::" + item.getSignature().toString();
-
-        if(paramList.get(V_METHOD_LIST) != null)
-        {
-            List<String> actualList = new ArrayList<>(paramList.get(V_METHOD_LIST));
-
-            if(!actualList.contains(methodName)) {
-                actualList.add(methodName);
-                paramList.put(V_METHOD_LIST, actualList);
-            }
-        }
-        else
-        {
-            paramList.put(V_METHOD_LIST, Arrays.asList(methodName));
+            parameters.addMethodNameToVariableList(item, className);
         }
     }
 

@@ -5,6 +5,7 @@ import analysis.dataflow.MethodDataFlowAnalyzer;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.symbolsolver.javaparser.Navigator;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,10 @@ public class MethodExtractSingleArgument implements IContextDetector {
     @Override
     public Map<String,List<String>> getParameterMap() {
         throw new UnsupportedOperationException("Not implemented yet");
+    }
+
+    public ParameterCollector getParameters() {
+        throw new NotImplementedException();
     }
 
     @Override

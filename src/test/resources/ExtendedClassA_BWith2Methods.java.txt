@@ -16,6 +16,12 @@ public class E implements D
     {
 
     }
+
+
+    public boolean MethodEight(boolean b)
+    {
+        return true;
+    }
 }
 
 public class B extends E implements C, D

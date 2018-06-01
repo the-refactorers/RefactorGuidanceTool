@@ -22,8 +22,7 @@ public class MethodOverride implements IContextDetector{
 
     protected List<ReferenceType> _rt = null;
 
-    protected Map<String,List<String>> paramList = new HashMap<>();
-    protected final String V_CLASS_LIST = "#class-list";
+    ParameterCollector parameters = new ParameterCollector();
 
     protected List<JavaParserMethodDeclaration>  listOfNodesForOverrideMethods = new ArrayList<>();
 
@@ -66,16 +65,18 @@ public class MethodOverride implements IContextDetector{
                             //System.out.println("Returns " + m.getReturnType().describe());
                             //System.out.println("Returns " + m.getQualifiedSignature());
 
-                            addClassNameToVariableList((JavaParserMethodDeclaration)m);
+                            parameters.addClassNameToVariableList((JavaParserMethodDeclaration)m);
                             listOfNodesForOverrideMethods.add((JavaParserMethodDeclaration)m);
                         }
                 });
             }
         });
 
-        return !paramList.isEmpty();
+        return !parameters.getCollection().isEmpty();
     }
 
+    // Check for an exact match of the method
+    // This is also done on the parameter signature level on types, so names of parameters are allowed to be different
     protected boolean fullSignatureMatch(MethodDeclaration m) {
         return  m.getReturnType().describe().contentEquals(_method.getType()) &&
                 m.getName().contentEquals(_method.getName()) &&
@@ -83,30 +84,18 @@ public class MethodOverride implements IContextDetector{
     }
 
     @Override
-    public Map<String,List<String>> getParameterMap() {
-        return paramList;
+    public ParameterCollector getParameters() {
+        return parameters;
+    }
+
+    public Map<String,List<String>> getParameterMap()
+    {
+        return getParameters().getCollection();
     }
 
     @Override
     public CodeContext.CodeContextEnum getType() {
         return CodeContext.CodeContextEnum.MethodOverride;
-    }
-
-    protected void addClassNameToVariableList(JavaParserMethodDeclaration jpClass) {
-
-        if(paramList.get(V_CLASS_LIST) != null)
-        {
-            List<String> actualList = new ArrayList<>(paramList.get(V_CLASS_LIST));
-
-            if(!actualList.contains(jpClass.declaringType().getQualifiedName())) {
-                actualList.add(jpClass.declaringType().getQualifiedName());
-                paramList.put(V_CLASS_LIST, actualList);
-            }
-        }
-        else
-        {
-            paramList.put(V_CLASS_LIST, Arrays.asList(jpClass.declaringType().getQualifiedName()));
-        }
     }
 
     protected List<JavaParserMethodDeclaration> getOverridenMethods()

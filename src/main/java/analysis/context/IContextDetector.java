@@ -11,7 +11,6 @@ public interface IContextDetector {
     // When analyzes has detected specific context, it will hold internally a set of relevant parameters
     // to this context definition. getParameters extends a set of ParamCOllection, which can be used later in the
     // generation of instructions by parsing the AIT and filling in parameters present in this tree
-    //ParamCollection getParameters(ParamCollection setOfParameters);
 
     // pass on object with specific configuration of analysis parameters
     // e.g. method name, sections to act on
@@ -29,9 +28,13 @@ public interface IContextDetector {
 
     /**
      * When a context exists a hashmap is filled with parametrized values in form <"$param","param-value">
-     * @return Hashmap with concrete values for parameters
+     *     which is contained in the ParameterCollector
+     * @return ParameterCollector object which can be queried for the desired parameters
      */
-    Map<String, List<String>> getParameterMap();
+    public ParameterCollector getParameters();
+
+    @Deprecated
+    public Map<String,List<String>> getParameterMap();
 
     /**
      * Type name of detector

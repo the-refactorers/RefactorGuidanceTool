@@ -18,14 +18,25 @@ package analysis.context;
 
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
+import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
+import com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration;
+import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
+import com.github.javaparser.symbolsolver.model.typesystem.ReferenceType;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * Determine those methods that have the same name as the given method
+ * but differ in parameters or type
+ */
 public class MethodOverload implements IContextDetector {
 
     private ClassMethodFinder _analyzer = null;
     private String _methodName = null;
+    private List<JavaParserMethodDeclaration>  methodsMatchingInName = new ArrayList<>();
+    private ParameterCollector pc = new ParameterCollector();
+    private final String V_METHOD_LIST = "#method-list";
 
     public MethodOverload(ClassMethodFinder cmf, String methodName) {
         this._analyzer = cmf;
@@ -39,12 +50,43 @@ public class MethodOverload implements IContextDetector {
 
     @Override
     public boolean detect() throws Exception {
-        return false;
+
+        // Determine all classes/interfaces that are superseeding the class being analyzed
+        ReferenceTypeDeclaration rtd = _analyzer.getReferenceTypeDeclarationOfClass();
+        List<ReferenceType> _rt = rtd.getAllAncestors();
+
+        _rt.forEach( ancestor ->
+        {
+            ReferenceTypeDeclaration rtd_ancestor = ancestor.getTypeDeclaration();
+
+            if (!_analyzer.isIgnoredPackage(rtd_ancestor) && !ancestor.getTypeDeclaration().isInterface()) {
+                // when ancestor is not a interface declaration, check if any method in super classes equals name of
+                // provided method name
+                rtd_ancestor.getDeclaredMethods().forEach(m ->
+                {
+                    if(MethodNameOnlyMatch(m)) {
+                        pc.addMethodNameToVariableList(((JavaParserMethodDeclaration)m).getWrappedNode(), m.declaringType().getClassName());
+                        methodsMatchingInName.add((JavaParserMethodDeclaration)m);
+                    }
+                });
+            }
+        });
+
+        return !methodsMatchingInName.isEmpty();
+    }
+
+    private boolean MethodNameOnlyMatch(MethodDeclaration m) {
+        return m.getName().contentEquals(_methodName);
     }
 
     @Override
-    public Map<String,List<String>> getParameterMap() {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public ParameterCollector getParameters() {
+        return pc;
+    }
+
+    @Override
+    public Map<String, List<String>> getParameterMap() {
+        return null;
     }
 
     @Override

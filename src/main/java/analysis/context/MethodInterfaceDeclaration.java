@@ -3,6 +3,7 @@ package analysis.context;
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -48,6 +49,10 @@ public class MethodInterfaceDeclaration implements IContextDetector {
     @Override
     public Map<String,List<String>> getParameterMap() {
         return _parameterMap;
+    }
+
+    public ParameterCollector getParameters() {
+        throw new NotImplementedException();
     }
 
     @Override

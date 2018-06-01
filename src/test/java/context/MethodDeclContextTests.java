@@ -244,8 +244,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         try {
             // Detector should indicate that class B has methods that do not contain an @Override marker
             Assert.assertTrue(mod.detect());
-            Assert.assertTrue(mod.getParameterMap().get("#method-list").contains("B::MethodFour()"));
-            Assert.assertTrue(mod.getParameterMap().get("#method-list").contains("E::MethodFour()"));
+            Assert.assertTrue(mod.getParameters().getCollection().get("#method-list").contains("B :: void MethodFour()"));
+            Assert.assertTrue(mod.getParameters().getCollection().get("#method-list").contains("E :: void MethodFour()"));
         }
         catch(Exception e)
         {
@@ -269,8 +269,8 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             Assert.assertTrue(mod.detect());
-            Assert.assertFalse(mod.getParameterMap().get("#method-list").contains("A::MethodOne()"));
-            Assert.assertTrue(mod.getParameterMap().get("#method-list").contains("B::MethodOne()"));
+            Assert.assertFalse(mod.getParameterMap().get("#method-list").contains("A :: void MethodOne()"));
+            Assert.assertTrue(mod.getParameterMap().get("#method-list").contains("B :: void MethodOne()"));
         }
         catch(Exception e)
         {
@@ -296,10 +296,60 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         MethodOverride overrideDetector = new MethodOverride(cc);
 
         try {
-            overrideDetector.detect();
+            boolean needsOverride = overrideDetector.detect();
 
             // Expect there is no #class-list key defined, while this is a unique method
             Assert.assertFalse(overrideDetector.getParameterMap().containsKey("#class-list"));
+            Assert.assertFalse(needsOverride);
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectOverloadedMethods()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        MethodDescriber md = new MethodDescriber("int","MethodEight","(boolean)");
+        cc.setMethodDescriber(md);
+        cc.setCMFAnalyzer(cmf);
+        MethodOverload mod = new MethodOverload(cc);
+
+        try {
+            Assert.assertTrue(mod.detect());
+            Assert.assertTrue(mod.getParameters().getCollection().get("#method-list").contains("B :: void MethodEight(boolean)"));
+            Assert.assertTrue(mod.getParameters().getCollection().get("#method-list").contains("E :: boolean MethodEight(boolean)"));
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectMethodNotOverloaded()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        MethodDescriber md = new MethodDescriber("void","MethodTwo","()");
+        cc.setMethodDescriber(md);
+        cc.setCMFAnalyzer(cmf);
+        MethodOverload mod = new MethodOverload(cc);
+
+        try {
+            Assert.assertFalse(mod.detect());
+            Assert.assertTrue(mod.getParameters().getCollection().isEmpty());
         }
         catch(Exception e)
         {

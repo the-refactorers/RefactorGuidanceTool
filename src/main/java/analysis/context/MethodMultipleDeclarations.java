@@ -3,6 +3,7 @@ package analysis.context;
 import ait.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
@@ -44,6 +45,10 @@ public class MethodMultipleDeclarations implements IContextDetector {
         }
 
         return result;
+    }
+
+    public ParameterCollector getParameters() {
+        throw new NotImplementedException();
     }
 
     @Override
