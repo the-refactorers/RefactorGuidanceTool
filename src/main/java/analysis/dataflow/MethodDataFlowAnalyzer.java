@@ -58,6 +58,11 @@ public class MethodDataFlowAnalyzer implements ICodeAnalyzer {
         return variableDataFlowSet;
     }
 
+    public List<String> getVariablesUsedInExtractSection()
+    {
+        return variableDataFlowSet.getVariablesUsedInWithinSection();
+    }
+
     private void setExtractSection(int start, int end)
     {
         for(MarkVariableFlowList markRunner : markRunners)

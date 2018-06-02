@@ -57,4 +57,16 @@ public class VariableFlowSet {
     {
         return dataFlowMethodVariables.stream().allMatch(VariableFlowTable::allFactsInRegionMarkedFalse);
     }
+
+    public List<String> getVariablesUsedInWithinSection() {
+        List<String> variables = new ArrayList<>();
+
+        dataFlowMethodVariables.forEach(flowTable ->
+        {
+            if(flowTable.within_region.read || flowTable.within_region.write)
+                variables.add(flowTable.name);
+        });
+
+        return variables;
+    }
 }

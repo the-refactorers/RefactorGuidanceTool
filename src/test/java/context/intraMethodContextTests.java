@@ -12,6 +12,8 @@ import static org.junit.Assert.fail;
 
 public class intraMethodContextTests extends JavaParserTestSetup {
 
+    double _hiddenName = 0.0;
+
     @Test
     public void detectNoneLocalVarDependencies()
     {
@@ -131,5 +133,49 @@ public class intraMethodContextTests extends JavaParserTestSetup {
             e.printStackTrace();
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    public void detectNoneArgumentsNeeded()
+    {
+        try {
+            extractRegion(7, 10);
+            setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
+
+            ContextConfiguration cc = mdfaAnalysis();
+            MethodExtractNoneArguments mena = new MethodExtractNoneArguments(cc);
+
+            assertEquals(true, mena.detect());
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractNoneArguments, mena.getType());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectNoneResultsNeeded()
+    {
+        try {
+            extractRegion(7, 10);
+            setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
+
+            ContextConfiguration cc = mdfaAnalysis();
+            MethodExtractNoneResults menr = new MethodExtractNoneResults(cc);
+
+            assertEquals(true, menr.detect());
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractNoneResults, menr.getType());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectLocalNameHiding()
+    {
+
     }
 }

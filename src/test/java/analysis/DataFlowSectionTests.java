@@ -93,8 +93,6 @@ public class DataFlowSectionTests extends JavaParserTestSetup {
 
         VariableFlowTable varFT = dataFlowSet.getVariableFlowTable("a");
         Assert.assertTrue(varFT.before_region.read);
-        //varFT = dataFlowSet.getVariableFlowTable("f");
-        //Assert.assertTrue(varFT.within_region.write);
     }
 
     @Test

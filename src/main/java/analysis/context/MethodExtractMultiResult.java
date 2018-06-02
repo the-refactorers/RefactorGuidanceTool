@@ -30,5 +30,3 @@ public class MethodExtractMultiResult extends MethodExtract {
         return CodeContext.CodeContextEnum.MethodExtractMultiResult;
     }
 }
-
-

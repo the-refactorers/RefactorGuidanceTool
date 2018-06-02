@@ -15,7 +15,7 @@ public class ExtractMethodCases
     public void ExtractionWith1Input()
     {
         int a=0;
-
+        int c=5;
         //extract this
         int b=2;
         b = a + 1;
@@ -113,5 +113,21 @@ public class ExtractMethodCases
 
         System.out.println(b);
         System.out.println(a);
+    }
+
+    int _hiddenName = 4;
+
+     public void ExtractionWith2Input1NoneRelated()
+    {
+        int a=0;
+        int _hiddenName =2;
+        int c=4;
+
+        //_hiddenName is also defined @ class level; a + _hiddenName should be argument (not providing _hiddenArgument
+        // goes unnoticed ok, but changes behavior)
+        _hiddenName = _hiddenName + 1 + a;
+        //extract end
+
+        a = _hiddenName + 3;
     }
 }

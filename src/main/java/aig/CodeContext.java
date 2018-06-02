@@ -21,8 +21,9 @@ public class CodeContext {
         MethodExtractSingleResult,
         MethodExtractMultiArgument,
         MethodExtractMultiResult,
-        intramethod_extract_multi_result,
-        intramethod_extract_double_name_binding, // variable name is binded on different scopes
+        MethodExtractNameHiding, // variable name is binded on different scopes
+        MethodExtractNoneArguments,
+        MethodExtractNoneResults,
         intramethod_extract_flow_break,
         intramethod_extract_flow_return
 
