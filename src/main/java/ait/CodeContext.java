@@ -22,15 +22,14 @@ public class CodeContext {
         MethodExtractNoneLocalDependencies,
         MethodExtractSingleArgument,
         MethodExtractSingleResult,
-        intramethod_extract_multi_argument,
+        MethodExtractMultiArgument,
         intramethod_extract_no_result,
         intramethod_extract_multi_result,
         intramethod_extract_double_name_binding, // variable name is binded on different scopes
         intramethod_extract_flow_break,
-        intramethod_extract_flow_return,
+        intramethod_extract_flow_return
 
-
-        always_true     // used to link multiple actions together, where no decision is required
+        , always_true     // used to link multiple actions together, where no decision is required
     }
 }
 

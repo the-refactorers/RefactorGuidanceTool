@@ -84,4 +84,16 @@ public class ExtractMethodCases
         int b = a + 1; // Variable is not 'live' here; it was written in within before the first read
         // extract end
     }
+
+    public void ExtractionWith2Input1NoneRelated()
+    {
+        int a=0;
+        int b=2;
+
+        //extract this b=read and written in section so is needed; a = read)
+        b = a + 1 + b;
+        //extract end
+
+        b = 0;
+    }
 }

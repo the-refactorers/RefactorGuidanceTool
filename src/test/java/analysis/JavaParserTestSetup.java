@@ -4,6 +4,7 @@ import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.ResourceExampleClassParser;
 import analysis.context.CodeSection;
+import analysis.context.ContextConfiguration;
 import analysis.context.IContextDetector;
 import analysis.context.ParameterCollector;
 import analysis.dataflow.MethodDataFlowAnalyzer;
@@ -69,11 +70,16 @@ public class JavaParserTestSetup {
         _params = _pc.getCollection();
     }
 
-    protected void mdfaAnalysis()
+    protected ContextConfiguration mdfaAnalysis()
     {
         _mdfaAna = new MethodDataFlowAnalyzer();
         _mdfaAna.initialize(_selectedMethod, _extractRegion);
         _mdfaAna.start();
+
+        ContextConfiguration cc = new ContextConfiguration();
+        cc.setMethodDataFlowAnalyzer(_mdfaAna);
+
+        return cc;
     }
 
     @Before
