@@ -1,4 +1,4 @@
-package ait;
+package aig;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -6,13 +6,13 @@ import java.util.EnumSet;
 import java.util.List;
 
 /**
- * The root of the tree were start is made to
+ * The root of the graph were start is made to
  * generate adaptive instructions for refactoring procedures
  * based on specific context of code structure
  */
 @XmlRootElement(name="AIT")
 @XmlType(propOrder = {"refactorMechanic", "description", "allInstructions"})
-public class AdaptiveInstructionTree {
+public class AdaptiveInstructionGraph {
 
     public final static int FINAL_NODE = -1;
 
@@ -43,7 +43,7 @@ public class AdaptiveInstructionTree {
      * Returns the set of all unique code context decision points in the AIT
      * @return
      */
-    public EnumSet<CodeContext.CodeContextEnum> allUniqueCodeContextInTree()
+    public EnumSet<CodeContext.CodeContextEnum> allUniqueCodeContextInGraph()
     {
         for(Instruction i : allInstructions) {
             for(ContextDecision cd : i.getDecisions()) {
@@ -59,9 +59,9 @@ public class AdaptiveInstructionTree {
      * It has filtered out always_true, which is a placeholder for those actions that always should take place
      * @return
      */
-    public EnumSet<CodeContext.CodeContextEnum> allSpecializedCodeContextInTree()
+    public EnumSet<CodeContext.CodeContextEnum> allSpecializedCodeContextInGraph()
     {
-        EnumSet<CodeContext.CodeContextEnum> set = allUniqueCodeContextInTree();
+        EnumSet<CodeContext.CodeContextEnum> set = allUniqueCodeContextInGraph();
         set.remove(CodeContext.CodeContextEnum.always_true);
 
         return set;

@@ -17,7 +17,7 @@
 
 package analysis;
 
-import ait.*;
+import aig.*;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.context.ContextAnalyzer;
@@ -26,7 +26,6 @@ import analysis.context.ContextDetectorSetBuilder;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 
@@ -89,11 +88,11 @@ public class RenameMethodAnalyzer {
         // When we have a method name, start generating instructions for renaming this method
         if (!selectedMethod.getName().isEmpty()) {
             // SELECT refactoring
-            AdaptiveInstructionTree tree = null;
+            AdaptiveInstructionGraph graph = null;
             if(refactorAction.contentEquals("Rename"))
-                 tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
+                graph = new AIG_RenameGeneration().getAdaptiveInstructionGraph();
             else if(refactorAction.contentEquals("ExtractMethod"))
-                tree = new AIT_ExtractMethodGeneration().getAdaptiveInstructionTree();
+                graph = new AIG_ExtractMethodGeneration().getAdaptiveInstructionGraph();
 
             // Analyze context and set-up code context of generator
             ContextConfiguration cac = new ContextConfiguration();
@@ -105,13 +104,13 @@ public class RenameMethodAnalyzer {
 
             ContextDetectorSetBuilder cb = new ContextDetectorSetBuilder();
             cb.setConfiguration(cac);
-            cb.setAIT(tree);
+            cb.setAIT(graph);
 
             ContextAnalyzer ca = new ContextAnalyzer();
 
             try {
                 // CONFIGURE context detectors
-                // Build up specific set of context detectors belonging to the tree provided
+                // Build up specific set of context detectors belonging to the graph provided
                 ca.setContextDetectors(cb.getContextDetectors());
 
                 // ANALYZE code
@@ -124,13 +123,13 @@ public class RenameMethodAnalyzer {
             }
 
             // Instantiate instruction generator
-            InstructionGenerator generator = new InstructionGenerator(tree);
+            InstructionGenerator generator = new InstructionGenerator(graph);
 
             // Provide concrete parameter values and detected context set
             generator.setParameterMap(ca.getParameterMap());
             generator.setContext(ca.getDetectedContextSet());
 
-            // GENERATE (=Filter nodes from tree + parsing of parametrized values in resulting nodes)
+            // GENERATE (=Filter nodes from graph + parsing of parametrized values in resulting nodes)
             instructionSteps = generator.generateInstruction(true);
         }
         else

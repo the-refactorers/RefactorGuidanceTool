@@ -1,4 +1,4 @@
-package ait;
+package aig;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

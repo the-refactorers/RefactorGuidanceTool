@@ -1,12 +1,12 @@
-package ait;
+package aig;
 
-public class AIT_RenameGeneration {
+public class AIG_RenameGeneration implements I_AIG {
 
-    AdaptiveInstructionTree tree = new AdaptiveInstructionTree();
+    AdaptiveInstructionGraph _graph = new AdaptiveInstructionGraph();
 
-    public AIT_RenameGeneration() {
-        tree.setDescription("... Remember, code is written for humans ...");
-        tree.setRefactorMechanic("Rename Method");
+    public AIG_RenameGeneration() {
+        _graph.setDescription("... Remember, code is written for humans ...");
+        _graph.setRefactorMechanic("Rename Method");
 
         Instruction i1 = new Instruction(1, "\nBelow are INSTRUCTIONS for renaming #method in class #class of your project, assuming all risks are taken into account.\n" +
                 "Feel free to skip specific steps for risks which you think are not relevant. Steps are marked for specific risks. \n");
@@ -57,22 +57,20 @@ public class AIT_RenameGeneration {
         i8.addDecision(i8_d1);
         i9.addDecision(i9_d1);
 
-        tree.setFirstInstruction(i1);
+        _graph.setFirstInstruction(i1);
 
-        tree.addInstruction(i2);
-        tree.addInstruction(i3);
-        tree.addInstruction(i4);
-        tree.addInstruction(i5);
-        tree.addInstruction(i6);
-        tree.addInstruction(i7);
-        tree.addInstruction(i8);
-        tree.addInstruction(i9);
+        _graph.addInstruction(i2);
+        _graph.addInstruction(i3);
+        _graph.addInstruction(i4);
+        _graph.addInstruction(i5);
+        _graph.addInstruction(i6);
+        _graph.addInstruction(i7);
+        _graph.addInstruction(i8);
+        _graph.addInstruction(i9);
     }
 
-
-    public AdaptiveInstructionTree getAdaptiveInstructionTree()
-    {
-        return tree;
+    @Override
+    public AdaptiveInstructionGraph getAdaptiveInstructionGraph() {
+        return _graph;
     }
-
 }

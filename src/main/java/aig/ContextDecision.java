@@ -1,4 +1,4 @@
-package ait;
+package aig;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -13,7 +13,7 @@ public class ContextDecision {
     @XmlTransient
     private Instruction                     nextInstruction;
     private CodeContext.CodeContextEnum     contextType;
-    private int                             nextInstructionID = AdaptiveInstructionTree.FINAL_NODE;
+    private int                             nextInstructionID = AdaptiveInstructionGraph.FINAL_NODE;
     private String                          _riskDescription = new String("");
 
     public ContextDecision(CodeContext.CodeContextEnum decisionCtxt, int resultsIn)

@@ -96,4 +96,22 @@ public class ExtractMethodCases
 
         b = 0;
     }
+
+    public void ExtractWith2OutputAnd2NoneRelated()
+    {
+        int a=0;
+        int c=10;
+
+        //extract this
+        int b=2;
+        int d=5;
+        b = a + 1;
+        a = 8;
+        c = a + b;
+        d--;
+        //extract end
+
+        System.out.println(b);
+        System.out.println(a);
+    }
 }

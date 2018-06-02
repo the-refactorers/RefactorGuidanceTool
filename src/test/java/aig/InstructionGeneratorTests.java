@@ -1,7 +1,6 @@
-package ait;
+package aig;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -11,14 +10,14 @@ public class InstructionGeneratorTests {
     @Test
     public void GivenNoContextResultsInEmptyInstructions()
     {
-        AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
-        InstructionGenerator generator = new InstructionGenerator(tree);
+        AdaptiveInstructionGraph graph = new AIG_TestGenerator().getAdaptiveInstructionGraph();
+        InstructionGenerator generator = new InstructionGenerator(graph);
 
         Assert.assertEquals(generator.generateInstruction().get(0), "ERROR: Context-set is empty or null");
     }
 
     @Test
-    public void GivenTreeNullGivesErrorInstruction()
+    public void GivenGraphNullGivesErrorInstruction()
     {
         InstructionGenerator generator = new InstructionGenerator(null);
         Assert.assertEquals(generator.generateInstruction().get(0), "ERROR: AIT is null");
@@ -27,8 +26,8 @@ public class InstructionGeneratorTests {
     @Test
     public void GivenEmptyContextSetShouldResultInErrorInstruction()
     {
-        AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
-        InstructionGenerator generator = new InstructionGenerator(tree);
+        AdaptiveInstructionGraph graph = new AIG_TestGenerator().getAdaptiveInstructionGraph();
+        InstructionGenerator generator = new InstructionGenerator(graph);
         EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
         generator.setContext(codeContext);
 
@@ -38,8 +37,8 @@ public class InstructionGeneratorTests {
     @Test
     public void GivenInstructionAndParameterMapFillsParameterValues()
     {
-        AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
-        InstructionGenerator generator = new InstructionGenerator(tree);
+        AdaptiveInstructionGraph graph = new AIG_TestGenerator().getAdaptiveInstructionGraph();
+        InstructionGenerator generator = new InstructionGenerator(graph);
 
         // Instruction in template Parameter fill test: Dummy method $method is located in dummy $class
         Map<String, List<String>> parameterMap = new HashMap<>();
@@ -59,17 +58,17 @@ public class InstructionGeneratorTests {
     @Test
     public void defaultNoRiskContextDescribed()
     {
-        AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTree();
-        Assert.assertEquals(0, tree.getSetOfRiskContext().size());
-        Assert.assertEquals("", tree.allInstructions.get(0).decisions.get(0).getRiskDescription());
+        AdaptiveInstructionGraph graph = new AIG_TestGenerator().getAdaptiveInstructionGraph();
+        Assert.assertEquals(0, graph.getSetOfRiskContext().size());
+        Assert.assertEquals("", graph.allInstructions.get(0).decisions.get(0).getRiskDescription());
     }
 
     @Test
-    public void treeWithRiskDescriptions()
+    public void graphWithRiskDescriptions()
     {
-        AdaptiveInstructionTree tree = new AIT_TestGenerator().getAdaptiveInstructionTreeWithRiskDescription();
-        Assert.assertEquals(1, tree.getSetOfRiskContext().size());
-        Assert.assertFalse(tree.allInstructions.get(0).decisions.get(1).getRiskDescription().isEmpty());
-        Assert.assertTrue(tree.allInstructions.get(0).decisions.get(0).getRiskDescription().isEmpty());
+        AdaptiveInstructionGraph graph = new AIG_TestGenerator().getAdaptiveInstructionGraphWithRiskDescription();
+        Assert.assertEquals(1, graph.getSetOfRiskContext().size());
+        Assert.assertFalse(graph.allInstructions.get(0).decisions.get(1).getRiskDescription().isEmpty());
+        Assert.assertTrue(graph.allInstructions.get(0).decisions.get(0).getRiskDescription().isEmpty());
     }
 }

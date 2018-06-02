@@ -1,17 +1,17 @@
-package ait;
+package aig;
 
-public class AIT_TestGenerator {
+public class AIG_TestGenerator {
 
-    AdaptiveInstructionTree tree = new AdaptiveInstructionTree();
+    AdaptiveInstructionGraph _graph = new AdaptiveInstructionGraph();
 
-    public AIT_TestGenerator() {
+    public AIG_TestGenerator() {
 
     }
 
-    public AdaptiveInstructionTree getAdaptiveInstructionTree()
+    public AdaptiveInstructionGraph getAdaptiveInstructionGraph()
     {
-        tree.setDescription("An adaptive instruction tree template just for unit test purposes");
-        tree.setRefactorMechanic("Unit Testing Template");
+        _graph.setDescription("An adaptive instruction graph template just for unit test purposes");
+        _graph.setRefactorMechanic("Unit Testing Template");
 
         Instruction i1 = new Instruction(1, "Parameter fill test: Dummy method #method is located in dummy #class ");
         ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodSingleDeclaration, 2);
@@ -22,18 +22,18 @@ public class AIT_TestGenerator {
         Instruction i2 = new Instruction( 2, "Instruction 2: Single declaration method #method ");
         Instruction i3 = new Instruction(3,"Instruction 3: Overrides class #class ");
 
-        tree.addInstruction(i2);
-        tree.addInstruction(i3);
+        _graph.addInstruction(i2);
+        _graph.addInstruction(i3);
 
-        tree.setFirstInstruction(i1);
+        _graph.setFirstInstruction(i1);
 
-        return tree;
+        return _graph;
     }
 
-    public AdaptiveInstructionTree getAdaptiveInstructionTreeWithRiskDescription()
+    public AdaptiveInstructionGraph getAdaptiveInstructionGraphWithRiskDescription()
     {
-        tree.setDescription("An adaptive instruction tree template just for unit test purposes");
-        tree.setRefactorMechanic("Unit Testing Template");
+        _graph.setDescription("An adaptive instruction graph template just for unit test purposes");
+        _graph.setRefactorMechanic("Unit Testing Template");
 
         Instruction i1 = new Instruction(1, "Parameter fill test: Dummy method $method is located in dummy $class");
         ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodSingleDeclaration, 2);
@@ -44,10 +44,10 @@ public class AIT_TestGenerator {
         Instruction i2 = new Instruction( 2, "Instruction 2: Single declaration method $method");
         Instruction i3 = new Instruction(3,"Instruction 3: Overrides class $class");
 
-        tree.addInstruction(i2);
-        tree.addInstruction(i3);
+        _graph.addInstruction(i2);
+        _graph.addInstruction(i3);
 
-        tree.setFirstInstruction(i1);
-        return tree;
+        _graph.setFirstInstruction(i1);
+        return _graph;
     }
 }

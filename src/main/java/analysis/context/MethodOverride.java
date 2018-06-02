@@ -1,10 +1,9 @@
 package analysis.context;
 
-import ait.CodeContext;
+import aig.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import com.github.javaparser.symbolsolver.javaparsermodel.declarations.JavaParserMethodDeclaration;
-import com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration;
 import com.github.javaparser.symbolsolver.model.declarations.ReferenceTypeDeclaration;
 import com.github.javaparser.symbolsolver.model.typesystem.ReferenceType;
 

@@ -1,7 +1,4 @@
-package ait;
-
-import java.util.HashMap;
-import java.util.Map;
+package aig;
 
 public class CodeContext {
 
@@ -23,7 +20,7 @@ public class CodeContext {
         MethodExtractSingleArgument,
         MethodExtractSingleResult,
         MethodExtractMultiArgument,
-        intramethod_extract_no_result,
+        MethodExtractMultiResult,
         intramethod_extract_multi_result,
         intramethod_extract_double_name_binding, // variable name is binded on different scopes
         intramethod_extract_flow_break,

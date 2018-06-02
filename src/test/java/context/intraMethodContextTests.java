@@ -1,21 +1,11 @@
 package context;
 
-import ait.CodeContext;
+import aig.CodeContext;
 import analysis.JavaParserTestSetup;
-import analysis.MethodAnalyzer.ClassMethodFinder;
-import analysis.MethodAnalyzer.MethodDescriber;
 import analysis.context.*;
-import analysis.dataflow.MethodDataFlowAnalyzer;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import javassist.compiler.ast.MethodDecl;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.naming.Context;
-
-import java.util.List;
-
-import static ait.CodeContext.CodeContextEnum.MethodExtractSingleResult;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -109,6 +99,33 @@ public class intraMethodContextTests extends JavaParserTestSetup {
             Assert.assertTrue(_params.get(_pc.getArgumentListType()).contains("b"));
 
             Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractMultiArgument, mema.getType());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectMultiResult()
+    {
+        try {
+            extractRegion(105,112);
+            setupTestClass("ExtractMethodCases", "ExtractWith2OutputAnd2NoneRelated");
+
+            ContextConfiguration cc = mdfaAnalysis();
+            MethodExtractMultiResult memr = new MethodExtractMultiResult(cc);
+
+            Assert.assertEquals(true, memr.detect());
+            retrieveParams(memr);
+
+            Assert.assertNotNull(_params.get(_pc.getResultListType()));
+
+            Assert.assertEquals(2, _params.get(_pc.getResultListType()).size());
+            Assert.assertTrue(_params.get(_pc.getResultListType()).contains("a"));
+            Assert.assertTrue(_params.get(_pc.getResultListType()).contains("b"));
+
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractMultiResult, memr.getType());
         }
         catch (Exception e) {
             e.printStackTrace();

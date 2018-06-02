@@ -1,6 +1,6 @@
 package analysis.context;
 
-import ait.CodeContext;
+import aig.CodeContext;
 
 public class ContextDetector implements IContextDetector {
 

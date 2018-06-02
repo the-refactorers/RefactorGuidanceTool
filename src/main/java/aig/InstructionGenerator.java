@@ -1,4 +1,4 @@
-package ait;
+package aig;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -9,12 +9,12 @@ import java.util.regex.Pattern;
 
 public class InstructionGenerator {
 
-    AdaptiveInstructionTree aitTree = null;
+    AdaptiveInstructionGraph _aig = null;
     EnumSet<CodeContext.CodeContextEnum> contextSet = null;
     private Map<String, List<String>> parameterMap = null;
 
-    public InstructionGenerator(AdaptiveInstructionTree tree)   {
-        aitTree = tree;
+    public InstructionGenerator(AdaptiveInstructionGraph graph)   {
+        _aig = graph;
     }
 
     public void provideContext(EnumSet<CodeContext.CodeContextEnum> contextSet) {
@@ -42,9 +42,9 @@ public class InstructionGenerator {
     /**
      * Based on code context information encoded in contextSet
      * and the variable Name information in the parameter map
-     * Instruction is generated based on the given instruction tree
+     * Instruction is generated based on the given instruction graph
      *
-     * @return  List of strings describing refactor steps based, empty list when invalid no context set, parameter map or missing instruction tree
+     * @return  List of strings describing refactor steps based, empty list when invalid no context set, parameter map or missing instruction graph
      */
     public List<String> generateInstruction(boolean riskOverview)
     {
@@ -54,7 +54,7 @@ public class InstructionGenerator {
         List<String> generatedInstructionList = new ArrayList<>();
         List<String> parsedValuesInstructionList = new ArrayList<>();
 
-        if(aitTree == null) {errStr = "ERROR: AIT is null"; inputErr = true;}
+        if(_aig == null) {errStr = "ERROR: AIT is null"; inputErr = true;}
         else
         if(contextSet == null || contextSet.isEmpty()) {errStr = "ERROR: Context-set is empty or null"; inputErr = true;}
         else
@@ -66,12 +66,12 @@ public class InstructionGenerator {
         if (!inputErr)
         {
             if(riskOverview) {
-                generatedInstructionList.add("Identified RISKS in your code that need special attention when performing " + aitTree.getRefactorMechanic() + " on method #method \n");
+                generatedInstructionList.add("Identified RISKS in your code that need special attention when performing " + _aig.getRefactorMechanic() + " on method #method \n");
                 SummarizeRisks(generatedInstructionList, contextSet);
             }
 
             // built up the instruction list, based on the code context set
-            Instruction _instr = aitTree.getFirstInstruction();
+            Instruction _instr = _aig.getFirstInstruction();
 
             generatedInstructionList.add(_instr.getInstructionDescription());
 
@@ -79,7 +79,7 @@ public class InstructionGenerator {
                 for (ContextDecision decision : _instr.getDecisions()) {
                     // Check if context for specific decision exists in code
                     if (contextSet.contains(decision.getContextType())) {
-                        _instr = aitTree.findInstruction(decision.getNextInstructionID());
+                        _instr = _aig.findInstruction(decision.getNextInstructionID());
                         generatedInstructionList.add(_instr.getInstructionDescription());
                     }
                 }
@@ -130,7 +130,7 @@ public class InstructionGenerator {
         else
         {
             for(CodeContext.CodeContextEnum cce : contextSet)
-                generatedInstructionList.add(aitTree.getRiskDescription(cce));
+                generatedInstructionList.add(_aig.getRiskDescription(cce));
         }
     }
 

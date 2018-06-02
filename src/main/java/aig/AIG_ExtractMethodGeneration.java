@@ -1,15 +1,15 @@
-package ait;
+package aig;
 
-public class AIT_ExtractMethodGeneration implements I_AIT {
+public class AIG_ExtractMethodGeneration implements I_AIG {
 
-    AdaptiveInstructionTree tree = new AdaptiveInstructionTree();
+    AdaptiveInstructionGraph _graph = new AdaptiveInstructionGraph();
 
-    public AIT_ExtractMethodGeneration()
+    public AIG_ExtractMethodGeneration()
     {
-        tree.setDescription("... Remember, keep you methods understandable, small and simple ...");
-        tree.setRefactorMechanic("Extract Method");
+        _graph.setDescription("... Remember, keep you methods understandable, small and simple ...");
+        _graph.setRefactorMechanic("Extract Method");
 
-        // All possible textual instructions in the tree
+        // All possible textual instructions in the graph
         // parameterized values by '$<param>'
         Instruction i1 = new Instruction(1, "Create the new method #new_method. Choose a proper meaningful name.");
         Instruction i2 = new Instruction(2, "Copy code to extract from $method to #new_mehod.");
@@ -29,18 +29,19 @@ public class AIT_ExtractMethodGeneration implements I_AIT {
         i1.addDecision(i1_d1);
         i1.addDecision(i1_d2);
 
-        // Set entry point of tree
-        tree.setFirstInstruction(i1);
+        // Set entry point of graph
+        _graph.setFirstInstruction(i1);
 
-        tree.addInstruction(i2);
-        tree.addInstruction(i3);
-        tree.addInstruction(i4);
-        tree.addInstruction(i5);
-        tree.addInstruction(i6);
+        _graph.addInstruction(i2);
+        _graph.addInstruction(i3);
+        _graph.addInstruction(i4);
+        _graph.addInstruction(i5);
+        _graph.addInstruction(i6);
     }
 
-    public AdaptiveInstructionTree getAdaptiveInstructionTree()
+    @Override
+    public AdaptiveInstructionGraph getAdaptiveInstructionGraph()
     {
-        return tree;
+        return _graph;
     }
 }

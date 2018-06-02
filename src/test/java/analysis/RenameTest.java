@@ -1,6 +1,6 @@
 package analysis;
 
-import ait.*;
+import aig.*;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 import com.github.javaparser.ast.CompilationUnit;
@@ -47,8 +47,8 @@ public class RenameTest {
         parameterMap.put("$method", Arrays.asList(method.fullTypeSignature()));
         parameterMap.put("$class", Arrays.asList(className));
 
-        AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
-        InstructionGenerator generator = new InstructionGenerator(tree);
+        AdaptiveInstructionGraph graph = new AIG_RenameGeneration().getAdaptiveInstructionGraph();
+        InstructionGenerator generator = new InstructionGenerator(graph);
 
         //generator.contextSet = codeContext;
         generator.setParameterMap(parameterMap);
@@ -80,8 +80,8 @@ public class RenameTest {
         parameterMap.put("$method", Arrays.asList(method.fullTypeSignature()));
         parameterMap.put("$class", Arrays.asList(className));
 
-        AdaptiveInstructionTree tree = new AIT_RenameGeneration().getAdaptiveInstructionTree();
-        InstructionGenerator generator = new InstructionGenerator(tree);
+        AdaptiveInstructionGraph graph = new AIG_RenameGeneration().getAdaptiveInstructionGraph();
+        InstructionGenerator generator = new InstructionGenerator(graph);
 
         //generator.contextSet = codeContext;
         generator.setParameterMap(parameterMap);

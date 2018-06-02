@@ -1,6 +1,6 @@
 package analysis.context;
 
-import ait.CodeContext;
+import aig.CodeContext;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
 

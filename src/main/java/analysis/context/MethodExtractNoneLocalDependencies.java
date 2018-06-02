@@ -1,8 +1,7 @@
 package analysis.context;
 
-import ait.CodeContext;
-import analysis.dataflow.MethodDataFlowAnalyzer;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import aig.CodeContext;
+
 import java.util.List;
 
 public class MethodExtractNoneLocalDependencies extends MethodExtract {

@@ -1,9 +1,6 @@
 package analysis.context;
 
-import ait.CodeContext;
-
-import java.util.List;
-import java.util.Map;
+import aig.CodeContext;
 
 // A General interface which every context class should implement
 public interface IContextDetector {

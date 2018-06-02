@@ -1,7 +1,7 @@
 package analysis.context;
 
-import ait.AdaptiveInstructionTree;
-import ait.CodeContext;
+import aig.AdaptiveInstructionGraph;
+import aig.CodeContext;
 import analysis.ICodeAnalyzer;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.dataflow.MethodDataFlowAnalyzer;
@@ -13,24 +13,24 @@ import java.util.List;
 
 /**
  *  Class builds up a set of context detectors that are needed to detect contextual situations
- *  in a given adaptive instruction tree. The list of detectors can be provided to the procedural
+ *  in a given adaptive instruction graph. The list of detectors can be provided to the procedural
  *  guidance generator
  */
 public class ContextDetectorSetBuilder {
 
-    private AdaptiveInstructionTree _ait = null;
+    private AdaptiveInstructionGraph _aig = null;
 
     private ContextConfiguration _analyzerConfig = null;
 
     private List<IContextDetector> _contextDetectors = new ArrayList<IContextDetector>();
     private List<ICodeAnalyzer> _analyzers = new ArrayList<ICodeAnalyzer>();
 
-    public void SetAIT(AdaptiveInstructionTree ait)  {
-        setAIT(ait);
+    public void SetAIT(AdaptiveInstructionGraph aig)  {
+        setAIT(aig);
     }
 
-    public void setAIT(AdaptiveInstructionTree ait) {
-        this._ait = ait;
+    public void setAIT(AdaptiveInstructionGraph aig) {
+        this._aig = aig;
     }
 
     public List<IContextDetector> getContextDetectors() throws Exception {
@@ -38,8 +38,8 @@ public class ContextDetectorSetBuilder {
             throw new Exception("No ContextConfiguration object was defined. call setContextAnalyzerConfiguration(...) first");
         }
 
-        EnumSet<CodeContext.CodeContextEnum> completeCodeContext = this._ait.allUniqueCodeContextInTree();
-        String refactoringProcessName = this._ait.getRefactorMechanic();
+        EnumSet<CodeContext.CodeContextEnum> completeCodeContext = this._aig.allUniqueCodeContextInGraph();
+        String refactoringProcessName = this._aig.getRefactorMechanic();
 
         if(refactoringProcessName.contentEquals("Rename Method"))
         {

@@ -8,7 +8,7 @@
 Name:       Rename Method
 Reason:     "... Remember your code is for a human first and a computer second. Humans need good names...."
 
-// Coding of decision tree where the context of the code is taken into account for decision making
+// Coding of decision graph where the context of the code is taken into account for decision making
 // if context description is valid, the action linked to the decision is taken
 
 <guidance_decision_tree>
