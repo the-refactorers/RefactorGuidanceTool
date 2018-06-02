@@ -14,11 +14,11 @@ public class MethodExtractMultiResult extends MethodExtract {
 
         if (validDataFlowAnalyzer()) {
             _analyzer.start();
-            List<String> vfi = _analyzer.variablesForInput();
+            List<String> vfo = _analyzer.variablesForOutput();
 
-            if (vfi.size() > 1) {
-                vfi.forEach(argument ->
-                        parameters.addArgumentName(argument));
+            if (vfo.size() > 1) {
+                vfo.forEach(result ->
+                        parameters.addResultName(result));
             }
         }
 
@@ -27,7 +27,7 @@ public class MethodExtractMultiResult extends MethodExtract {
 
     @Override
     public CodeContext.CodeContextEnum getType() {
-        return CodeContext.CodeContextEnum.MethodExtractMultiArgument;
+        return CodeContext.CodeContextEnum.MethodExtractMultiResult;
     }
 }
 
