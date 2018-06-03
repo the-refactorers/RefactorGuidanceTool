@@ -117,7 +117,7 @@ public class ExtractMethodCases
 
     int _hiddenName = 4;
 
-     public void ExtractionWith2Input1NoneRelated()
+     public void ExtractionWithLocalVarHidingClassField()
     {
         int a=0;
         int _hiddenName =2;

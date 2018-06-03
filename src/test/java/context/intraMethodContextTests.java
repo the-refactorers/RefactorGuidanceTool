@@ -176,6 +176,26 @@ public class intraMethodContextTests extends JavaParserTestSetup {
     @Test
     public void detectLocalNameHiding()
     {
+        try {
+            extractRegion(126, 129);
+            setupTestClass("ExtractMethodCases", "ExtractionWithLocalVarHidingClassField");
 
+            ContextConfiguration cc = mdfaAnalysis();
+            cc.setClassName("ExtractMethodCases");
+            cc.setCompilationUnit(_cu);
+
+            MethodExtractNameHiding menh = new MethodExtractNameHiding(cc);
+
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractNameHiding, menh.getType());
+            assertEquals(true, menh.detect());
+            retrieveParams(menh);
+
+            Assert.assertEquals(1, _params.get(_pc.getVariableListType()).size());
+            Assert.assertTrue(_params.get(_pc.getVariableListType()).contains("_hiddenName"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
     }
 }
