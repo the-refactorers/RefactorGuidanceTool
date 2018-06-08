@@ -22,6 +22,7 @@ public class CodeContext {
         MethodExtractMultiArgument,
         MethodExtractMultiResult,
         MethodExtractNameHiding, // variable name is binded on different scopes
+        MethodExtractNoNameHiding,
         MethodExtractNoneArguments,
         MethodExtractNoneResults,
         intramethod_extract_flow_break,

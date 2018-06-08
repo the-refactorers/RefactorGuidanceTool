@@ -28,5 +28,4 @@ public class MethodExtractSingleResult extends MethodExtract {
     public CodeContext.CodeContextEnum getType() {
         return CodeContext.CodeContextEnum.MethodExtractSingleResult;
     }
-
 }

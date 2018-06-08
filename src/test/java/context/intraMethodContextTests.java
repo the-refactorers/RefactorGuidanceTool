@@ -198,4 +198,27 @@ public class intraMethodContextTests extends JavaParserTestSetup {
             fail(e.getMessage());
         }
     }
+
+    @Test
+    public void detectNoLocalNameHiding()
+    {
+        try {
+            extractRegion(7, 10);
+            setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
+
+            ContextConfiguration cc = mdfaAnalysis();
+            cc.setClassName("ExtractMethodCases");
+            cc.setCompilationUnit(_cu);
+
+            MethodExtractNoNameHiding menh = new MethodExtractNoNameHiding(cc);
+
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractNoNameHiding, menh.getType());
+            assertTrue(menh.detect());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package analysis.context;
 
 import aig.CodeContext;
+
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
