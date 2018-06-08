@@ -76,13 +76,22 @@ public class InstructionGenerator {
             generatedInstructionList.add(_instr.getInstructionDescription());
 
             while (!_instr.endNode()) {
+
+                int decisionPaths = 0;
+                Instruction prevInstr = _instr;
+
                 for (ContextDecision decision : _instr.getDecisions()) {
+
                     // Check if context for specific decision exists in code
                     if (contextSet.contains(decision.getContextType())) {
                         _instr = _aig.findInstruction(decision.getNextInstructionID());
                         generatedInstructionList.add(_instr.getInstructionDescription());
+                        decisionPaths++; // only one decision should be valid
                     }
+
                 }
+
+                if(decisionPaths > 1) {System.out.println("\nINVALID GRAPH, unambiguous decision at " + prevInstr.instructionID + "\n");}
             }
 
             // Fill in the used variables in the generated instructions, based on the parameter map

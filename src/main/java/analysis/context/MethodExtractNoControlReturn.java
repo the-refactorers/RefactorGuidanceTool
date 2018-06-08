@@ -1,24 +1,23 @@
 package analysis.context;
-
 import aig.CodeContext;
 
 /**
  * This class is the inverse of MethodExtractNameHiding
  */
-public class MethodExtractNoNameHiding extends MethodExtract {
+public class MethodExtractNoControlReturn extends MethodExtract {
 
-    MethodExtractNameHiding _menh;
+    MethodExtractControlReturn _mecr;
 
-    public MethodExtractNoNameHiding(ContextConfiguration cc) {
+    public MethodExtractNoControlReturn(ContextConfiguration cc) {
         super(cc);
 
-        _menh = new MethodExtractNameHiding(cc);
+        _mecr = new MethodExtractControlReturn(cc);
     }
 
     @Override
     public boolean detect() throws Exception {
 
-        return !_menh.detect();
+        return !_mecr.detect();
     }
 
     @Override
