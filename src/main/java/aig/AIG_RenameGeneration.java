@@ -2,6 +2,16 @@ package aig;
 
 public class AIG_RenameGeneration implements I_AIG {
 
+    ContextDescriber cdMethodInterfaceDeclaration = new ContextDescriber(
+            CodeContext.CodeContextEnum.MethodInterfaceDeclaration,
+            "[Method Interface Declaration]. Dependencies with external packages might be broken."
+    );
+
+    ContextDescriber cdMethodOverride = new ContextDescriber(
+            CodeContext.CodeContextEnum.MethodOverride,
+            "[Method override]. Single method rename might change behavior due to polymorphism."
+    );
+
     AdaptiveInstructionGraph _graph = new AdaptiveInstructionGraph();
 
     public AIG_RenameGeneration() {
@@ -25,14 +35,11 @@ public class AIG_RenameGeneration implements I_AIG {
         ContextDecision i2_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i3_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 4);
 
-        ContextDecision i5_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodInterfaceDeclaration, 6);
-        i5_d1.setRiskDescription("[Method Interface Declaration]. Dependencies with external packages might be broken.");
+        ContextDecision i5_d1 = new ContextDecision(cdMethodInterfaceDeclaration, 6);
 
-        ContextDecision i5_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverride, 7);
-        i5_d2.setRiskDescription("[Method override]. Single method rename might change behavior due to polymorphism.");
+        ContextDecision i5_d2 = new ContextDecision(cdMethodOverride, 7);
 
-        ContextDecision i6_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverride, 7);
-        i6_d1.setRiskDescription("[Method override]. Single method rename might change behavior due to polymorphism.");
+        ContextDecision i6_d1 = new ContextDecision(cdMethodOverride, 7);
 
         ContextDecision i6_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i7_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 8);

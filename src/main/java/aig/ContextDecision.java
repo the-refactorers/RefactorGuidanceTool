@@ -12,19 +12,26 @@ public class ContextDecision {
     Instruction previousInstruction;
     @XmlTransient
     private Instruction                     nextInstruction;
-    private CodeContext.CodeContextEnum     contextType;
-    private int                             nextInstructionID = AdaptiveInstructionGraph.FINAL_NODE;
+    private CodeContext.CodeContextEnum     _contextType;
+    private int                             _nextInstructionID = AdaptiveInstructionGraph.FINAL_NODE;
     private String                          _riskDescription = new String("");
 
     public ContextDecision(CodeContext.CodeContextEnum decisionCtxt, int resultsIn)
     {
-        contextType = decisionCtxt;
-        nextInstructionID = resultsIn;
+        _contextType = decisionCtxt;
+        _nextInstructionID = resultsIn;
+    }
+
+    public ContextDecision(ContextDescriber description, int resultsIn)
+    {
+        this._contextType = description.decisionContext;
+        this._riskDescription = description.riskDescription;
+        this._nextInstructionID = resultsIn;
     }
 
     public ContextDecision(CodeContext.CodeContextEnum decisionCtxt)
     {
-        contextType = decisionCtxt;
+        this._contextType = decisionCtxt;
     }
 
     public String getRiskDescription(){
@@ -33,10 +40,10 @@ public class ContextDecision {
 
     @XmlAttribute
     public void setContextType(CodeContext.CodeContextEnum contextType) {
-        this.contextType = contextType;
+        this._contextType = contextType;
     }
     public CodeContext.CodeContextEnum getContextType() {
-        return contextType;
+        return this._contextType;
     }
 
     @XmlAttribute
@@ -46,9 +53,9 @@ public class ContextDecision {
 
     @XmlElement(name="NEXT_INSTRUCTION")
     public void setNextInstructionID(int instructionResult) {
-        this.nextInstructionID = instructionResult;
+        this._nextInstructionID = instructionResult;
     }
     public int getNextInstructionID() {
-        return nextInstructionID;
+        return _nextInstructionID;
     }
 }
