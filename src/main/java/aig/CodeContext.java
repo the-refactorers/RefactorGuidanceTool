@@ -7,13 +7,18 @@ public class CodeContext {
     }
 
     public enum CodeContextEnum {
+
         // Rename refactoring defined context
         MethodSingleDeclaration,
-        MethodInterfaceDeclaration,
         MethodMultipleDeclarations,
+        MethodNoneInterfaceDeclaration,
+        MethodInterfaceDeclaration,
         MethodOverload,
+        MethodNoneOverload,
         MethodOverride,
+        MethodNoneOverride,
         MethodOverrideNoAnnotation,
+        MethodNoneOverrideNoAnnotation,
 
         // Extract method
         MethodExtractNoneLocalDependencies,

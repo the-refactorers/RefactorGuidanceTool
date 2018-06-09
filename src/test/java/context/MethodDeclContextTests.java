@@ -1,5 +1,6 @@
 package context;
 
+import aig.CodeContext;
 import analysis.JavaParserTestSetup;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
@@ -150,6 +151,26 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
     }
 
     @Test
+    public void detectMethodNotDeclaredInInterface()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+        MethodDescriber method = new MethodDescriber("void","MethodTwo","()");
+        MethodNoneInterfaceDeclaration mnid = new MethodNoneInterfaceDeclaration(cmf, method);
+
+        try {
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodNoneInterfaceDeclaration, mnid.getType());
+            Assert.assertTrue(mnid.detect());
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
     public void parametersMethodDeclaredInInterface()
     {
         //@todo: specifically public interface, this might lead to exposure to packages with unseen behavior
@@ -190,6 +211,31 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
 
         try {
             Assert.assertTrue("No override detected", mod.detect());
+        }
+        catch(Exception e)
+        {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectMethodHasNoOverride()
+    {
+        CreateCompilationUnitFromTestClass("ExtendedClassA_BWith2Methods.java.txt");
+
+        ClassMethodFinder cmf = new ClassMethodFinder();
+        cmf.initialize(_cu, "A");
+
+        ContextConfiguration cc = new ContextConfiguration();
+        MethodDescriber method = new MethodDescriber("void","MethodTwo","()");
+        cc.setMethodDescriber(method);
+
+        cc.setCMFAnalyzer(cmf);
+        MethodNoneOverride mnod = new MethodNoneOverride(cc);
+
+        try {
+            Assert.assertTrue(mnod.detect());
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodNoneOverride, mnod.getType());
         }
         catch(Exception e)
         {
@@ -357,10 +403,16 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         cc.setMethodDescriber(md);
         cc.setCMFAnalyzer(cmf);
         MethodOverload mod = new MethodOverload(cc);
+        MethodNoneOverload mnod = new MethodNoneOverload(cc);
 
         try {
             Assert.assertFalse(mod.detect());
             Assert.assertTrue(mod.getParameters().getCollection().isEmpty());
+
+            Assert.assertTrue(mnod.detect());
+
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodOverload, mod.getType());
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodNoneOverload, mnod.getType());
         }
         catch(Exception e)
         {
