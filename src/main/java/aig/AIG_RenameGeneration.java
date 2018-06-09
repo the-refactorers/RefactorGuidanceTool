@@ -6,17 +6,22 @@ public class AIG_RenameGeneration implements I_AIG {
 
     private ContextDescriber cdMethodInterfaceDeclaration = new ContextDescriber(
             CodeContext.CodeContextEnum.MethodInterfaceDeclaration,
-            "[Method Interface Declaration]. Dependencies with external packages might be broken."
+            "[Method Interface Declaration]: Dependencies with external packages might be broken. They no longer can access this method because the name changed."
     );
 
     private ContextDescriber cdMethodOverride = new ContextDescriber(
             CodeContext.CodeContextEnum.MethodOverride,
-            "[Method override]. Single method rename might change behavior due to polymorphism."
+            "[Method override]: Not renaming methods that you override might change behavior of your program due to polymorphism."
     );
 
     private ContextDescriber cdMethodOverload = new ContextDescriber(
             CodeContext.CodeContextEnum.MethodOverload,
-            "[Method overload]. For readibility it should be considered to change all method which share a common name."
+            "[Method overload]: To make your code more understandable it should be considered to change names of all methods which share a common name."
+    );
+
+    private ContextDescriber cdMethodOverrideNoAnnotation = new ContextDescriber(
+            CodeContext.CodeContextEnum.MethodOverrideNoAnnotation,
+            "[None @Override]: It is recommended to preceed each method that is overriden with @Override."
     );
 
     AdaptiveInstructionGraph _graph = new AdaptiveInstructionGraph();
@@ -25,25 +30,25 @@ public class AIG_RenameGeneration implements I_AIG {
         _graph.setDescription("... Remember, code is written for humans ...");
         _graph.setRefactorMechanic("Rename Method");
 
-        Instruction i1 = new Instruction(1, "\nBelow are INSTRUCTIONS for renaming #method in class #class of your project, assuming all risks are taken into account.\n" +
+        Instruction i1 = new Instruction(1, "\n\nBelow are INSTRUCTIONS for renaming #method in class #class of your project, assuming all risks are taken into account.\n" +
                 "Feel free to skip specific steps for risks which you think are not relevant. Steps are marked for specific risks. \n");
-        Instruction i2 = new Instruction(2, "In the current context there is no risk in renaming method #method directly\n");
-        Instruction i3 = new Instruction(3, "Rename #method in class #class to your new name");
-        Instruction i4 = new Instruction(4, "Build project. Resolve any unresolved references to #method indicated by compiler.");
-        Instruction i5 = new Instruction(5, "Method #method is not declared for the first time in class #class .");
-        Instruction i6 = new Instruction(6, "[Interface Declaration] A declaration exists in (public) interface #interface.\n" +
-                "It is a good practice to \n\t" +
-                "1. Mark public #method deprecated in #interface with @deprecated \n\t" +
-                "2. Declare new method in #interface \n\t " +
-                "3. Create your new method in #class and call this method from within #method");
-        Instruction i7 = new Instruction(7, "[Method Override] Method #method has been defined in the following superclasses: #class-list\n" +
-                "Check if you want to rename them also to preserve application behavior.\n When no risk. proceed...");
-        Instruction i8 = new Instruction( 8, "To eliminate any side-effect risks, I suggest to rename #method also in #class-list\n");
-        Instruction i9 = new Instruction( 9, "[Method Overload] There are methods present in your class hierarchy with the same name (method override), but different number of parameters.\n" +
-                "It is a good practice to rename also these methods to the new name you have choosen ");
+        Instruction i2 = new Instruction(2, "\nIn the current context there is no risk in renaming method #method directly\n");
+        Instruction i3 = new Instruction(3, "\nRename #method in class #class to your new name");
+        Instruction i4 = new Instruction(4, "\nBuild project.\nResolve unresolved references to #method indicated by compiler by changing the old name to the new name.\nRun your automatic tests and solve issues.\n");
+        Instruction i5 = new Instruction(5, "\nMethod #method is not declared for the first time in class #class .");
+        Instruction i6 = new Instruction(6, "\n[Method Interface Declaration]\nA declaration exists in (public) interface #interface.\n" +
+                "It is a good practice to \n" +
+                "\t1. Mark public #method deprecated in #interface with annotation '@Deprecated' \n" +
+                "\t2. Add method with the new name to interface #interface\n" +
+                "\t3. Rename #method in class #class to the new name\n" +
+                "\t3. Create method #method in #class and make a direct call to your method from within #method to new method");
+        Instruction i7 = new Instruction(7, "\n[Method Override]\nMethod #method has been defined in the following superclasses:\n#class-list\n" +
+                "To eliminate any side-effect risks, I suggest to rename #method also in: \n#class-list\n");
+        Instruction i9 = new Instruction( 9, "\n[Method Overload]\nThere are methods present in your class hierarchy with the same name (method override), but different number of parameters.\n" +
+                "It is a good practice to also perform refactoring Rename Method also for these methods.");
         Instruction i10 = new Instruction(10, "");
-        Instruction i11 = new Instruction(11, "[No @Override annotations] In these classes @Override has not been added everywhere. " +
-                "Before renaming, Add @Override above  methods #method-list");
+        Instruction i11 = new Instruction(11, "\n[None @Override]\nIn these classes @Override has not been added everywhere." +
+                "Before renaming these methods, Add @Override above  methods\n#method-list");
 
         ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodSingleDeclaration, 2);
         i1_d1.setRiskDescription("");
@@ -57,12 +62,10 @@ public class AIG_RenameGeneration implements I_AIG {
         ContextDecision i10_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverride, 3);
 
         ContextDecision i6_d1 = new ContextDecision(cdMethodOverride, 7);
-        ContextDecision i6_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverride, 3);
+        ContextDecision i6_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverride, 4);
 
-        ContextDecision i7_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 8);
-
-        ContextDecision i8_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverrideNoAnnotation, 3);
-        ContextDecision i8_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverrideNoAnnotation, 11);
+        ContextDecision i7_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverrideNoAnnotation, 3);
+        ContextDecision i7_d2 = new ContextDecision(cdMethodOverrideNoAnnotation, 11);
 
         ContextDecision i9_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
 
@@ -82,8 +85,7 @@ public class AIG_RenameGeneration implements I_AIG {
         i6.addDecision(i6_d1);
         i6.addDecision(i6_d2);
         i7.addDecision(i7_d1);
-        i8.addDecision(i8_d1);
-        i8.addDecision(i8_d2);
+        i7.addDecision(i7_d2);
         i9.addDecision(i9_d1);
         i10.addDecision(i10_d1);
         i10.addDecision(i10_d2);
@@ -97,7 +99,6 @@ public class AIG_RenameGeneration implements I_AIG {
         _graph.addInstruction(i5);
         _graph.addInstruction(i6);
         _graph.addInstruction(i7);
-        _graph.addInstruction(i8);
         _graph.addInstruction(i9);
         _graph.addInstruction(i10);
         _graph.addInstruction(i11);

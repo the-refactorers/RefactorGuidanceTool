@@ -109,7 +109,7 @@ public class InstructionGenerator {
 
                 for (Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
                     if (exactMatchInString(parsedInstructionLine, entry.getKey())) {
-                        parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), String.join(" ++\n", entry.getValue()));
+                        parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), String.join("\n", entry.getValue()));
                     }
                 }
 
