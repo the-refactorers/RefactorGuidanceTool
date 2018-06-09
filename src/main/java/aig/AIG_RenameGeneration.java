@@ -2,14 +2,19 @@ package aig;
 
 public class AIG_RenameGeneration implements I_AIG {
 
-    ContextDescriber cdMethodInterfaceDeclaration = new ContextDescriber(
+    private ContextDescriber cdMethodInterfaceDeclaration = new ContextDescriber(
             CodeContext.CodeContextEnum.MethodInterfaceDeclaration,
             "[Method Interface Declaration]. Dependencies with external packages might be broken."
     );
 
-    ContextDescriber cdMethodOverride = new ContextDescriber(
+    private ContextDescriber cdMethodOverride = new ContextDescriber(
             CodeContext.CodeContextEnum.MethodOverride,
             "[Method override]. Single method rename might change behavior due to polymorphism."
+    );
+
+    private ContextDescriber cdMethodOverload = new ContextDescriber(
+            CodeContext.CodeContextEnum.MethodOverload,
+            "[Method overload]. For readibility it should be considered to change all method which share a common name."
     );
 
     AdaptiveInstructionGraph _graph = new AdaptiveInstructionGraph();
@@ -45,8 +50,7 @@ public class AIG_RenameGeneration implements I_AIG {
         ContextDecision i7_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 8);
         ContextDecision i8_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i9_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
-        ContextDecision i4_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverload, 9);
-        i4_d1.setRiskDescription("[Method overload]. For readibility it should be considered to change all method which share a common name.");
+        ContextDecision i4_d1 = new ContextDecision(cdMethodOverload, 9);
 
         ContextDecision i4_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
 

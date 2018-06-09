@@ -1,6 +1,7 @@
 interface C
 {
     public void MethodOne();
+    public void allOverrideAnno();
 }
 
 interface D
@@ -58,6 +59,12 @@ public class B extends E implements C, D
     {
 
     }
+
+    @Override
+    public void allOverrideAnno()
+    {
+
+    }
 }
 
 public class A extends B
@@ -74,6 +81,12 @@ public class A extends B
     }
 
     public int MethodEight(boolean b)
+    {
+
+    }
+
+    @Override
+    public void allOverrideAnno()
     {
 
     }
