@@ -1,8 +1,6 @@
 package analysis.context;
 
 import aig.CodeContext;
-import analysis.MethodAnalyzer.ClassMethodFinder;
-import analysis.MethodAnalyzer.MethodDescriber;
 
 public class MethodNoneOverload extends ContextDetector {
 

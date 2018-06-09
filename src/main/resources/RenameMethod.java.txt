@@ -4,6 +4,7 @@ interface SimpleInterface {
 }
 
 class Base {
+    @Override
     public void MethodOverride(){
         return;
     }
@@ -19,6 +20,7 @@ class Base {
 }
 
 class Middle extends Base {
+      @Override
       public void MethodOverride(){
        }
 
@@ -52,6 +54,7 @@ class MyMethod extends Middle implements SimpleInterface
         return 0;
     }
 
+    @Override
     public void MethodOverride()
     {
     }

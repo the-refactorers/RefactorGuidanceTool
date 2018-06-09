@@ -287,7 +287,7 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         MethodDescriber md = new MethodDescriber("void","MethodFour","()");
         cc.setMethodDescriber(md);
         cc.setCMFAnalyzer(cmf);
-        MethodOverrideWithoutNoAnnotation mod = new MethodOverrideWithoutNoAnnotation(cc);
+        MethodOverrideNoAnnotation mod = new MethodOverrideNoAnnotation(cc);
 
         try {
             // Detector should indicate that class B has methods that do not contain an @Override marker
@@ -315,7 +315,7 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         MethodDescriber md = new MethodDescriber("void","MethodOne","()");
         cc.setMethodDescriber(md);
         cc.setCMFAnalyzer(cmf);
-        MethodOverrideWithoutNoAnnotation mod = new MethodOverrideWithoutNoAnnotation(cc);
+        MethodOverrideNoAnnotation mod = new MethodOverrideNoAnnotation(cc);
 
         try {
             Assert.assertTrue(mod.detect());
@@ -343,7 +343,7 @@ public class MethodDeclContextTests extends JavaParserTestSetup {
         MethodDescriber md = new MethodDescriber("void","allOverrideAnno","()");
         cc.setMethodDescriber(md);
         cc.setCMFAnalyzer(cmf);
-        MethodNoneOverrideWithoutNoAnnotation mnowno = new MethodNoneOverrideWithoutNoAnnotation(cc);
+        MethodNoneOverrideNoAnnotation mnowno = new MethodNoneOverrideNoAnnotation(cc);
 
         try {
             Assert.assertTrue(mnowno.detect());

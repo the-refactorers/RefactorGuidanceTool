@@ -15,12 +15,12 @@ import java.util.List;
  * This is done for the local class and all of its overriden methods in the ancestors
  *
  */
-public class MethodOverrideWithoutNoAnnotation extends MethodOverride {
+public class MethodOverrideNoAnnotation extends MethodOverride {
 
     // We assume the situation is true, cycling through all methods
     private boolean method_without_override_annotation = true;
 
-    public MethodOverrideWithoutNoAnnotation(ContextConfiguration cc) {
+    public MethodOverrideNoAnnotation(ContextConfiguration cc) {
         super(cc);
     }
 

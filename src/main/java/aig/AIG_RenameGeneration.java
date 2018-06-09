@@ -1,5 +1,7 @@
 package aig;
 
+import analysis.context.MethodNoneOverride;
+
 public class AIG_RenameGeneration implements I_AIG {
 
     private ContextDescriber cdMethodInterfaceDeclaration = new ContextDescriber(
@@ -29,10 +31,19 @@ public class AIG_RenameGeneration implements I_AIG {
         Instruction i3 = new Instruction(3, "Rename #method in class #class to your new name");
         Instruction i4 = new Instruction(4, "Build project. Resolve any unresolved references to #method indicated by compiler.");
         Instruction i5 = new Instruction(5, "Method #method is not declared for the first time in class #class .");
-        Instruction i6 = new Instruction(6, "[Interface Declaration] A declaration exists in (public) interface #interface.\nIt is a good practice to \n\t1. Mark public #method deprecated in #interface with @deprecated \n\t2. Declare new method in #interface \n\t 3. Create your new method in #class and call this method from within #method");
-        Instruction i7 = new Instruction(7, "[Method Override] Method #method has been defined in the following superclasses: #class-list\nCheck if you want to rename them also to preserve application behavior.\n When no risk. proceed...");
+        Instruction i6 = new Instruction(6, "[Interface Declaration] A declaration exists in (public) interface #interface.\n" +
+                "It is a good practice to \n\t" +
+                "1. Mark public #method deprecated in #interface with @deprecated \n\t" +
+                "2. Declare new method in #interface \n\t " +
+                "3. Create your new method in #class and call this method from within #method");
+        Instruction i7 = new Instruction(7, "[Method Override] Method #method has been defined in the following superclasses: #class-list\n" +
+                "Check if you want to rename them also to preserve application behavior.\n When no risk. proceed...");
         Instruction i8 = new Instruction( 8, "To eliminate any side-effect risks, I suggest to rename #method also in #class-list\n");
-        Instruction i9 = new Instruction( 9, "[Method Overload] There are methods present in your class hierarchy with the same name (method override), but different number of parameters.\nIt is a good practice to rename also these methods to the new name you have choosen ");
+        Instruction i9 = new Instruction( 9, "[Method Overload] There are methods present in your class hierarchy with the same name (method override), but different number of parameters.\n" +
+                "It is a good practice to rename also these methods to the new name you have choosen ");
+        Instruction i10 = new Instruction(10, "");
+        Instruction i11 = new Instruction(11, "[No @Override annotations] In these classes @Override has not been added everywhere. " +
+                "Before renaming, Add @Override above  methods #method-list");
 
         ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodSingleDeclaration, 2);
         i1_d1.setRiskDescription("");
@@ -41,18 +52,24 @@ public class AIG_RenameGeneration implements I_AIG {
         ContextDecision i3_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 4);
 
         ContextDecision i5_d1 = new ContextDecision(cdMethodInterfaceDeclaration, 6);
-
-        ContextDecision i5_d2 = new ContextDecision(cdMethodOverride, 7);
+        ContextDecision i5_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneInterfaceDeclaration, 10);
+        ContextDecision i10_d1 = new ContextDecision(cdMethodOverride, 7);
+        ContextDecision i10_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverride, 3);
 
         ContextDecision i6_d1 = new ContextDecision(cdMethodOverride, 7);
+        ContextDecision i6_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverride, 3);
 
-        ContextDecision i6_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
         ContextDecision i7_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 8);
-        ContextDecision i8_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
-        ContextDecision i9_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
-        ContextDecision i4_d1 = new ContextDecision(cdMethodOverload, 9);
 
-        ContextDecision i4_d2 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
+        ContextDecision i8_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverrideNoAnnotation, 3);
+        ContextDecision i8_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodOverrideNoAnnotation, 11);
+
+        ContextDecision i9_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true);
+
+        ContextDecision i4_d1 = new ContextDecision(cdMethodOverload, 9);
+        ContextDecision i4_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodNoneOverload);
+
+        ContextDecision i11_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 3);
 
         i1.addDecision(i1_d1);
         i1.addDecision(i1_d2);
@@ -66,7 +83,11 @@ public class AIG_RenameGeneration implements I_AIG {
         i6.addDecision(i6_d2);
         i7.addDecision(i7_d1);
         i8.addDecision(i8_d1);
+        i8.addDecision(i8_d2);
         i9.addDecision(i9_d1);
+        i10.addDecision(i10_d1);
+        i10.addDecision(i10_d2);
+        i11.addDecision(i11_d1);
 
         _graph.setFirstInstruction(i1);
 
@@ -78,6 +99,8 @@ public class AIG_RenameGeneration implements I_AIG {
         _graph.addInstruction(i7);
         _graph.addInstruction(i8);
         _graph.addInstruction(i9);
+        _graph.addInstruction(i10);
+        _graph.addInstruction(i11);
     }
 
     @Override

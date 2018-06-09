@@ -75,6 +75,8 @@ public class InstructionGenerator {
 
             generatedInstructionList.add(_instr.getInstructionDescription());
 
+            String graphTrace = new String("\n");
+
             while (!_instr.endNode()) {
 
                 int decisionPaths = 0;
@@ -87,12 +89,15 @@ public class InstructionGenerator {
                         _instr = _aig.findInstruction(decision.getNextInstructionID());
                         generatedInstructionList.add(_instr.getInstructionDescription());
                         decisionPaths++; // only one decision should be valid
+                        graphTrace += " > " + decision.getNextInstructionID();
                     }
 
                 }
 
                 if(decisionPaths > 1) {System.out.println("\nINVALID GRAPH, unambiguous decision at " + prevInstr.instructionID + "\n");}
             }
+
+            System.out.println(graphTrace);
 
             // Fill in the used variables in the generated instructions, based on the parameter map
             //        1. Are there variables present
@@ -122,7 +127,7 @@ public class InstructionGenerator {
     }
 
     private static boolean exactMatchInString(String source, String subItem){
-        String pattern = "\\s" + subItem + "\\s";
+        String pattern = "\\s" + subItem;
         Pattern p=Pattern.compile(pattern);
         Matcher m=p.matcher(source);
         return m.find();
