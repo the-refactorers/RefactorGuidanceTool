@@ -31,36 +31,6 @@ import java.util.*;
 
 public class RenameMethodAnalyzer {
 
-    @Deprecated
-    public EnumSet<CodeContext.CodeContextEnum> AnalyzeContext(ClassMethodFinder cmf, MethodDescriber method)
-    {
-        EnumSet<CodeContext.CodeContextEnum> codeContext = EnumSet.noneOf(CodeContext.CodeContextEnum.class);
-
-        try {
-            if (!cmf.contextMultipleDeclarations(method)) {
-                codeContext.add(CodeContext.CodeContextEnum.MethodSingleDeclaration);
-            } else {
-                codeContext.add(CodeContext.CodeContextEnum.MethodMultipleDeclarations);
-            }
-
-            if (cmf.contextDeclaredInInterface(method)) {
-                codeContext.add(CodeContext.CodeContextEnum.MethodInterfaceDeclaration);
-            }
-            if (cmf.contextDeclaredInSuperClass(method)) {
-                codeContext.add(CodeContext.CodeContextEnum.MethodOverride);
-            }
-
-            codeContext.add(CodeContext.CodeContextEnum.always_true);
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-
-        return codeContext;
-    }
-
-
     // @todo: rename code section to specify which part of code to be extracted
     public List<String> generateInstructions(String refactorAction, String testResource, String className, String newMethodName, int lineNumber) {
 
