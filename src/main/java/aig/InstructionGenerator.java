@@ -143,8 +143,11 @@ public class InstructionGenerator {
         }
         else
         {
-            for(CodeContext.CodeContextEnum cce : contextSet)
-                generatedInstructionList.add(_aig.getRiskDescription(cce));
+            // For all items in the context stream that has a none empty risk description,
+            // add those risk descriptions to the instruction list
+            contextSet.stream().filter(context -> !_aig.getRiskDescription(context).isEmpty()).forEach(
+                    ctxtWithRisk -> generatedInstructionList.add(_aig.getRiskDescription(ctxtWithRisk))
+            );
         }
     }
 
