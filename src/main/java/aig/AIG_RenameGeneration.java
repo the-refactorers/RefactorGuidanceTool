@@ -1,7 +1,5 @@
 package aig;
 
-import analysis.context.MethodNoneOverride;
-
 public class AIG_RenameGeneration implements I_AIG {
 
     private ContextDescriber cdMethodInterfaceDeclaration = new ContextDescriber(

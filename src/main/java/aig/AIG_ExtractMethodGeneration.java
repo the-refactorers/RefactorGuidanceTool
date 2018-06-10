@@ -12,7 +12,7 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
         // All possible textual instructions in the graph
         // parameterized values by '$<param>'
         Instruction i1 = new Instruction(1, "Create the new method #new_method. Choose a proper meaningful name.");
-        Instruction i2 = new Instruction(2, "Copy code to extract from $method to #new_mehod.");
+        Instruction i2 = new Instruction(2, "Copy code to extract from #method to #new_mehod.");
         Instruction i3 = new Instruction(3, "Check your local declared methods. Do they have meaningful names. If not rename the local vars.");
         Instruction i4 = new Instruction(4, "Compile your code");
         Instruction i5 = new Instruction(5, "When no compilation errors. You can now safely replace the extracted code in #method with a call to #new_method");

@@ -30,10 +30,10 @@ public class MethodDescriber {
 
     public boolean equals(MethodDescriber md)
     {
-        System.out.println(this.getType() + " " +
-                this.getName() + " " + this.getSignature());
-        System.out.println(md.getType() + " " +
-                md.getName() + " " + md.getSignature());
+        //System.out.println(this.getType() + " " +
+          //      this.getName() + " " + this.getSignature());
+        //System.out.println(md.getType() + " " +
+          //      md.getName() + " " + md.getSignature());
 
         return (md.getType().contentEquals(this._type) &&
                 md.getName().contentEquals(this._name) &&
