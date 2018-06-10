@@ -109,4 +109,17 @@ public class DataFlowConclusionTests extends JavaParserTestSetup {
         Assert.assertTrue(varsInExtract.contains("a"));
         Assert.assertTrue(varsInExtract.contains("_hiddenName"));
     }
+
+    @Test
+    public void failingCase1()
+    {
+        extractRegion(137,138);
+        setupTestClass("ExtractMethodCases", "ExtractMe");
+        mdfaAnalysis();
+
+        // Because the variable is assigned, before a read. It is not
+        // needed to pass on to extract method
+        List<String> varsInExtract = _mdfaAna.getVariablesUsedInExtractSection();
+        Assert.assertEquals(2, varsInExtract.size());
+    }
 }

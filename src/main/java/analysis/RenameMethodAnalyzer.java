@@ -20,6 +20,7 @@ package analysis;
 import aig.*;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
+import analysis.context.CodeSection;
 import analysis.context.ContextAnalyzer;
 import analysis.context.ContextConfiguration;
 import analysis.context.ContextDetectorSetBuilder;
@@ -32,7 +33,12 @@ import java.util.*;
 public class RenameMethodAnalyzer {
 
     // @todo: rename code section to specify which part of code to be extracted
-    public List<String> generateInstructions(String refactorAction, String testResource, String className, String newMethodName, int lineNumber) {
+    public List<String> generateInstructions(String refactorAction,
+                                             String testResource,
+                                             String className,
+                                             String newMethodName,
+                                             int lineNumberStart,
+                                             int lineNumberEnd) {
 
         // load java class from the resource set
         InputStream parseStream = this.getClass().getClassLoader().getResourceAsStream(testResource);
@@ -51,21 +57,24 @@ public class RenameMethodAnalyzer {
         cmf.initialize(cu, className);
 
         // Determine name based on location
-        MethodDescriber selectedMethod = cmf.getMethodDescriberForLocation(lineNumber);
+        MethodDescriber selectedMethod = cmf.getMethodDescriberForLocation(lineNumberStart);
 
         List<String> instructionSteps = new ArrayList<>();
 
         // When we have a method name, start generating instructions for renaming this method
         if (!selectedMethod.getName().isEmpty()) {
+
+            // Analyze context and set-up code context of generator
+            ContextConfiguration cac = new ContextConfiguration();
+
             // SELECT refactoring
             AdaptiveInstructionGraph graph = null;
             if(refactorAction.contentEquals("Rename"))
                 graph = new AIG_RenameGeneration().getAdaptiveInstructionGraph();
-            else if(refactorAction.contentEquals("ExtractMethod"))
+            else if(refactorAction.contentEquals("ExtractMethod")) {
                 graph = new AIG_ExtractMethodGeneration().getAdaptiveInstructionGraph();
-
-            // Analyze context and set-up code context of generator
-            ContextConfiguration cac = new ContextConfiguration();
+                cac.setCodeSection(new CodeSection(lineNumberStart, lineNumberEnd));
+            }
 
             // SPECIFY necessary refactoring properties
             cac.setMethodDescriber(selectedMethod);
@@ -104,7 +113,7 @@ public class RenameMethodAnalyzer {
         }
         else
         {
-            instructionSteps.add("There is not a valid scope of method (method not found) on line "+ lineNumber + ". \nI cannot give any suggestions for renaming activity");
+            instructionSteps.add("There is not a valid scope of method (method not found) on line "+ lineNumberStart + ". \nI cannot give any suggestions for renaming activity");
         }
 
         return instructionSteps;

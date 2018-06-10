@@ -22,7 +22,7 @@ public class MethodExtractNoControlReturn extends MethodExtract {
 
     @Override
     public CodeContext.CodeContextEnum getType() {
-        return CodeContext.CodeContextEnum.MethodExtractNoNameHiding;
+        return CodeContext.CodeContextEnum.MethodExtractNoControlReturn;
     }
 
 }

@@ -130,4 +130,11 @@ public class ExtractMethodCases
 
         a = _hiddenName + 3;
     }
+
+    public void ExtractMe()
+    {
+        String firstName = "Patrick";
+        String copyOfFirstName;
+        copyOfFirstName = firstName;
+    }
 }

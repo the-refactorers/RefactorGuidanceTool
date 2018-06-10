@@ -87,9 +87,12 @@ public class InstructionGenerator {
                     // Check if context for specific decision exists in code
                     if (contextSet.contains(decision.getContextType())) {
                         _instr = _aig.findInstruction(decision.getNextInstructionID());
-                        generatedInstructionList.add(_instr.getInstructionDescription());
-                        decisionPaths++; // only one decision should be valid
-                        graphTrace += " > " + decision.getNextInstructionID();
+
+                        if(!_instr.getInstructionDescription().isEmpty()) {
+                            generatedInstructionList.add(_instr.getInstructionDescription());
+                        }
+                            decisionPaths++; // only one decision should be valid
+                            graphTrace += " > " + decision.getNextInstructionID();
                     }
 
                 }
@@ -109,7 +112,7 @@ public class InstructionGenerator {
 
                 for (Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
                     if (exactMatchInString(parsedInstructionLine, entry.getKey())) {
-                        parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), String.join("\n", entry.getValue()));
+                        parsedInstructionLine = parsedInstructionLine.replace(entry.getKey(), String.join(", ", entry.getValue()));
                     }
                 }
 

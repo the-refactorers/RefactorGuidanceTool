@@ -102,14 +102,8 @@ public class ContextDetectorSetBuilder {
 
         _analyzerConfig.setMethodDataFlowAnalyzer(new MethodDataFlowAnalyzer());
         _analyzerConfig.getMethodDataFlowAnalyzer().initialize(
-                _analyzerConfig.getCMFAnalyzer().getMethodDescriberForLocation(27).getMethodDeclaration(),
+                _analyzerConfig.getCMFAnalyzer().getMethodDescriberForLocation(_analyzerConfig.getCodeSection().begin()).getMethodDeclaration(),
                 _analyzerConfig.getCodeSection());
-
-        // Intra-method detectors need:
-        // MethodDescriptor AST Javaparser, identifying method from which to extract
-        // Code section to extract (this is sufficent to extract MethodDescirptor)
-        // Class name where method is defined
-
 
         // 2. Create the relevant detectors and provided them with the generic config object
         UniversalBuildContextDetectors(completeCodeContext, _analyzerConfig);

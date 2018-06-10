@@ -17,10 +17,10 @@ public class UIController {
     private JButton browseJavaFileButton;
     private JButton projectDirButton;
     private JTextField inputProjectDir;
-    private JTextField inputCodeLineSmell;
+    private JTextField startLine;
     private JComboBox prefabExamplesSelection;
     private JTextField newMethodName;
-    private JTextField textField1;
+    private JTextField endLine;
 
 
     public UIController() {
@@ -34,6 +34,9 @@ public class UIController {
                 RenameMethodAnalyzer analyzer = new RenameMethodAnalyzer();
                 List<String> instructions = new ArrayList<>();
 
+                int startLine = Integer.parseInt(UIController.this.startLine.getText());
+                int endLine = Integer.parseInt(UIController.this.endLine.getText());
+
                 if(renameRadioButton.isSelected())
                 {
                     // Selection of method to rename is based on provided line number
@@ -42,16 +45,16 @@ public class UIController {
                             inputJavaFile.getText(),
                             "MyMethod",
                             newMethodName.getText(),
-                            Integer.parseInt(inputCodeLineSmell.getText()));
+                            startLine, -1);
 
                 } else if(extractMethodRadioButton.isSelected())
                 {
                     instructions = analyzer.generateInstructions(
                             "ExtractMethod",
                             inputJavaFile.getText(),
-                            "MyMethod",
+                            "EM",
                             newMethodName.getText(),
-                            Integer.parseInt(inputCodeLineSmell.getText()));
+                            startLine, endLine);
 
                 } else
                 {
@@ -85,9 +88,10 @@ public class UIController {
 
         prefabExamplesSelection.addItem("");
         prefabExamplesSelection.addItem("RenameMethod.java.txt");
+        prefabExamplesSelection.addItem("ExtractMethod.java");
         prefabExamplesSelection.addItem("SimpleClassWith2Methods.java.txt");
 
-        prefabExamplesSelection.setSelectedIndex(1);
+        prefabExamplesSelection.setSelectedIndex(2);
 
         //renameRadioButton.setSelected(true);
         extractMethodRadioButton.setSelected(true);

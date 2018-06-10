@@ -70,13 +70,15 @@
           </component>
         </children>
       </grid>
-      <component id="26c8d" class="javax.swing.JTextField" binding="inputCodeLineSmell">
+      <component id="26c8d" class="javax.swing.JTextField" binding="startLine">
         <constraints>
           <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="24"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value="7"/>
+        </properties>
       </component>
       <component id="c5b66" class="javax.swing.JLabel">
         <constraints>
@@ -135,13 +137,15 @@
           <text value="New Method name"/>
         </properties>
       </component>
-      <component id="997d5" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+      <component id="997d5" class="javax.swing.JTextField" binding="endLine">
         <constraints>
           <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="24"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value="8"/>
+        </properties>
       </component>
     </children>
   </grid>

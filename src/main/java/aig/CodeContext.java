@@ -30,8 +30,8 @@ public class CodeContext {
         MethodExtractNoNameHiding,
         MethodExtractNoneArguments,
         MethodExtractNoneResults,
-        intramethod_extract_flow_break,
-        intramethod_extract_flow_return
+        MethodExtractControlReturn,
+        MethodExtractNoControlReturn
 
         , always_true     // used to link multiple actions together, where no decision is required
     }

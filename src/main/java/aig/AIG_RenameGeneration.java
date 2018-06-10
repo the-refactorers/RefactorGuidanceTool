@@ -29,7 +29,7 @@ public class AIG_RenameGeneration implements I_AIG {
         _graph.setRefactorMechanic("Rename Method");
 
         Instruction i1 = new Instruction(1, "\n\nBelow are INSTRUCTIONS for renaming #method in class #class of your project, assuming all risks are taken into account.\n" +
-                "Feel free to skip specific steps for risks which you think are not relevant. Steps are marked for specific risks. \n");
+                "Feel free to skip specific steps for risks which you think are not relevant. Steps are marked with [] for specific risks.\n");
         Instruction i2 = new Instruction(2, "\nIn the current context there is no risk in renaming method #method directly\n");
         Instruction i3 = new Instruction(3, "\nRename #method in class #class to your new name");
         Instruction i4 = new Instruction(4, "\nBuild project.\nResolve unresolved references to #method indicated by compiler by changing the old name to the new name.\nRun your automatic tests and solve issues.\n");

@@ -1,5 +1,6 @@
 package analysis.context;
 
+import aig.CodeContext;
 import com.github.javaparser.ast.CompilationUnit;
 
 public class MethodExtractControlReturn extends MethodExtract {
@@ -16,6 +17,11 @@ public class MethodExtractControlReturn extends MethodExtract {
 
     @Override
     public boolean detect() throws Exception {
-        return true;
+        return false;
+    }
+
+    @Override
+    public CodeContext.CodeContextEnum getType() {
+        return CodeContext.CodeContextEnum.MethodExtractControlReturn;
     }
 }
