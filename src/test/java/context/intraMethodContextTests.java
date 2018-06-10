@@ -6,6 +6,7 @@ import analysis.context.*;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -214,6 +215,55 @@ public class intraMethodContextTests extends JavaParserTestSetup {
 
             Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractNoNameHiding, menh.getType());
             assertTrue(menh.detect());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void detectReturnStatementInExtractedCode()
+    {
+        try {
+            extractRegion(145, 154);
+            setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
+
+            ContextConfiguration cc = new ContextConfiguration();
+            cc.setCodeSection(_extractRegion);
+            cc.setCompilationUnit(_cu);
+            cc.setCMFAnalyzer(_cmf);
+
+            MethodExtractControlReturn mecr = new MethodExtractControlReturn(cc);
+
+            assertTrue(mecr.detect());
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractControlReturn, mecr.getType());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void no_DetectReturnStatementOutsideExtractedCode()
+    {
+        try {
+            extractRegion(150, 152);
+            setupTestClass("ExtractMethodCases", "ExtractionWithoutDependencies");
+
+            ContextConfiguration cc = new ContextConfiguration();
+            cc.setCodeSection(_extractRegion);
+            cc.setCompilationUnit(_cu);
+            cc.setCMFAnalyzer(_cmf);
+
+            MethodExtractControlReturn mecr = new MethodExtractControlReturn(cc);
+            MethodExtractNoControlReturn mencr = new MethodExtractNoControlReturn(cc);
+
+            assertFalse(mecr.detect());
+
+            assertTrue(mencr.detect());
+            Assert.assertEquals(CodeContext.CodeContextEnum.MethodExtractNoControlReturn, mencr.getType());
         }
         catch (Exception e) {
             e.printStackTrace();

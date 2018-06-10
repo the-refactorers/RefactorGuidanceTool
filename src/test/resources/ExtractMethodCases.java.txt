@@ -137,4 +137,22 @@ public class ExtractMethodCases
         String copyOfFirstName;
         copyOfFirstName = firstName;
     }
+
+    public void ExtractWithReturnInIt() // 145-154
+    {
+        String p =0;
+
+        if(p<0)
+        {
+            return;
+        }
+        else
+        {
+            int s =4;
+        }
+
+        s++;
+
+        p = p - s;
+    }
 }

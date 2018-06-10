@@ -48,7 +48,8 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
         Instruction i12 = new Instruction(12, "\nYour extracted code contains variable [ #result-list ] that is used later in source method #method.\n" +
                 "\nAdd return type to your new method that equals the type of variable [ #result-list ].\n" +
                 "\nReturn variable #result-list at end of your new method.\n" +
-                "\nIn the original method #method assign the result after calling the new method to the local variable [ #result-list ]\n");
+                "\nIn the original method #method assign the result after calling the new method to the local variable.\n" +
+                "\tExample: #result-list = newName(arg)\n");
 
         // Define to what node to jump, when a specific code context is valid for a specific instruction
         ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractNoNameHiding, 2);
@@ -66,7 +67,7 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
 
         ContextDecision i7_8_9_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractNoneResults, 4);
 
-        ContextDecision i8_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractSingleResult, 10);
+        ContextDecision i7_8_9_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractSingleResult, 10);
 
         ContextDecision i10_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractNoControlReturn, 12);
 
@@ -83,10 +84,16 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
         i3.addDecision(i3_d1);
         i4.addDecision(i4_d1);
         i5.addDecision(i5_d1);
+
         i7.addDecision(i7_8_9_d1);
+        i7.addDecision(i7_8_9_d2);
+
         i8.addDecision(i7_8_9_d1);
+        i8.addDecision(i7_8_9_d2);
+
         i9.addDecision(i7_8_9_d1);
-        i8.addDecision(i8_d2);
+        i9.addDecision(i7_8_9_d2);
+
         i10.addDecision(i10_d1);
         i12.addDecision(i12_d1);
 

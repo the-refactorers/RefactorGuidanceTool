@@ -27,7 +27,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
     }
 
     // Every variable used in an expression will be part of a node NameExpr that is visited.
-    //@Override
+    @Override
     public void visit(NameExpr sn, Void args)
     {
         _lst.getListOfVariableFlowTables().forEach( flowTable ->
@@ -119,7 +119,7 @@ public class LocalVariableReadMarker extends MarkVariableFlowList {
     /**
      * Determine if name of variable can be found in a given expression
      *
-     * @param childNodes
+     * @param names
      * @param name
      * @return true = given name found
      */
