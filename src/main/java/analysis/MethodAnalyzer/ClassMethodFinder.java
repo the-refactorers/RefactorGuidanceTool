@@ -30,11 +30,13 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeS
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
 import com.github.javaparser.symbolsolver.model.typesystem.ReferenceType;
 import helpers.Checker;
+import javassist.compiler.ast.MethodDecl;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ClassMethodFinder implements ICodeAnalyzer {
 
@@ -49,7 +51,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
 
         _symbolSolver = new CombinedTypeSolver(
                 new ReflectionTypeSolver(),
-                new JavaParserTypeSolver(new File("SymbolSolver/src/main/java/"))
+                new JavaParserTypeSolver(new File("src/main/java/"))
         );
     }
 
@@ -217,6 +219,16 @@ public class ClassMethodFinder implements ICodeAnalyzer {
                 // When interface declaration and not one of the ignored packages
                 // Check if provided methodName is present in the stream of declared methods
                 // of this interface
+
+                Set<com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration>s = rtd_ancestor.getDeclaredMethods();
+
+                for(com.github.javaparser.symbolsolver.model.declarations.MethodDeclaration md : s) {
+                    System.out.println(md.getName() + "\n");
+                    System.out.println(md.getReturnType().describe() + "\n");
+                    System.out.println(method.getType() + "\n");
+                    System.out.println(md.getSignature() + "\n");
+                }
+
                 if (!isIgnoredPackage(rtd_ancestor) &&
                         rtd_ancestor.getDeclaredMethods().stream().anyMatch(m ->
                                 m.getName().equals(method.getName()) &&

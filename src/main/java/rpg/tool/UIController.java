@@ -43,7 +43,7 @@ public class UIController {
                     instructions = analyzer.generateInstructions(
                             "Rename",
                             inputJavaFile.getText(),
-                            "MyMethod",
+                            inputProjectDir.getText(),//"MyMethod",
                             newMethodName.getText(),
                             startLine, -1);
 
@@ -52,7 +52,7 @@ public class UIController {
                     instructions = analyzer.generateInstructions(
                             "ExtractMethod",
                             inputJavaFile.getText(),
-                            "EM",
+                            inputProjectDir.getText(),//"EM",
                             newMethodName.getText(),
                             startLine, endLine);
 
@@ -88,6 +88,7 @@ public class UIController {
 
         prefabExamplesSelection.addItem("");
         prefabExamplesSelection.addItem("RenameMethod.java.txt");
+        prefabExamplesSelection.addItem("API_Rename.java");
         prefabExamplesSelection.addItem("ExtractMethod.java");
         prefabExamplesSelection.addItem("SimpleClassWith2Methods.java.txt");
 

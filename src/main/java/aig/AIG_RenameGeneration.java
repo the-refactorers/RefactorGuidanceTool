@@ -37,16 +37,18 @@ public class AIG_RenameGeneration implements I_AIG {
         Instruction i6 = new Instruction(6, "\n[Method Interface Declaration]\nA declaration exists in (public) interface #interface.\n" +
                 "It is a good practice to \n" +
                 "\t1. Mark public #method deprecated in #interface with annotation '@Deprecated' \n" +
-                "\t2. Add method with the new name to interface #interface\n" +
-                "\t3. Rename #method in class #class to the new name\n" +
-                "\t3. Create method #method in #class and make a direct call to your method from within #method to new method");
+                "\t2. Add method with new name to interface #interface\n" +
+                "\t3. Add method with new name in class #class\n" +
+                "\t4. Cut content of #method in #class and paste into your new method.\n" +
+                "\t5. Place in #method a direct return call to your newly created method. Example: return newName();)\n");
+
         Instruction i7 = new Instruction(7, "\n[Method Override]\nMethod #method has been defined in the following superclasses:\n#class-list\n" +
-                "To eliminate any side-effect risks, I suggest to rename #method also in: \n#class-list\n");
+                "To eliminate any side-effect risks, I suggest to rename #method also to your new name in: \n#class-list\n");
         Instruction i9 = new Instruction( 9, "\n[Method Overload]\nThere are methods present in your class hierarchy with the same name (method override), but different number of parameters.\n" +
                 "It is a good practice to also perform refactoring Rename Method also for these methods.");
         Instruction i10 = new Instruction(10, "");
-        Instruction i11 = new Instruction(11, "\n[None @Override]\nIn these classes @Override has not been added everywhere." +
-                "Before renaming these methods, Add @Override above  methods\n#method-list");
+        Instruction i11 = new Instruction(11, "\n[None @Override]\nFor the listed methods @Override has not been added everywhere." +
+                "Before renaming any methods, Add @Override above methods\n#method-list");
 
         ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodSingleDeclaration, 2);
         i1_d1.setRiskDescription("");
