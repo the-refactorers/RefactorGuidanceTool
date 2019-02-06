@@ -54,8 +54,8 @@ public class ClassMethodFinder implements ICodeAnalyzer {
 
         _symbolSolver = new CombinedTypeSolver(
                 new ReflectionTypeSolver(),
-                new JavaParserTypeSolver(new File("src/main/java/"))
-        );
+                new JavaParserTypeSolver(new File("src/main/java/")),
+                new JavaParserTypeSolver(new File("C:\\Dropbox\\sources\\RefactorGuidance\\RefactorScenarios\\SimpleRename")));
     }
 
     public String getQualifiedClassName()
@@ -199,7 +199,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
 
     /**
      * Determine if the provided methodName has been declared in an interface or not
-     * @param methodName Name of method to be resolved
+     * @param method Name of method to be resolved
      * @return true, method name has been declared initially in an interface definition
      */
     public boolean isMethodDeclaredFirstTimeInInterface(MethodDescriber method) throws Exception {
@@ -272,7 +272,7 @@ public class ClassMethodFinder implements ICodeAnalyzer {
 
     /**
      * Is method defined in this specific class [Note: no check on return types and parameters yet in this case]
-     * @param methodName Name of method to be looked up
+     * @param method Name of method to be looked up
      * @return true, method name exists in class definition
      */
     public boolean hasMethodDefined(MethodDescriber method) {

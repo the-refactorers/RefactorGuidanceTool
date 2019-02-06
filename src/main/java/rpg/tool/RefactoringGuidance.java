@@ -113,9 +113,17 @@ public class RefactoringGuidance {
                 instructions = analyzer.generateInstructions(
                         "Rename",
                         inputJavaFile.getText(),
-                        inputProjectDir.getText(),//"MyMethod",
+                        "MyClass",
                         newMethodName.getText(),
-                        sl, -1);
+                        5, -1, false);
+
+                instructions.add("STOP");
+
+                hereTheGeneratedTextTextPane.setText("");
+                for(String s : instructions)
+                {
+                    hereTheGeneratedTextTextPane.append(s + "\n");
+                }
             }
         });
     }

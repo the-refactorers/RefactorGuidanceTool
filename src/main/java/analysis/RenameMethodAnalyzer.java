@@ -20,6 +20,10 @@
 
 package analysis;
 
+import java.io.IOException;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+
 import aig.*;
 import analysis.MethodAnalyzer.ClassMethodFinder;
 import analysis.MethodAnalyzer.MethodDescriber;
@@ -28,9 +32,12 @@ import analysis.context.ContextAnalyzer;
 import analysis.context.ContextConfiguration;
 import analysis.context.ContextDetectorSetBuilder;
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.utils.SourceRoot;
 
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class RenameMethodAnalyzer {
@@ -53,7 +60,6 @@ public class RenameMethodAnalyzer {
                                              int lineNumberStart,
                                              int lineNumberEnd,
                                              boolean fromResource) {
-
         CompilationUnit cu = null;
 
        if(fromResource) {
@@ -66,8 +72,21 @@ public class RenameMethodAnalyzer {
 
            cu = JavaParser.parse(parseStream);
        }
+       else
+       {
+           List<ParseResult<CompilationUnit>> results = null;
+           Path projectRoot = Paths.get("C:\\Dropbox\\sources\\RefactorGuidance\\RefactorScenarios\\SimpleRename");
+           SourceRoot sr = new SourceRoot(projectRoot);
 
-       // CompilationUnit cu = JavaParser.parse("src/main/java/");
+           try {
+               results = sr.tryToParse();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+
+           List<CompilationUnit> cus = sr.getCompilationUnits();
+           cu = cus.get(3);
+       }
 
         // set up analyzer to make it possible to retrieve method-number based on line number
         // @todo: This should be taken out of analyzer class
