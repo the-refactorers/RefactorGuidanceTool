@@ -4,7 +4,7 @@ interface SimpleInterface {
 }
 
 class Base {
-    @Override
+
     public void MethodOverride(){
         return;
     }
@@ -14,8 +14,9 @@ class Base {
         return;
     }
 
-    public void MethodOverload()
+    public int MethodOverload(int b)
     {
+        return b;
     }
 }
 
