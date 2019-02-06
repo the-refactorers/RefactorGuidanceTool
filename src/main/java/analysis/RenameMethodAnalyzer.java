@@ -35,23 +35,38 @@ import java.util.*;
 
 public class RenameMethodAnalyzer {
 
+    public List<String> generateInstructions(String refactorAction,
+                                             String testResource,
+                                             String className,
+                                             String newMethodName,
+                                             int lineNumberStart,
+                                             int lineNumberEnd)
+    {
+        return generateInstructions(refactorAction, testResource, className, newMethodName, lineNumberStart, lineNumberEnd, true);
+    }
+
     // @todo: rename code section to specify which part of code to be extracted
     public List<String> generateInstructions(String refactorAction,
                                              String testResource,
                                              String className,
                                              String newMethodName,
                                              int lineNumberStart,
-                                             int lineNumberEnd) {
+                                             int lineNumberEnd,
+                                             boolean fromResource) {
 
-        // load java class from the resource set
-        InputStream parseStream = this.getClass().getClassLoader().getResourceAsStream(testResource);
+        CompilationUnit cu = null;
 
-        if (parseStream == null) {
-            throw new RuntimeException("Unable to find sample " + testResource);
-        }
+       if(fromResource) {
+           // load java class from the resource set
+           InputStream parseStream = this.getClass().getClassLoader().getResourceAsStream(testResource);
 
-        // Initialize compilation unit
-        CompilationUnit cu = JavaParser.parse(parseStream);
+           if (parseStream == null) {
+               throw new RuntimeException("Unable to find sample " + testResource);
+           }
+
+           cu = JavaParser.parse(parseStream);
+       }
+
        // CompilationUnit cu = JavaParser.parse("src/main/java/");
 
         // set up analyzer to make it possible to retrieve method-number based on line number

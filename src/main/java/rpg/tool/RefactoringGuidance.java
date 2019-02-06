@@ -40,6 +40,8 @@ public class RefactoringGuidance {
     private JComboBox prefabExamplesSelection;
     private JTextField newMethodName;
     private JTextField endLine;
+    private JButton projectTestButton;
+    private List<String> instructions = new ArrayList<>();
 
 
     public RefactoringGuidance() {
@@ -51,10 +53,9 @@ public class RefactoringGuidance {
             public void actionPerformed(ActionEvent e) {
 
                 RenameMethodAnalyzer analyzer = new RenameMethodAnalyzer();
-                List<String> instructions = new ArrayList<>();
 
-                int startLine = Integer.parseInt(RefactoringGuidance.this.startLine.getText());
-                int endLine = Integer.parseInt(RefactoringGuidance.this.endLine.getText());
+                int sl = Integer.parseInt(RefactoringGuidance.this.startLine.getText());
+                int el = Integer.parseInt(RefactoringGuidance.this.endLine.getText());
 
                 if(renameRadioButton.isSelected())
                 {
@@ -64,7 +65,7 @@ public class RefactoringGuidance {
                             inputJavaFile.getText(),
                             inputProjectDir.getText(),//"MyMethod",
                             newMethodName.getText(),
-                            startLine, -1);
+                            sl, -1);
 
                 } else if(extractMethodRadioButton.isSelected())
                 {
@@ -73,7 +74,7 @@ public class RefactoringGuidance {
                             inputJavaFile.getText(),
                             inputProjectDir.getText(),//"EM",
                             newMethodName.getText(),
-                            startLine, endLine);
+                            sl, el);
 
                 } else
                 {
@@ -100,6 +101,23 @@ public class RefactoringGuidance {
                 }
             }
         });
+
+        projectTestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              JOptionPane.showMessageDialog(null, "You did something");
+
+                int sl = Integer.parseInt(RefactoringGuidance.this.startLine.getText());
+
+                RenameMethodAnalyzer analyzer = new RenameMethodAnalyzer();
+                instructions = analyzer.generateInstructions(
+                        "Rename",
+                        inputJavaFile.getText(),
+                        inputProjectDir.getText(),//"MyMethod",
+                        newMethodName.getText(),
+                        sl, -1);
+            }
+        });
     }
 
     private void createUIComponents() {
@@ -109,7 +127,6 @@ public class RefactoringGuidance {
         prefabExamplesSelection.addItem("RenameMethod.java.txt");
         prefabExamplesSelection.addItem("API_Rename.java");
         prefabExamplesSelection.addItem("ExtractMethod.java");
-        prefabExamplesSelection.addItem("SimpleClassWith2Methods.java.txt");
 
         prefabExamplesSelection.setSelectedIndex(2);
 
