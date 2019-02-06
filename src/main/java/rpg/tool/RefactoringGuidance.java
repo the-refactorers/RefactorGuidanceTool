@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-public class UIController {
+public class RefactoringGuidance {
     public JPanel mainPanel;
     private JTextArea hereTheGeneratedTextTextPane;
     private JButton generateInstructionsButton;
@@ -15,7 +15,7 @@ public class UIController {
     private JRadioButton extractMethodRadioButton;
     private JTextField inputJavaFile;
     private JButton browseJavaFileButton;
-    private JButton projectDirButton;
+    private JButton classNameButton;
     private JTextField inputProjectDir;
     private JTextField startLine;
     private JComboBox prefabExamplesSelection;
@@ -23,7 +23,7 @@ public class UIController {
     private JTextField endLine;
 
 
-    public UIController() {
+    public RefactoringGuidance() {
 
         createUIComponents();
 
@@ -34,8 +34,8 @@ public class UIController {
                 RenameMethodAnalyzer analyzer = new RenameMethodAnalyzer();
                 List<String> instructions = new ArrayList<>();
 
-                int startLine = Integer.parseInt(UIController.this.startLine.getText());
-                int endLine = Integer.parseInt(UIController.this.endLine.getText());
+                int startLine = Integer.parseInt(RefactoringGuidance.this.startLine.getText());
+                int endLine = Integer.parseInt(RefactoringGuidance.this.endLine.getText());
 
                 if(renameRadioButton.isSelected())
                 {

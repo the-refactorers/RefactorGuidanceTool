@@ -41,8 +41,8 @@ public class RPGTool {
         //System.out.print(cmd.getOptionValue("file"));
         //System.out.print(cmd.getOptionValue("loc"));
 
-        JFrame frame = new  JFrame("UIController");
-        frame.setContentPane(new UIController().mainPanel);
+        JFrame frame = new  JFrame("RefactoringGuidance");
+        frame.setContentPane(new RefactoringGuidance().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

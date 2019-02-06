@@ -50,10 +50,20 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
                 "\nReturn variable #result-list at end of your new method.\n" +
                 "\nIn the original method #method assign the result after calling the new method to the local variable.\n" +
                 "\tExample: #result-list = newName(arg)\n");
+        Instruction i13 = new Instruction(13, "\n" +
+                "Your code contains a conditional return statement.\n" +
+                "Add Boolean result type to your new method description.\n" +
+                "Return true in the conditional expression.\n" +
+                "Return false at the end of your new method.\n" +
+                "Wrap your new method that is called in [$method-name] with if(newmethod() == true) return;");
+
+        Instruction i14 = new Instruction(14, "");
+        Instruction i15 = new Instruction(15, "");
+        Instruction i16 = new Instruction(16, "");
 
         // Define to what node to jump, when a specific code context is valid for a specific instruction
         ContextDecision i1_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractNoNameHiding, 2);
-        ContextDecision i1_d2 = new ContextDecision(cdMethodOverrideNoAnnotation, 3);
+        ContextDecision i1_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractNameHiding, 3);
 
         ContextDecision i2_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractNoneArguments, 7);
         ContextDecision i2_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractSingleArgument, 8);
@@ -62,6 +72,7 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
         ContextDecision i3_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 2);
 
         ContextDecision i4_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractNoControlReturn, 5);
+        ContextDecision i4_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractControlReturn, 13);
 
         ContextDecision i5_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 6);
 
@@ -70,8 +81,11 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
         ContextDecision i7_8_9_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractSingleResult, 10);
 
         ContextDecision i10_d1 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractNoControlReturn, 12);
+        ContextDecision i10_d2 = new ContextDecision(CodeContext.CodeContextEnum.MethodExtractControlReturn, 13);
 
         ContextDecision i12_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 6);
+
+        ContextDecision i13_d1 = new ContextDecision(CodeContext.CodeContextEnum.always_true, 6);
 
         // Couple decision points based on code context to relevant instructions
         i1.addDecision(i1_d1);
@@ -83,6 +97,7 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
 
         i3.addDecision(i3_d1);
         i4.addDecision(i4_d1);
+        i4.addDecision(i4_d2);
         i5.addDecision(i5_d1);
 
         i7.addDecision(i7_8_9_d1);
@@ -95,7 +110,11 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
         i9.addDecision(i7_8_9_d2);
 
         i10.addDecision(i10_d1);
+        i10.addDecision(i10_d2);
+
         i12.addDecision(i12_d1);
+
+        i13.addDecision(i13_d1);
 
         // Set entry point of graph
         _graph.setFirstInstruction(i1);
@@ -110,6 +129,7 @@ public class AIG_ExtractMethodGeneration implements I_AIG {
         _graph.addInstruction(i9);
         _graph.addInstruction(i10);
         _graph.addInstruction(i12);
+        _graph.addInstruction(i13);
     }
 
     @Override
