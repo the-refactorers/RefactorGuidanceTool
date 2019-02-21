@@ -60,12 +60,12 @@ public class AIG_RenameGeneration implements I_AIG {
                 "\t3. Add method with new name in class #class\n" +
                 "\t4. Cut content of #method in #class and paste into your new method.\n" +
                 "\t5. Place in #method a direct return call to your newly created method. Example: return newName();)\n" +
-                "\t6. Place above #method @Depricated \n");
+                "\t6. Place above #method @Deprecated \n");
 
         Instruction i7 = new Instruction(7, "\n[Method Override]\nMethod #method has been defined in the following superclasses:\n#class-list\n" +
                 "To eliminate any side-effect risks, I suggest to rename #method also to your new name in: \n#class-list\n");
-        Instruction i9 = new Instruction( 9, "\n[Method Overload]\nThere are methods present in your class hierarchy with the same name (method override), but different number of parameters.\n" +
-                "It is a good practice to also perform refactoring Rename Method also for these methods.");
+        Instruction i9 = new Instruction( 9, "\n[Method Overload]\nThere are methods present in your class hierarchy that has the same name of the method being renamed, but different number of parameters.\n" +
+                "To improve understandibility, it is a good practice to perform refactoring Rename Method also for these methods.");
         Instruction i10 = new Instruction(10, "");
         Instruction i11 = new Instruction(11, "\n[None @Override]\nFor the listed methods @Override has not been added everywhere." +
                 "Before renaming any methods, Add @Override above methods\n#method-list");

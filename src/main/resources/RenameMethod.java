@@ -29,6 +29,12 @@ class Middle extends Base {
        {
            return;
        }
+
+       @Override
+       public int MethodOverload()
+    {
+        return 0;
+    }
 }
 
 class MyMethod extends Middle implements SimpleInterface
@@ -50,9 +56,10 @@ class MyMethod extends Middle implements SimpleInterface
         return;
     }
 
+    @Override
     public int MethodOverload()
     {
-        return 0;
+        return 2;
     }
 
     @Override

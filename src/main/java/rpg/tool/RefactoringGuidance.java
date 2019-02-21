@@ -132,7 +132,7 @@ public class RefactoringGuidance {
         // TODO: place custom component creation code here
 
         prefabExamplesSelection.addItem("");
-        prefabExamplesSelection.addItem("RenameMethod.java.txt");
+        prefabExamplesSelection.addItem("RenameMethod.java");
         prefabExamplesSelection.addItem("API_Rename.java");
         prefabExamplesSelection.addItem("ExtractMethod.java");
 
